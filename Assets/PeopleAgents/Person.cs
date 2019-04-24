@@ -35,8 +35,9 @@ public class Person : PersonAgent, NameManager
 
     public static PersonAgent createChild(PersonAgent p1, params PersonAgent[] otherParents)
     {
-        // createChild(p1, p1.sigOther)
-        p2 = otherParents[0];
+        // Assuming "Person" is a humant variant, otherParents should be of length 1
+        // e.g. a call for two humans, p1 and p2, creating a child should look like
+        // var createdChild = createChild(p1, p2)
 
         
     }
