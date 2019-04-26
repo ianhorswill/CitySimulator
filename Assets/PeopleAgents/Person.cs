@@ -4,16 +4,16 @@ using UnityEngine;
 
 interface PersonAgent : GameObject
 {
-    int age;
-    string name;
+    int age { get; set; }
+    string name { get; set; }
 
-    var currentLocation;
-    var relationships;
+    var currentLocation { get; set; }
+    var relationships { get; set; }
 
 
-    PersonAgent sigOther;
-    PersonAgent[] siblings;
-    PersonAgent[] parents;
+    PersonAgent sigOther { get; set; }
+    PersonAgent[] siblings { get; set; }
+    PersonAgent[] parents{ get; set; }
 
     public static PersonAgent createChild(PersonAgent p1, params PersonAgent[] otherParents) {
         /*

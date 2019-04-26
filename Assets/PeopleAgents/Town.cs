@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+//Is this action related?
 public interface Settlement
 {
     PersonAgent[] agents  {get; set;}
@@ -16,8 +17,6 @@ public interface Settlement
     void death();
     void birth();
     void departed();
-     
-    
 }
 
 public class PersonTown : Settlement
@@ -41,6 +40,7 @@ public class PersonTown : Settlement
         // Life event does further processing?
     }
 
+    //Is this a life event?
     public static void birth(){
         //Select Parent Randomly
         var livingPeople =  from Agent in Agents
@@ -52,9 +52,8 @@ public class PersonTown : Settlement
         Person otherParent = new Parent();
         Person newborn = selectedParent.createChild(selectedParent, otherParent);
         Agents.Add(newborn);
+        
     }
-
-
 }
 
 
