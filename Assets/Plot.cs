@@ -10,6 +10,10 @@ public class Plot : MonoBehaviour
     public bool occupied;
     public GameObject[] building_list; 
 
+    void Awake()
+    {
+        neighbor_plots = new GameObject[4];
+    }
 
     // Start is called before the first frame update
     void Start()

@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class Street : MonoBehaviour
 {
-    string name;
-    int direction; // [0-3 -> N E S W]
-    public GameObject[] intersections; // list of streets that given street intersects with (order?)
+    public string streetName;
+    public int direction; // [0-1 -> NS EW]
+    static int CONNECTED_STREETS_MAX = 10; // arbitrary max of 10
+    public GameObject[] connected_streets;
+
+    void Awake()
+    {
+        connected_streets = new GameObject[CONNECTED_STREETS_MAX];
+    }
 
     // Start is called before the first frame update
     void Start()
