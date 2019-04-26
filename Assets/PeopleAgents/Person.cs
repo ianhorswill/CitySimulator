@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-interface PersonAgent
+interface PersonAgent : GameObject
 {
     int age;
     string name;
@@ -25,9 +25,9 @@ interface PersonAgent
          */
 
     } 
-
-
 }
+
+
 
 public class Person : PersonAgent, NameManager
 {
@@ -42,3 +42,5 @@ public class Person : PersonAgent, NameManager
         
     }
 }
+
+
