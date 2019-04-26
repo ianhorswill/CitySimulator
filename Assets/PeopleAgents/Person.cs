@@ -114,7 +114,7 @@ public class Person
                                 where !(p2.children.Contains(child))
                                 select child;
 
-                            siblingsCollection = siblingsCollection.Union(from child in p2.children where !(p1.children.Contains(child)) select child);
+                            siblingsCollection = siblingsCollection.Union(from child in p2.children select child);
 
                             currSiblings = siblingsCollection.ToList<Person>();
                         }
