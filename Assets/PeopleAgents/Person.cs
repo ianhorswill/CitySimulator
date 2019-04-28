@@ -1,46 +1,130 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-interface PersonAgent : GameObject
+public class Person
 {
-    int age { get; set; }
-    string name { get; set; }
+    private int age {get; set;}
 
-    var currentLocation { get; set; }
-    var relationships { get; set; }
+    private string name {get; set;}
 
+    private bool alive {get; set;}
 
-    PersonAgent sigOther { get; set; }
-    PersonAgent[] siblings { get; set; }
-    PersonAgent[] parents{ get; set; }
+    private int id {get; set;}
 
-    public static PersonAgent createChild(PersonAgent p1, params PersonAgent[] otherParents) {
-        /*
-         * createChild takes in at least one PersonAgent, p1
-         * Depending on the constraints of what implements PersonAgent, it can take in other PersonAgents as additional args
-         * 
-         * Based on whatever restrictions the implemented class has, it should then return a new PersonAgent
-         * 
-         */
+    // We will have things here eventually.
+    // private var currentLocation;
+    // private var relationships;
+    
+    Person sigOther;
+    List<Person> siblings;
+    List<Person> children;
+    Person[] parents;
+    private static double conceptionRate = 0.25;
 
-    } 
-}
-
-
-
-public class Person : PersonAgent, NameManager
-{
-
-
-    public static PersonAgent createChild(PersonAgent p1, params PersonAgent[] otherParents)
+    //If biologicalSex is true, the person is Male; if false, female.
+    private bool biologicalSex;
+    public bool isMale()
     {
-        // Assuming "Person" is a humant variant, otherParents should be of length 1
-        // e.g. a call for two humans, p1 and p2, creating a child should look like
-        // var createdChild = createChild(p1, p2)
+        return biologicalSex;
+    }
 
+    public bool isFemale()
+    {
+        return !biologicalSex;
+    }
+
+    //Basic Constructor, takes in string nameAtBirth, and list of current siblings
+    public Person(string nameAtBirth, List<Person> currSiblings)
+    {
+        age = 0;
+        name = nameAtBirth;
+        sigOther = null;
+        siblings = new List<Person>();
+        children = null;
+        parents = new Person[2];
+        System.Random rng = new System.Random();
+        if(rng.Next(1) == 1)
+        {
+            biologicalSex = true;
+        }
+        else
+        {
+            biologicalSex = false;
+        }
+
+        foreach(Person p in currSiblings)
+        {
+            siblings.Add(p);
+        }
+    }
+
+    //Constructor for adults, those who may enter the town or are settlers
+    public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
+        this.age = age;
+        this.name = name;
+        this.sigOther = sigOther;
+        this.siblings = currSiblings;
+        this.children = children;
+        this.parents = parents;
+        this.biologicalSex = biologicalSex;
+    }
+
+    public static Person createChild(Person p1, params Person[] otherParents)
+    {
+        // createChild(p1, p1.sigOther)
+        Person p2 = otherParents[0];
+
+        if(otherParents.Length >= 1)
+        {
+            // Humans should only have two biological parents
+            return null;
+        }
+
+
+        int minAge = 18;
+        if(p2.Age >= minAge && p1.Age >= minAge)
+        {
+            // if both individuals are above the minimum age, then they may have a child
+            if(p1.isFemale() && p2.isMale() || p1.isMale() && p2.isFemale())
+            {
+                System.Random rng = new System.Random();
+                double birthChance = rng.NextDouble();
+                if(birthChance <= conceptionRate)
+                {
+
+                    string tempNameGen = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
+                    List<Person> currSiblings = null;
+                    if(p1.children != null)
+                    {
+                        if(p2.children != null)
+                        {
+                            var siblingsCollection =
+                                from child in p1.children
+                                where !(p2.children.Contains(child))
+                                select child;
+
+                            siblingsCollection = siblingsCollection.Union(from child in p2.children select child);
+
+                            currSiblings = siblingsCollection.ToList<Person>();
+                        }
+
+                        currSiblings = p1.children;
+                    }
+                    else if(p2.children != null)
+                    {
+                        currSiblings = p2.children;
+                    }
+
+                    Person bornChild = new Person(tempNameGen, currSiblings);
+                }
+            }
+
+        }
+
+        return null;
         
     }
 }
-
-
