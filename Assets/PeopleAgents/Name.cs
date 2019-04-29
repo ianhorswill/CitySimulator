@@ -8,6 +8,10 @@ public class NameManager : MonoBehaviour
 {
     public string assetDir = "/Assets/PeopleAgents";
     private string path;
+    private string[] surnames;
+    private string[] feminine_names;
+    private string[] masculine_names;
+    private string names_by_decade;
     
     public enum sex
     {
@@ -18,35 +22,61 @@ public class NameManager : MonoBehaviour
     void Start()
     {
         path = Directory.GetCurrentDirectory();
+        surnames = File.ReadAllLines(path + assetDir + "/names/english_surnames.txt");
+        feminine_names = File.ReadAllLines(path + assetDir + "/names/feminine_names.txt");
+        masculine_names = File.ReadAllLines(path + assetDir + "/names/masculine_names.txt");
+        names_by_decade = File.ReadAllText(path + assetDir + "/names/american_names_by_decade_with_fitted_probability_distributions");
     }
 
-    public string getName(sex sex)
+    public string getName(sex sex, int year)
     {
-        return getSurname() + " " + getFirstname(sex);
+        return getSurname() + " " + getFirstname(sex, year);
     }
 
     public string getSurname()
     {
-        string[] surnames = File.ReadAllLines(path + assetDir + "/names/english_surnames.txt");
         System.Random rand = new System.Random();
         return surnames[rand.Next(surnames.Length)];
     }
 
-    public string getFirstname(sex sex)
+    public string getFirstname(sex sex, int year)
     {
-        string[] firstnames;
+        string firstname;
         if (sex == NameManager.sex.female)
         {
-            firstnames = File.ReadAllLines(path + assetDir + "/names/feminine_names.txt");
+            firstname = getMasculineNameByDecades(year);
         } else if (sex == sex.male)
         {
-            firstnames = File.ReadAllLines(path + assetDir + "/names/masculine_names.txt");
+            firstname = getMasculineNameByDecades(year);
         }
         else
         {
-            firstnames = File.ReadAllLines(path + assetDir + "/names/masculine_names.txt");
+            firstname = getMasculineNameByDecades(year);
         }
+        return firstname;
+    }
+
+    public string getMasculineNameByDecades(int year)
+    {
+        if (year < 1880)
+            year = 1880;
+        int decade = (int)(Math.Floor(year / 10f) * 10f);
         System.Random rand = new System.Random();
-        return firstnames[rand.Next(firstnames.Length)];
+        if (rand.Next(1) > 0.99f)
+        {
+            // choose masculine name from a rare name set 
+            string name = masculine_names[rand.Next(masculine_names.Length)];
+        }
+        else
+        {
+            
+        }
+
+        return name;
+    }
+
+    public string getNameByDecade(int decade)
+    {
+        
     }
 }
