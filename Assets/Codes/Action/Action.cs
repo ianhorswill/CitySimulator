@@ -19,7 +19,6 @@ public class Action
     }
 }
 
-
 public class ActionBase
 {
     public string actionName;
@@ -71,4 +70,3 @@ public class ActionTalk : ActionBase
 //         // TODO: call all the actions that will be triggered by this action
 //     }
 }
-
