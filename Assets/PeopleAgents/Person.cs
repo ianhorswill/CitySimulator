@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class Person
 {
-    private int age {get; set;}
+    public int age {get; set;}
 
-    private string name {get; set;}
+    public string name {get; set;}
 
-    private bool alive {get; set;}
+    public bool alive {get; set;}
 
-    private int id {get; set;}
+    public int id {get; set;}
 
     // We will have things here eventually.
     // private var currentLocation;
     // private var relationships;
-    
-    Person sigOther;
-    List<Person> siblings;
-    List<Person> children;
-    Person[] parents;
-    private static double conceptionRate = 0.25;
+
+    public Person sigOther;
+    public List<Person> siblings;
+    public  List<Person> children;
+    public Person[] parents;
+    private static double conceptionRate = 1.0; // Should be lower, but setting higher for the sake of it.
 
     //If biologicalSex is true, the person is Male; if false, female.
     private bool biologicalSex;
@@ -46,7 +46,7 @@ public class Person
         children = null;
         parents = new Person[2];
         System.Random rng = new System.Random();
-        if(rng.Next(1) == 1)
+        if(rng.Next(0, 1) == 1)
         {
             biologicalSex = true;
         }
@@ -54,11 +54,15 @@ public class Person
         {
             biologicalSex = false;
         }
-
-        foreach(Person p in currSiblings)
+        
+        if(currSiblings != null)
         {
-            siblings.Add(p);
+            foreach (Person p in currSiblings)
+            {
+                siblings.Add(p);
+            }
         }
+        
     }
 
     //Constructor for adults, those who may enter the town or are settlers
@@ -76,24 +80,34 @@ public class Person
     {
         // createChild(p1, p1.sigOther)
         Person p2 = otherParents[0];
-
-        if(otherParents.Length >= 1)
+        if(otherParents.Length > 1)
         {
             // Humans should only have two biological parents
             return null;
         }
 
 
-        int minAge = 18;
-        if(p2.Age >= minAge && p1.Age >= minAge)
+        int minAge = 0; // Change this to like 18 when we actually have age incrementing properly
+        if(p1 == null || p2 == null)
+        {
+            return null;
+        }
+
+        if(p2.age >= minAge && p1.age >= minAge)
         {
             // if both individuals are above the minimum age, then they may have a child
-            if(p1.isFemale() && p2.isMale() || p1.isMale() && p2.isFemale())
+            Debug.LogFormat("Adam and Eve Results: {0}, {1}, {2}", p1.isFemale(), p2.isMale(), p1.isFemale() && p2.isMale());
+            Debug.LogFormat("Other Result: {0}, {1}, {2}", p1.isMale(), p2.isFemale(), p1.isMale() && p2.isFemale());
+            if((p1.isFemale() && p2.isMale()) || (p1.isMale() && p2.isFemale()))
             {
                 System.Random rng = new System.Random();
                 double birthChance = rng.NextDouble();
+                Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
+           
                 if(birthChance <= conceptionRate)
                 {
+
+
 
                     string tempNameGen = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
                     List<Person> currSiblings = null;
@@ -119,6 +133,9 @@ public class Person
                     }
 
                     Person bornChild = new Person(tempNameGen, currSiblings);
+                    bornChild.parents = new Person[] { p1, p2 };
+
+                    return bornChild;
                 }
             }
 
