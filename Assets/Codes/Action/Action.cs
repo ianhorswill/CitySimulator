@@ -1,5 +1,13 @@
 
-using UnityEngine;
+public class Location
+{
+    // TODO: This is a fake Location class, just for getting rid of errors
+}
+
+public class Time
+{
+    // TODO: This is a fake Time class, just for getting rid of errors
+}
 
 public class Action
 {
