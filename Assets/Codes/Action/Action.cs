@@ -52,26 +52,23 @@ public class ActionBase
 
 public class ActionTalk : ActionBase
 {
-    
-    public ActionTalk(object agent, object patient)
-    {}
-    
+    public string actionName = 'Talk';
     public int priority = 3;
     
-    public override bool prerequisites(object agent, object patient, Location location, Time time)
-    {
-        // TODO: check the prereqs of this specific action 
-        return true;
-    }
+//     public override bool prerequisites(object agent, object patient, Location location, Time time)
+//     {
+//         // TODO: check the prereqs of this specific action 
+//         return true;
+//     }
     
-    public override void modifications(object agent, object patient, Location location, Time time)
-    {
-        // TODO: modify the world
-    }
+//     public override void modifications(object agent, object patient, Location location, Time time)
+//     {
+//         // TODO: modify the world
+//     }
     
-    public override void triggers(object agent, object patient, Location location, Time time)
-    {
-        // TODO: call all the actions that will be triggered by this action
-    }
+//     public override void triggers(object agent, object patient, Location location, Time time)
+//     {
+//         // TODO: call all the actions that will be triggered by this action
+//     }
 }
 
