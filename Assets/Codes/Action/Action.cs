@@ -1,6 +1,3 @@
-
-using UnityEngine;
-
 public class Action
 {
     string actionName;
