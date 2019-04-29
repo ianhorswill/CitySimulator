@@ -5,6 +5,8 @@ public class Action
     object patient;
     Location location;
     Time time;
+    // More roll names...
+    // Dict fill?
 
     public Action(string actionName, object agent, object patient, Location location, Time time)
     {
@@ -16,26 +18,30 @@ public class Action
     }
 }
 
-public class ActionBase
+public abstract class ActionType
 {
     public string actionName;
     public int priority = 0;
+    // roll desc
+    //  - name
+    //  - attr (e.g. must like the person who -stored in other role- ...) | prolog-like (enum, flags..)
+    //  - lambda (filter) <-- delegate types... vs func<int, string> | data driven
 
     public virtual bool prerequisites(object agent, object patient, Location location, Time time)
     {
-        return true;
+        return true; // <--- check if this is a good action to run, not can be run
     }
+    // LAMBDA??
 
-    public virtual void modifications(object agent, object patient, Location location, Time time)
-    {}
+    public abstract void modifications(object agent, object patient, Location location, Time time);
 
-    public virtual void triggers(object agent, object patient, Location location, Time time)
-    {}
+    public abstract void triggers(object agent, object patient, Location location, Time time);
     
     public bool exec(object agent, object patient, Location location, Time time)
     {
         if (prerequisites(agent, patient, location, time))
         {
+            // check rolls...
             Action currAction = new Action(this.actionName, agent, patient, location, time);
             modifications(agent, patient, location, time);
             triggers(agent, patient, location, time);
@@ -46,7 +52,7 @@ public class ActionBase
     }
 }
 
-public class ActionTalk : ActionBase
+public class ActionTalk : ActionType
 {
     public string actionName = 'Talk';
     public int priority = 3;
