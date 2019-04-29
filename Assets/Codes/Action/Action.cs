@@ -27,28 +27,22 @@ public class ActionBase
 
     public virtual bool prerequisites(object agent, object patient, Location location, Time time)
     {
-        return false;
+        return true;
     }
 
-    public virtual void modifications(Action action)
-    {
-        
-    }
+    public virtual void modifications(object agent, object patient, Location location, Time time)
+    {}
 
-    public virtual void triggers(Action action)
-    {
-        
-    }
+    public virtual void triggers(object agent, object patient, Location location, Time time)
+    {}
     
     public bool exec(object agent, object patient, Location location, Time time)
     {
-        // Check if prereqs are satisfied
         if (prerequisites(agent, patient, location, time))
         {
             Action currAction = new Action(this.actionName, agent, patient, location, time);
-            // TODO: what effect will the action have ?
-            modifications(currAction);
-            triggers(currAction);
+            modifications(agent, patient, location, time);
+            triggers(agent, patient, location, time);
             return true;
         }
         else
@@ -60,24 +54,22 @@ public class ActionTalk : ActionBase
 {
     
     public ActionTalk(object agent, object patient)
-    {
-        
-    }
+    {}
     
     public int priority = 3;
     
     public override bool prerequisites(object agent, object patient, Location location, Time time)
     {
         // TODO: check the prereqs of this specific action 
-        return false;
+        return true;
     }
     
-    public void modifications(Action action)
+    public override void modifications(object agent, object patient, Location location, Time time)
     {
         // TODO: modify the world
     }
     
-    public override void triggers(Action action)
+    public override void triggers(object agent, object patient, Location location, Time time)
     {
         // TODO: call all the actions that will be triggered by this action
     }
