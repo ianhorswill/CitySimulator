@@ -5,7 +5,7 @@ public class Action
     object patient;
     Location location;
     Time time;
-    // More roll names...
+    // More role names...
     // Dict fill?
 
     public Action(string actionName, object agent, object patient, Location location, Time time)
@@ -22,7 +22,7 @@ public abstract class ActionType
 {
     public string actionName;
     public int priority = 0;
-    // roll desc
+    // role desc
     //  - name
     //  - attr (e.g. must like the person who -stored in other role- ...) | prolog-like (enum, flags..)
     //  - lambda (filter) <-- delegate types... vs func<int, string> | data driven
@@ -41,7 +41,7 @@ public abstract class ActionType
     {
         if (prerequisites(agent, patient, location, time))
         {
-            // check rolls...
+            // check roles...
             Action currAction = new Action(this.actionName, agent, patient, location, time);
             modifications(agent, patient, location, time);
             triggers(agent, patient, location, time);
