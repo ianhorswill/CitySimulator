@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 
 namespace Institution
 {
@@ -158,6 +159,8 @@ namespace Institution
 
         public void Build(string loc)
         {
+            Console.WriteLine("Building institution site...");
+            Thread.Sleep(3000);
             Console.WriteLine("Construct building at "+loc);
         }
     }
