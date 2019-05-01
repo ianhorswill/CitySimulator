@@ -137,6 +137,7 @@ namespace Institution
         private void Hiring(object state)
         {
             Hiring("someone");
+            Console.WriteLine("------------------\n"+ this.ToString());
         }
 
         public void Hiring(string person)
@@ -145,7 +146,6 @@ namespace Institution
             employeeList.Add(person);
             Console.WriteLine("\n----------HIRE----------");
             Console.WriteLine("["+type+ "] hires new employee ["+person+"]");
-            Console.WriteLine("------------------------\n");
         }
 
         public void ConstructCompanySite(string location)
@@ -258,12 +258,6 @@ namespace Institution
     {
         public static void Main(string[] args)
         {
-            var name1 = "John";
-            var location1 = "12, 7";
-
-            var name2 = "Alice";
-            var location2 = "3, 3";
-            
             string[] names = {"John", "Alice", "Nick", "Mike", "Sam"};
             string[] locs = {"1, 2", "2, 8", "4, 6", "5, 9", "9, 5"};
 
@@ -271,9 +265,6 @@ namespace Institution
             {
                 Institution ins = InstitutionManager.GeneratorInstitution(names[i], locs[i]);
             }
-            
-//            Institution ins = InstitutionManager.GeneratorInstitution(name1, location1);
-//            Institution ins2 = InstitutionManager.GeneratorInstitution(name2, location2);
             Thread.Sleep(1000000);
         }
     }
