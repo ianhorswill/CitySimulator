@@ -6,6 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using Random = System.Random;
+
 //  Pseudo Classes
 public class Location
 {
@@ -52,8 +53,12 @@ public class Action
     object patient;
     Location location;
     Time time;
-    // More role names...
-    // Dict fill?
+    // Each of these should be a role, provided in some list or dict that gets filled in...
+    // role desc:
+    //  - name
+    //  - type (object type)
+    //  - attr (e.g. must like the person who -stored in other role- ...) | prolog-like (enum, flags..)
+    //  - lambda (filter) <-- delegate types... vs func<int, string> | data driven
 
     public Action(string actionName, object agent, object patient, Location location, Time time)
     {
@@ -64,10 +69,10 @@ public class Action
         this.time = time;
     }
     
+    // USED FOR DEBUG.LOG - need an alternative...
     public override string ToString()
     {
         String res = ((Person) agent).name + " " + actionName + " " + ((Person) patient).name + " at " + location.ToString() + ", " + time.timestamp;
-        
         return res;
     }
 }
@@ -76,21 +81,23 @@ public abstract class ActionType
 {
     public abstract string actionName { get;}
     public int priority = 0;
-    // role desc
-    //  - name
-    //  - attr (e.g. must like the person who -stored in other role- ...) | prolog-like (enum, flags..)
-    //  - lambda (filter) <-- delegate types... vs func<int, string> | data driven
 
+    // instead, pass in a list of roles that can be filled... this then means that prereq is not
+    // something you write, it is some list (data) you provide that gets run by a default
+    // prereq check function
     public abstract bool prerequisites(object agent, object patient, Location location, Time time);
-    // LAMBDA??
-
+    
+    // filled out per class to actuate creation, modification, and destruction of other objects
+    // in the game world...
     public abstract void modifications(object agent, object patient, Location location, Time time);
-
+    
+    // Actions that should be triggered after... need to revisit this because of role based
+    // prereqs...
     public abstract void triggers(object agent, object patient, Location location, Time time);
     
     public bool exec(object agent, object patient, Location location, Time time)
     {
-        if (prerequisites(agent, patient, location, time))
+        if (prerequisites(agent, patient, location, time))  // needs to come before exec
         {
             // check roles...
             Action currAction = new Action(this.actionName, agent, patient, location, time);
