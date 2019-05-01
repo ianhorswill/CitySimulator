@@ -6,7 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Experimental.PlayerLoop;
 using Random = System.Random;
-
+//  Pseudo Classes
 public class Location
 {
     public int x;
@@ -44,6 +44,7 @@ public class Person
     }
 }
 
+// Actual Classes
 public class Action
 {
     string actionName;
@@ -65,7 +66,7 @@ public class Action
     
     public override string ToString()
     {
-        String res = ((Person) agent).name + " " + actionName + " to " + ((Person) patient).name + " at " + location.ToString() + ", " + time.timestamp;
+        String res = ((Person) agent).name + " " + actionName + " " + ((Person) patient).name + " at " + location.ToString() + ", " + time.timestamp;
         
         return res;
     }
