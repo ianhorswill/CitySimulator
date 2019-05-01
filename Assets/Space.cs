@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class Space : MonoBehaviour
 {
-    static public int MAX_STARTING_PLOTS = 9;
-    static public int MAX_STARTING_STREETS = 8;
-    static public int MAX_PLOTS = 9;
-    static public int MAX_STREETS = 8;
+    static public int MAX_PLOTS = 16;
+    static public int MAX_STREETS = 30;
     public GameObject[] PlotsList;
     public GameObject[] StreetsList;
-    public GameObject plotPrefab;
     int gridLen = 3;
 
     // Start is called before the first frame update
@@ -53,23 +50,33 @@ public class Space : MonoBehaviour
         GameObject newPlotObj = new GameObject("Plot" + idx);
         newPlotObj.transform.parent = gameObject.transform;
         newPlotObj.AddComponent<SpriteRenderer>();
+        newPlotObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("grass03");
 
         Plot newPlot = newPlotObj.AddComponent<Plot>();
         newPlotObj.transform.position = new Vector3(x, y, 0);
         newPlotObj.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
-
-        newPlotObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("grass03");
-
 
         return newPlotObj;
     }
 
     GameObject MakeStreet(int lvl, int dir)
     {
-        string dir_name = dir == 0 ? "North" : "East";
-        GameObject newStreetObj = new GameObject("Street " + dir_name + lvl);
+        string dir_name = dir == 0 ? "N." : "E";
+
+        GameObject newStreetObj = new GameObject(dir_name + lvl + " Street");
         newStreetObj.transform.parent = gameObject.transform;
+        newStreetObj.AddComponent<SpriteRenderer>();
+        newStreetObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("gravel");
+
         Street newStreet = newStreetObj.AddComponent<Street>();
+        newStreetObj.transform.position = new Vector3(1, 2, 0);
+        newStreetObj.transform.localScale = new Vector3(0.56f, 4.20f, 1f);
+
+        if(dir == 1)
+        {
+            newStreetObj.transform.localRotation = Quaternion.Euler(0, 0, 90f);
+        }
+
         newStreet.direction = dir;
         return newStreetObj;
     }
