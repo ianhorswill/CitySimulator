@@ -25,8 +25,7 @@ public class Space : MonoBehaviour
             for (int x = 0; x < gridLen; x++)
             {
                 int idx = (gridLen * y) + x;
-                PlotsList[idx] = MakePlot(x, y, idx);
-                Instantiate(plotPrefab, new Vector3(x, y, 0), Quaternion.identity);
+                PlotsList[idx] = MakePlot(x+x, y+y, idx);
 
             }
         }
@@ -53,9 +52,15 @@ public class Space : MonoBehaviour
     {
         GameObject newPlotObj = new GameObject("Plot" + idx);
         newPlotObj.transform.parent = gameObject.transform;
+        newPlotObj.AddComponent<SpriteRenderer>();
+
         Plot newPlot = newPlotObj.AddComponent<Plot>();
-        newPlot.x_pos = x;
-        newPlot.y_pos = y;
+        newPlotObj.transform.position = new Vector3(x, y, 0);
+        newPlotObj.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+
+        newPlotObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("grass03");
+
+
         return newPlotObj;
     }
 

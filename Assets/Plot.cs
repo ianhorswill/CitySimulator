@@ -9,7 +9,6 @@ public class Plot : MonoBehaviour
     public GameObject[] neighbor_plots; // stored N,E,S,W
     public bool occupied;
     public GameObject[] building_list;
-    public int SpriteIndex;
 
     void Awake()
     {
@@ -35,4 +34,3 @@ public class Plot : MonoBehaviour
         return x_diff + y_diff;
     }
 }
-

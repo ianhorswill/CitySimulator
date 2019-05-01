@@ -97,4 +97,5 @@ MonoBehaviour:
   neighbor_plots: []
   occupied: 0
   building_list: []
-  SpriteIndex: 0
+  grass:
+  - {fileID: 21300000, guid: 7a32c696f696dcb4597f83653bfd12f5, type: 3}
