@@ -8,13 +8,17 @@ public class Space : MonoBehaviour
     static public int MAX_STREETS = 1000;
     public GameObject[] PlotsList;
     public GameObject[] StreetsList;
-    int gridLen = 3;
+    float streetStretch = 1.467f;
+    public int gridLen = 3;
 
     // Start is called before the first frame update
     void Start()
     {
         PlotsList = new GameObject[MAX_PLOTS];
         StreetsList = new GameObject[MAX_STREETS];
+
+        streetStretch *= gridLen;
+        streetStretch += 0.075f;
 
         // make starting plots and streets
         for (int y = 0; y < gridLen; y++)
@@ -70,8 +74,8 @@ public class Space : MonoBehaviour
 
         Street newStreet = newStreetObj.AddComponent<Street>();
         Vector3 posRef = PlotsList[lvl + gridLen].transform.position;
-        newStreetObj.transform.position = new Vector3(-1, 0, 0) + posRef;
-        newStreetObj.transform.localScale = new Vector3(0.56f, 4.20f, 1f);
+        newStreetObj.transform.position = new Vector3(-1, (gridLen - 3), 0) + posRef;
+        newStreetObj.transform.localScale = new Vector3(0.56f, streetStretch, 1f);
 
 
         if (dir == 1)
@@ -80,7 +84,7 @@ public class Space : MonoBehaviour
             if (lvl == gridLen)
             {
                 posRef = PlotsList[(lvl * gridLen) - gridLen + 1].transform.position;
-                newStreetObj.transform.position = new Vector3(0, 1, 0) + posRef;
+                newStreetObj.transform.position = new Vector3((gridLen - 3), 1, 0) + posRef;
                 newStreetObj.transform.localRotation = Quaternion.Euler(0, 0, 90f);
                 newStreet.direction = dir;
                 return newStreetObj;
@@ -88,7 +92,7 @@ public class Space : MonoBehaviour
 
             newStreetObj.transform.localRotation = Quaternion.Euler(0, 0, 90f);
             posRef = PlotsList[(lvl * gridLen) + 1].transform.position;
-            newStreetObj.transform.position = new Vector3(0, -1, 0) + posRef;
+            newStreetObj.transform.position = new Vector3((gridLen - 3), -1, 0) + posRef;
 
         }
 
@@ -98,8 +102,7 @@ public class Space : MonoBehaviour
             Debug.Log(lvl + gridLen);
             Debug.Log(((lvl * 2) - 1));
             posRef = PlotsList[(lvl * 2) - 1].transform.position;
-            newStreetObj.transform.position = new Vector3(1, 0, 0) + posRef;
-            newStreetObj.transform.localScale = new Vector3(0.56f, 4.20f, 1f);
+            newStreetObj.transform.position = new Vector3(1, (gridLen -3 ), 0) + posRef;
         }
 
         newStreet.direction = dir;
