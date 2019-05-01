@@ -10,6 +10,7 @@ public class Space : MonoBehaviour
     static public int MAX_STREETS = 8;
     public GameObject[] PlotsList;
     public GameObject[] StreetsList;
+    public GameObject plotPrefab;
     int gridLen = 3;
 
     // Start is called before the first frame update
@@ -17,6 +18,7 @@ public class Space : MonoBehaviour
     {
         PlotsList = new GameObject[MAX_PLOTS];
         StreetsList = new GameObject[MAX_STREETS];
+
         // make starting plots and streets
         for (int y = 0; y < gridLen; y++)
         {
@@ -24,6 +26,8 @@ public class Space : MonoBehaviour
             {
                 int idx = (gridLen * y) + x;
                 PlotsList[idx] = MakePlot(x, y, idx);
+                Instantiate(plotPrefab, new Vector3(x, y, 0), Quaternion.identity);
+
             }
         }
 
