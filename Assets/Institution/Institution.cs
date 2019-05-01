@@ -110,7 +110,10 @@ namespace Institution
             this.type = type;
             employeeList = new List<string>();
             
-            Console.WriteLine("------------------\n"+ this.ToString());
+            Console.WriteLine("------------------------\n"+ this.ToString());
+            
+            Console.WriteLine("["+type+"] start hiring process...");
+            StartHiringProcess();
         }
         public Institution(string owner, string location,string type)
         {
@@ -120,13 +123,29 @@ namespace Institution
             this.location = location;
             this.type = type;
             employeeList = new List<string>();
-            Console.WriteLine("------------------\n"+ this.ToString());
+            Console.WriteLine("------------------------\n"+ this.ToString());
+            
+            Console.WriteLine("["+type+"] start hiring process...");
+            StartHiringProcess();
+        }
+
+        public void StartHiringProcess()
+        {
+            Timer t = new Timer(Hiring,null,5000,10000);
+        }
+
+        private void Hiring(object state)
+        {
+            Hiring("someone");
         }
 
         public void Hiring(string person)
         {
             // TODO : hiring process
             employeeList.Add(person);
+            Console.WriteLine("\n----------HIRE----------");
+            Console.WriteLine("["+type+ "] hires new employee ["+person+"]");
+            Console.WriteLine("------------------------\n");
         }
 
         public void ConstructCompanySite(string location)
@@ -245,8 +264,17 @@ namespace Institution
             var name2 = "Alice";
             var location2 = "3, 3";
             
-            Institution ins = InstitutionManager.GeneratorInstitution(name1, location1);
-            Institution ins2 = InstitutionManager.GeneratorInstitution(name2, location2);
+            string[] names = {"John", "Alice", "Nick", "Mike", "Sam"};
+            string[] locs = {"1, 2", "2, 8", "4, 6", "5, 9", "9, 5"};
+
+            for (int i = 0; i < 5; i++)
+            {
+                Institution ins = InstitutionManager.GeneratorInstitution(names[i], locs[i]);
+            }
+            
+//            Institution ins = InstitutionManager.GeneratorInstitution(name1, location1);
+//            Institution ins2 = InstitutionManager.GeneratorInstitution(name2, location2);
+            Thread.Sleep(1000000);
         }
     }
     
