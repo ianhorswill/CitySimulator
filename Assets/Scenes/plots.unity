@@ -151,8 +151,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlotsList: []
   StreetsList: []
-  plotPrefab: {fileID: 7900159823793846113, guid: 88c3c75813d87fa48982411e3739d73f,
-    type: 3}
 --- !u!4 &791415368
 Transform:
   m_ObjectHideFlags: 0
@@ -220,7 +218,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 12.314681
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -244,7 +242,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1034684775}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.93, y: 2.35, z: -10}
+  m_LocalPosition: {x: 4.73, y: 2.15, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

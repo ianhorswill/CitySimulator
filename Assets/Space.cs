@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Space : MonoBehaviour
 {
-    static public int MAX_PLOTS = 16;
-    static public int MAX_STREETS = 30;
+    static public int MAX_PLOTS = 100;
+    static public int MAX_STREETS = 1000;
     public GameObject[] PlotsList;
     public GameObject[] StreetsList;
     int gridLen = 3;
@@ -61,7 +61,7 @@ public class Space : MonoBehaviour
 
     GameObject MakeStreet(int lvl, int dir)
     {
-        string dir_name = dir == 0 ? "N." : "E";
+        string dir_name = dir == 0 ? "N." : "E. ";
 
         GameObject newStreetObj = new GameObject(dir_name + lvl + " Street");
         newStreetObj.transform.parent = gameObject.transform;
@@ -69,12 +69,37 @@ public class Space : MonoBehaviour
         newStreetObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("gravel");
 
         Street newStreet = newStreetObj.AddComponent<Street>();
-        newStreetObj.transform.position = new Vector3(1, 2, 0);
+        Vector3 posRef = PlotsList[lvl + gridLen].transform.position;
+        newStreetObj.transform.position = new Vector3(-1, 0, 0) + posRef;
         newStreetObj.transform.localScale = new Vector3(0.56f, 4.20f, 1f);
 
-        if(dir == 1)
+
+        if (dir == 1)
         {
+            //Temporary fix for placing final E. street
+            if (lvl == gridLen)
+            {
+                posRef = PlotsList[(lvl * gridLen) - gridLen + 1].transform.position;
+                newStreetObj.transform.position = new Vector3(0, 1, 0) + posRef;
+                newStreetObj.transform.localRotation = Quaternion.Euler(0, 0, 90f);
+                newStreet.direction = dir;
+                return newStreetObj;
+            }
+
             newStreetObj.transform.localRotation = Quaternion.Euler(0, 0, 90f);
+            posRef = PlotsList[(lvl * gridLen) + 1].transform.position;
+            newStreetObj.transform.position = new Vector3(0, -1, 0) + posRef;
+
+        }
+
+        //Temporary fix for placing final N. street
+        if(lvl == gridLen)
+        {
+            Debug.Log(lvl + gridLen);
+            Debug.Log(((lvl * 2) - 1));
+            posRef = PlotsList[(lvl * 2) - 1].transform.position;
+            newStreetObj.transform.position = new Vector3(1, 0, 0) + posRef;
+            newStreetObj.transform.localScale = new Vector3(0.56f, 4.20f, 1f);
         }
 
         newStreet.direction = dir;
