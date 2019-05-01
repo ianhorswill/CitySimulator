@@ -8,7 +8,7 @@ public class Space : MonoBehaviour
     static public int MAX_STREETS = 1000;
     public GameObject[] PlotsList;
     public GameObject[] StreetsList;
-    float streetStretch = 1.467f;
+    float streetStretch = 1.505f;
     public int gridLen = 3;
 
     // Start is called before the first frame update
