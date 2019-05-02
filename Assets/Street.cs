@@ -2,27 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Street : MonoBehaviour
+public class Street : Object
 {
+    public enum street_direction { NS, EW }
     public string streetName;
     public int direction; // [0-1 -> NS EW]
     static int CONNECTED_STREETS_MAX = 10; // arbitrary max of 10
-    public GameObject[] connected_streets;
+    public Street[] connected_streets = new Street[CONNECTED_STREETS_MAX];
 
-    void Awake()
+
+    public Street(int street_dir, string name)
     {
-        connected_streets = new GameObject[CONNECTED_STREETS_MAX];
+        direction = street_dir;
+        name = streetName;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

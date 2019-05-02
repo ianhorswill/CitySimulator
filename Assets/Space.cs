@@ -1,41 +1,37 @@
-﻿using System.Collections;
+﻿//using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Space : MonoBehaviour
+public class Space : Object
 {
     static public int MAX_PLOTS = 100;
     static public int MAX_STREETS = 1000;
-    public GameObject[] PlotsList;
-    public GameObject[] StreetsList;
+    public Plot[,] PlotsList;
+    public Street[,] StreetsList;
     float streetStretch = 1.505f;
     public int gridLen = 3;
 
     // Start is called before the first frame update
-    void Start()
+    public void Init()
     {
-        PlotsList = new GameObject[MAX_PLOTS];
-        StreetsList = new GameObject[MAX_STREETS];
-
-        streetStretch *= gridLen;
-        streetStretch += 0.075f;
+        PlotsList = new Plot[gridLen,gridLen];
+        StreetsList = new Street[gridLen+1,2];
 
         // make starting plots and streets
         for (int y = 0; y < gridLen; y++)
         {
             for (int x = 0; x < gridLen; x++)
             {
-                int idx = (gridLen * y) + x;
-                PlotsList[idx] = MakePlot(x+x, y+y, idx);
-
+                PlotsList[x,y] = MakePlot(x+x, y+y);
             }
         }
 
-        for (int dir = 0; dir < 2; dir++) 
+        for (int dir = 0; dir < 2; dir++) // 0 : N and 1 : E
         {
-            for (int lvl = 0; lvl < gridLen + 1; lvl++)
+            for (int level = 0; level < gridLen + 1; level++)
             {
-                StreetsList[((gridLen + 1) * dir) + lvl] = MakeStreet(lvl, dir);
+                StreetsList[level,dir] = MakeStreet(level, dir);
             }
         }
 
@@ -43,89 +39,40 @@ public class Space : MonoBehaviour
         setupStreetConnections();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    Plot MakePlot(int x, int y)
     {
-        
+        Plot newPlot = new Plot(x, y);
+
+        return newPlot;
     }
 
-    GameObject MakePlot(int x, int y, int idx)
+    Street MakeStreet(int lvl, int dir)
     {
-        GameObject newPlotObj = new GameObject("Plot" + idx);
-        newPlotObj.transform.parent = gameObject.transform;
-        newPlotObj.AddComponent<SpriteRenderer>();
-        newPlotObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("grass03");
+        string dir_name = dir == 0 ? "N. " : "E. ";
+        Street new_street = new Street(dir, dir_name + lvl + " Street");
 
-        Plot newPlot = newPlotObj.AddComponent<Plot>();
-        newPlotObj.transform.position = new Vector3(x, y, 0);
-        newPlotObj.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
-
-        return newPlotObj;
-    }
-
-    GameObject MakeStreet(int lvl, int dir)
-    {
-        string dir_name = dir == 0 ? "N." : "E. ";
-
-        GameObject newStreetObj = new GameObject(dir_name + lvl + " Street");
-        newStreetObj.transform.parent = gameObject.transform;
-        newStreetObj.AddComponent<SpriteRenderer>();
-        newStreetObj.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("gravel");
-
-        Street newStreet = newStreetObj.AddComponent<Street>();
-        Vector3 posRef = PlotsList[lvl + gridLen].transform.position;
-        newStreetObj.transform.position = new Vector3(-1, (gridLen - 3), 0) + posRef;
-        newStreetObj.transform.localScale = new Vector3(0.56f, streetStretch, 1f);
-
-
-        if (dir == 1)
-        {
-            //Temporary fix for placing final E. street
-            if (lvl == gridLen)
-            {
-                posRef = PlotsList[(lvl * gridLen) - gridLen + 1].transform.position;
-                newStreetObj.transform.position = new Vector3((gridLen - 3), 1, 0) + posRef;
-                newStreetObj.transform.localRotation = Quaternion.Euler(0, 0, 90f);
-                newStreet.direction = dir;
-                return newStreetObj;
-            }
-
-            newStreetObj.transform.localRotation = Quaternion.Euler(0, 0, 90f);
-            posRef = PlotsList[(lvl * gridLen) + 1].transform.position;
-            newStreetObj.transform.position = new Vector3((gridLen - 3), -1, 0) + posRef;
-
-        }
-
-        //Temporary fix for placing final N. street
-        if(lvl == gridLen)
-        {
-            Debug.Log(lvl + gridLen);
-            Debug.Log(((lvl * 2) - 1));
-            posRef = PlotsList[(lvl * 2) - 1].transform.position;
-            newStreetObj.transform.position = new Vector3(1, (gridLen -3 ), 0) + posRef;
-        }
-
-        newStreet.direction = dir;
-        return newStreetObj;
+        return new_street;
     }
 
     // hard-coded method for setting up plot neighbors
     // will likely need to change if we want new plots to be created during simulation
     void setupPlotNeighbors()
     {
-        for(int i = 0; i < gridLen * gridLen; i++)
+        for(int x = 0; x < gridLen; x++)
         {
-            GameObject[] currNeighbors = PlotsList[i].GetComponent<Plot>().neighbor_plots;
-            int curX = i / gridLen;
-            int curY = i % gridLen;
-            GameObject north = (curY == gridLen - 1) ? null : PlotsList[Pos2Idx(curX, curY + 1)];
-            GameObject east = (curX == gridLen - 1) ? null : PlotsList[Pos2Idx(curX + 1, curY)];
-            GameObject south = (curY == 0) ? null : PlotsList[Pos2Idx(curX, curY - 1)];
-            GameObject west = (curX == 0) ? null : PlotsList[Pos2Idx(curX - 1, curY)];
-            currNeighbors[0] = north;
-            currNeighbors[1] = east;
-            currNeighbors[2] = south;
-            currNeighbors[3] = west;
+            for (int y = 0; y < gridLen; y++)
+            {
+                Plot curr_plot = PlotsList[x, y];
+                Plot north = (y == gridLen - 1) ? null : PlotsList[x, y + 1];
+                Plot east = (x == gridLen - 1) ? null : PlotsList[x + 1, y];
+                Plot south = (y == 0) ? null : PlotsList[x, y - 1];
+                Plot west = (x == 0) ? null : PlotsList[x-1, y];
+                curr_plot.neighbor_plots[0] = north;
+                curr_plot.neighbor_plots[1] = east;
+                curr_plot.neighbor_plots[2] = south;
+                curr_plot.neighbor_plots[3] = west;
+            }
         }
     }
 
@@ -133,16 +80,19 @@ public class Space : MonoBehaviour
     // will likely need to change if we want new plots to be created during simulation
     void setupStreetConnections()
     {
-        for (int i = 0; i < 2 * (gridLen + 1); i++)
+        for (int level = 0; level < (gridLen + 1); level++)
         {
-            Street currStreet = StreetsList[i].GetComponent<Street>();
-            int perp_streets_idx = (i < gridLen + 1) ? gridLen + 1 : 0;
-            for (int j = 0; j < gridLen + 1; j++)
+            for (int dir = 0; dir < 2; dir++)
             {
-                currStreet.connected_streets[j] = StreetsList[perp_streets_idx];
-                perp_streets_idx++;
+                Street currStreet = StreetsList[level,dir];
+                int other_dir = (dir == 0) ? 1 : 0;
+                for (int j = 0; j < gridLen + 1; j++)
+                {
+                    currStreet.connected_streets[j] = StreetsList[j,other_dir];
+                }
             }
         }
+        
     }
 
     int Pos2Idx(int x, int y)
