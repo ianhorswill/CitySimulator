@@ -11,6 +11,8 @@ public class ActionLibrary : MonoBehaviour
     {
         actionDict.Add("Talk", new ActionTalk());
         actionDict.Add("Heard", new ActionHeard());
+        actionDict.Add("GenerateInstitution", new ActionGenerateInstitution());
+        actionDict.Add("GiveBirth", new ActionGiveBirth());
     }
 
     public static ActionType RandomlyChoose()

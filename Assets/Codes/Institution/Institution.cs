@@ -4,6 +4,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Institution
 {
@@ -21,7 +23,7 @@ namespace Institution
         {
             institutionList = new List<Institution>();
             constructionCompanyList =  new List<ConstructionCompany>();
-            institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/institutionTypes.txt");
+            institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/institutionTypes.txt");
             
             // hard-codly assign one initial construction company
             ConstructionCompany cons = new ConstructionCompany("Government", "0, 0", "ConstructionCompany", false);
