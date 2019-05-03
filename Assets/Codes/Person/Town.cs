@@ -42,9 +42,9 @@ public class Town : MonoBehaviour
         float stepPeriod = 10000f;
 
 
-        if (Time.time > nextTime)
+        if (UnityEngine.Time.time > nextTime)
         {
-            nextTime = Time.time + period;
+            nextTime = UnityEngine.Time.time + period;
 
             var currAlive = currTown.aliveResidents;
             Debug.LogFormat("Settlers Alive: {0}", currAlive.Count);
@@ -54,10 +54,10 @@ public class Town : MonoBehaviour
 
         }
 
-        if (Time.time > stepTime)
+        if (UnityEngine.Time.time > stepTime)
         {
             currTown.step();
-            stepTime = Time.time + stepPeriod;
+            stepTime = UnityEngine.Time.time + stepPeriod;
 
         }
 
