@@ -7,7 +7,7 @@ using System.Web;
 
 public class NameManager : MonoBehaviour
 {
-    public string assetDir = "/Assets/PeopleAgents";
+    private string assetDir = "/Assets/Codes/Person";
     private string path;
     private string[] surnames;
     private string[] miscellaneous_feminine_names;
@@ -27,6 +27,7 @@ public class NameManager : MonoBehaviour
         miscellaneous_feminine_names = File.ReadAllLines(path + assetDir + "/names/feminine_names.txt");
         miscellaneous_masculine_names = File.ReadAllLines(path + assetDir + "/names/masculine_names.txt");
         names_by_decade = File.ReadAllText(path + assetDir + "/names/american_names_by_decade_with_fitted_probability_distributions.json");
+        Debug.Log(getName(sex.female, 1880, new List<string>()));
     }
     
     /*
@@ -44,7 +45,7 @@ public class NameManager : MonoBehaviour
         else // return randomly from the parent name list
         {
             System.Random rand = new System.Random();
-            return parent_name[rand.Next(parent_name.Count)] + " " + firstname;
+            return firstname + " " + parent_name[rand.Next(parent_name.Count)];
         } 
     }
 
@@ -82,7 +83,7 @@ public class NameManager : MonoBehaviour
             year = 1880;
         int decade = (int)(Math.Floor(year / 10f) * 10f);
         System.Random rand = new System.Random();
-        if (rand.Next(1) > 0.99f)
+        if (rand.Next(100) > 98)
         {
             // choose masculine name from a rare name set 
             name = miscellaneous_masculine_names[rand.Next(miscellaneous_masculine_names.Length)];
@@ -102,7 +103,7 @@ public class NameManager : MonoBehaviour
             year = 1880;
         int decade = (int)(Math.Floor(year / 10f) * 10f);
         System.Random rand = new System.Random();
-        if (rand.Next(1) > 0.99f)
+        if (rand.Next(100) > 98)
         {
             // choose masculine name from a rare name set 
             name = miscellaneous_feminine_names[rand.Next(miscellaneous_feminine_names.Length)];
