@@ -27,7 +27,7 @@ public class NameManager
     public static string getSurname(List<string> parent_name)
     {
         System.Random rand = new System.Random();
-        if (parent_name.Count == 0)
+        if (parent_name == null || parent_name.Count == 0)
         {
             return Surnames[rand.Next(Surnames.Length)];
         }

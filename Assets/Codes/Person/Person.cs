@@ -16,15 +16,15 @@ public class Person
 
     public string firstName;
 
-    public void setFirstName()
+    public string GenerateRandomFirstName()
     {
         NameManager.sex sex = biologicalSex ? NameManager.sex.male : NameManager.sex.female;
-        firstName = NameManager.getFirstname(sex);
+        return NameManager.getFirstname(sex);
     }
 
     public string lastName;
     
-    public void setLastName()
+    public string GenerateRandomLastName()
     {
         List<string> parentNames = new List<string>();
         if (parents != null)
@@ -34,7 +34,7 @@ public class Person
                 if (parents[i] != null) parentNames.Add(parents[i].lastName);
             }
         }
-        lastName = NameManager.getSurname(parentNames);
+        return NameManager.getSurname(parentNames);
     }
 
     public bool alive {get; set;}
@@ -64,21 +64,19 @@ public class Person
     }
     
     //Default Constructor, takes no parameters and return a person with randomly generated properties
-    public Person()
+    public static Person generateRandomPerson()
     {
-        setFirstName();
-        setLastName();
+        Person p = new Person("",null);
         System.Random rng = new System.Random();
-        if(rng.Next(0, 1) == 1)
-        {
-            biologicalSex = true;
-        }
-        else
-        {
-            biologicalSex = false;
-        }
+        p.biologicalSex = (rng.Next(0, 2) == 1);
+        p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
+        p.lastName = NameManager.getSurname(null);
+        return p;
     }
-    //Basic Constructor, takes in string nameAtBirth, and list of current siblings
+    
+    /*Basic Constructor, takes in string nameAtBirth, and list of current siblings
+      string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
+    */
     public Person(string nameAtBirth, List<Person> currSiblings)
     {
         age = 0;
@@ -87,7 +85,7 @@ public class Person
         children = null;
         parents = new Person[2];
         System.Random rng = new System.Random();
-        if(rng.Next(0, 1) == 1)
+        if(rng.Next(0, 2) == 1)
         {
             biologicalSex = true;
         }
@@ -104,23 +102,13 @@ public class Person
             }
         }
         string[] nameSplit = nameAtBirth.Split(' ');
-        if (nameAtBirth.Length != 0) this.firstName = nameSplit[0];
-        else
-        {
-            setFirstName();
-        }
-
-        if (nameSplit.Length > 1)
-        {
-            this.lastName = nameSplit[1];
-        }
-        else
-        {
-            setLastName();
-        }
+        this.firstName = (nameAtBirth.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
+        this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
     }
 
-    //Constructor for adults, those who may enter the town or are settlers
+    /*Constructor for adults, those who may enter the town or are settlers
+      string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
+     */
     public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
         this.age = age;
         this.sigOther = sigOther;
@@ -130,20 +118,8 @@ public class Person
         this.biologicalSex = biologicalSex;
         string[] nameSplit = name.Split(' ');
         
-        if (name.Length != 0) this.firstName = nameSplit[0];
-        else
-        {
-            setFirstName();
-        }
-
-        if (nameSplit.Length > 1)
-        {
-            this.lastName = nameSplit[1];
-        }
-        else
-        {
-            setLastName();
-        }
+        this.firstName = (name.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
+        this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
     }
 
     public static Person createChild(Person p1, params Person[] otherParents)
@@ -177,7 +153,7 @@ public class Person
                 if(birthChance <= conceptionRate)
                 {
                     
-                    string tempNameGen = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
+                    // string tempNameGen = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
                     List<Person> currSiblings = null;
                     if(p1.children != null)
                     {
@@ -200,7 +176,7 @@ public class Person
                         currSiblings = p2.children;
                     }
 
-                    Person bornChild = new Person(tempNameGen, currSiblings);
+                    Person bornChild = new Person("", currSiblings);
                     bornChild.parents = new Person[] { p1, p2 };
                     return bornChild;
                 }
