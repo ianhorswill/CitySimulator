@@ -1,11 +1,13 @@
 // Actual Classes
 
 
+using Codes.Action.Actions;
 using Codes.Institution;
 
 public class ActionGenerateInstitution : ActionType
 {
     public int priority = 3;
+    public Institution Institution;
 
     public override string actionName => "GenerateInstitution";
 
@@ -18,11 +20,15 @@ public class ActionGenerateInstitution : ActionType
     public override void modifications(object agent, object patient, Location location, Time time)
     {
         // TODO: modify the world
-        Institution ins = InstitutionManager.GeneratorInstitution(agent as Person, new Plot(location.x, location.y));
+        Institution = InstitutionManager.GeneratorInstitution(agent as Person, new Plot(location.x, location.y));
     }
     
     public override void triggers(object agent, object patient, Location location, Time time)
     {
         // TODO: call all the actions that will be triggered by this action
+        
+        // hiring process will be triggered by the generation of institution
+        ActionInstitutionHiring actionInstitutionHiring = (ActionInstitutionHiring) ActionLibrary.GetActionByName("InstitutionHiring");
+        actionInstitutionHiring.exec(agent, patient, location, time);
     }
 }

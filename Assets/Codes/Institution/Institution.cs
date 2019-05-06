@@ -43,14 +43,10 @@ namespace Codes.Institution
 //            StartHiringProcess();
         }
 
-        public void StartHiringProcess()
+        public IEnumerable<WaitForSeconds> StartHiringProcess()
         {
-            Timer t = new Timer(Hiring,null,5000,10000);
-        }
-
-        private void Hiring(object state)
-        {
-            Hiring("someone");
+            yield return new WaitForSeconds(5f);
+            Hiring(new Person("Someone", new List<Person>()));
         }
 
         public void Hiring(Person person)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Codes.Action.Actions;
 using UnityEngine;
 using Random = System.Random;
 
@@ -13,6 +14,7 @@ public class ActionLibrary : MonoBehaviour
         actionDict.Add("Heard", new ActionHeard());
         actionDict.Add("GenerateInstitution", new ActionGenerateInstitution());
         actionDict.Add("GiveBirth", new ActionGiveBirth());
+        actionDict.Add("InstitutionHiring", new ActionInstitutionHiring());
     }
 
     public static ActionType RandomlyChoose()
