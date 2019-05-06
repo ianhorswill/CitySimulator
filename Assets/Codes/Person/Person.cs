@@ -16,9 +16,9 @@ public class Person
 
     public string firstName;
 
-    public void setFirstName(NameManager.sex sex)
+    public void setFirstName()
     {
-        sex = biologicalSex ? NameManager.sex.male : NameManager.sex.female;
+        NameManager.sex sex = biologicalSex ? NameManager.sex.male : NameManager.sex.female;
         firstName = NameManager.getFirstname(sex);
     }
 
@@ -31,7 +31,7 @@ public class Person
         {
             for (int i = 0; i < parents.Length; i++)
             {
-                parentNames.Add(parents[i].lastName);
+                if (parents[i] != null) parentNames.Add(parents[i].lastName);
             }
         }
         lastName = NameManager.getSurname(parentNames);
@@ -62,12 +62,26 @@ public class Person
     {
         return !biologicalSex;
     }
-
+    
+    //Default Constructor, takes no parameters and return a person with randomly generated properties
+    public Person()
+    {
+        setFirstName();
+        setLastName();
+        System.Random rng = new System.Random();
+        if(rng.Next(0, 1) == 1)
+        {
+            biologicalSex = true;
+        }
+        else
+        {
+            biologicalSex = false;
+        }
+    }
     //Basic Constructor, takes in string nameAtBirth, and list of current siblings
     public Person(string nameAtBirth, List<Person> currSiblings)
     {
         age = 0;
-        firstName = nameAtBirth;
         sigOther = null;
         siblings = new List<Person>();
         children = null;
@@ -89,18 +103,47 @@ public class Person
                 siblings.Add(p);
             }
         }
-        
+        string[] nameSplit = nameAtBirth.Split(' ');
+        if (nameAtBirth.Length != 0) this.firstName = nameSplit[0];
+        else
+        {
+            setFirstName();
+        }
+
+        if (nameSplit.Length > 1)
+        {
+            this.lastName = nameSplit[1];
+        }
+        else
+        {
+            setLastName();
+        }
     }
 
     //Constructor for adults, those who may enter the town or are settlers
-    public Person (string firstName, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
+    public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
         this.age = age;
-        this.firstName = firstName;
         this.sigOther = sigOther;
         this.siblings = currSiblings;
         this.children = children;
         this.parents = parents;
         this.biologicalSex = biologicalSex;
+        string[] nameSplit = name.Split(' ');
+        
+        if (name.Length != 0) this.firstName = nameSplit[0];
+        else
+        {
+            setFirstName();
+        }
+
+        if (nameSplit.Length > 1)
+        {
+            this.lastName = nameSplit[1];
+        }
+        else
+        {
+            setLastName();
+        }
     }
 
     public static Person createChild(Person p1, params Person[] otherParents)

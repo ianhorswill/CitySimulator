@@ -4,13 +4,15 @@ using UnityEngine;
 using System.IO;
 using System;
 
-public class NameManager : MonoBehaviour
+public class NameManager
 {
     private static string assetDir = "/Assets/Codes/Person";
     private static readonly string path = Directory.GetCurrentDirectory();
     private static readonly string[] Surnames = File.ReadAllLines(path + assetDir + "/names/english_surnames.txt");
     private static readonly string[] MiscellaneousFeminineName = File.ReadAllLines(path + assetDir + "/names/feminine_names.txt");
     private static readonly string[] MiscellaneousMasculineName = File.ReadAllLines(path + assetDir + "/names/masculine_names.txt");
+    private static readonly string[] CommonFeminineName = File.ReadAllLines(path + assetDir + "/names/female-names.txt");
+    private static readonly string[] CommonMasculineName = File.ReadAllLines(path + assetDir + "/names/male-names.txt");
     
     public enum sex
     {
@@ -65,7 +67,7 @@ public class NameManager : MonoBehaviour
         }
         else
         {
-            name = "";
+            name = CommonMasculineName[rand.Next(CommonMasculineName.Length)];
         }
 
         return name;
@@ -82,7 +84,7 @@ public class NameManager : MonoBehaviour
         }
         else
         {
-            name = "";
+            name = CommonFeminineName[rand.Next(CommonFeminineName.Length)];
         }
         return name;
     }
