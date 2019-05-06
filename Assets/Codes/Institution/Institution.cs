@@ -1,131 +1,46 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
-using Random = System.Random;
+using UnityEngine;
 
 namespace Codes.Institution
 {
     // the InstitutionGenerator includes methods needed to generate an Institution
-    public static class InstitutionManager
-    {
-        // store all the institutions been constructed
-        private static List<Institution> institutionList;
-        // store the hardcode institution types
-        private static string[] institutionTypeList;
-        // store the construction companies
-        private static List<ConstructionCompany> constructionCompanyList;
-        
-        static InstitutionManager()
-        {
-            institutionList = new List<Institution>();
-            constructionCompanyList =  new List<ConstructionCompany>();
-            institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/institutionTypes.txt");
-            
-            // hard-codly assign one initial construction company
-            ConstructionCompany cons = new ConstructionCompany("Government", "0, 0", "ConstructionCompany", false);
-            constructionCompanyList.Add(cons);
-            institutionList.Add(cons);
-        }
-        
-        // get a random type
-        // TODO: based on current institution numbers and types and city scale
-        public static string GetRandomType()
-        {
-            Random rnd = new Random();
-            int index = rnd.Next(0, institutionTypeList.Length);
-            return institutionTypeList[index];
-        }
-        
-        
-        // generate a new institution
-        public static Institution GeneratorInstitution(string owner, string location)
-        {
-            // the first institution have to be the ConstructionCompany
-//            if (institutionList.Count == 0)
-//            {
-//                ConstructionCompany cons = new ConstructionCompany(owner, location, "ConstructionCompany");
-//                constructionCompanyList.Add(cons);
-//                institutionList.Add(cons);
-//            }
-            
-            string type = GetRandomType();
-            Institution newInstitution;
-            switch (type)
-            {
-                case "ConstructionCompany":
-                    newInstitution = new ConstructionCompany(owner, location, type);
-                    break;
-                case "School":
-                    newInstitution = new School(owner, location, type);
-                    break;
-                case "Hospital":
-                    newInstitution = new Hospital(owner, location, type);
-                    break;
-                case "LawFirm":
-                    newInstitution = new LawFirm(owner, location, type);
-                    break;
-                case "ApartmentComplex":
-                    newInstitution = new ApartmentComplex(owner, location, type);
-                    break;
-                default:
-                    newInstitution = new Institution(owner, location, type);
-                    break;
-            }
-
-            if (newInstitution.getType().Equals("ConstructionCompany"))
-            {
-                constructionCompanyList.Add(newInstitution as ConstructionCompany);
-            }
-            institutionList.Add(newInstitution);
-            
-            return newInstitution;
-        }
-
-        public static ConstructionCompany GetRandomConstructionCompany()
-        {
-            Random rnd = new Random();
-            int index = rnd.Next(0, constructionCompanyList.Count);
-            return constructionCompanyList[index];
-        }
-    }
 
     public class Institution
     {
-        private string owner;
-        private string location;
-        private List<String> employeeList;
+        private Person owner;
+        private Plot location;
+        private List<Person> employeeList;
         private string type;
 
-        public Institution(string owner, string location,string type, bool needBuild = true)
+        public Institution(Person owner, Plot location,string type, bool needBuild = true)
         {
-            if (needBuild)
-            {
-                ConstructCompanySite(location);
-            }
+//            if (needBuild)
+//            {
+//                ConstructCompanySite(location);
+//            }
             
             this.owner = owner;
             this.location = location;
             this.type = type;
-            employeeList = new List<string>();
-            
-            Console.WriteLine("------------------------\n"+ this.ToString());
-            
-            Console.WriteLine("["+type+"] start hiring process...");
-            StartHiringProcess();
+            employeeList = new List<Person>();
+
+            Debug.Log("------------------------\n" + this.ToString());
+//            Debug.Log("["+type+"] start hiring process...");
+//            StartHiringProcess();
         }
-        public Institution(string owner, string location,string type)
+        public Institution(Person owner, Plot location,string type)
         {
-            ConstructCompanySite(location);
+//            ConstructCompanySite(location);
             
             this.owner = owner;
             this.location = location;
             this.type = type;
-            employeeList = new List<string>();
-            Console.WriteLine("------------------------\n"+ this.ToString());
-            
-            Console.WriteLine("["+type+"] start hiring process...");
-            StartHiringProcess();
+            employeeList = new List<Person>();
+            Debug.Log("------------------------\n" + this.ToString());
+//            Debug.Log("["+type+"] start hiring process...");
+//            StartHiringProcess();
         }
 
         public void StartHiringProcess()
@@ -138,16 +53,14 @@ namespace Codes.Institution
             Hiring("someone");
         }
 
-        public void Hiring(string person)
+        public void Hiring(Person person)
         {
             // TODO : hiring process
             employeeList.Add(person);
-            Console.WriteLine("\n----------HIRE----------");
-            Console.WriteLine("["+type+ "] hires new employee ["+person+"]");
-            Console.WriteLine("------------------------\n");
+            Debug.Log("\n----------HIRE----------\n["+type+ "] hires new employee ["+person+"]\n------------------------\n");
         }
 
-        public void ConstructCompanySite(string location)
+        public void ConstructCompanySite(Plot location)
         {
             // randomly choose a construct company to construct a company site
             ConstructionCompany cons = InstitutionManager.GetRandomConstructionCompany();
@@ -161,37 +74,38 @@ namespace Codes.Institution
 
         public override string ToString()
         {
-            return "Institution: " + type + "\nOwner: " + owner + "\nLocation: (" + location + ")\n";
+            return "Institution: " + type + "\nOwner: " + owner.name + "\nLocation: (" + location.x_pos +"," + location.y_pos+ ")\n";
         }
     }
 
     public class ConstructionCompany : Institution
     {
-        public ConstructionCompany(string owner, string location, string type, bool needBuild = true) : base(owner, location, type, needBuild)
-        {
-        }
-        
-        public ConstructionCompany(string owner, string location, string type) : base(owner, location, type)
+        public ConstructionCompany(Person owner, Plot location, string type, bool needBuild = true) : base(owner, location, type, needBuild)
         {
         }
 
-        public void Build(string loc)
+        public ConstructionCompany(Person owner, Plot location, string type) : base(owner, location, type)
         {
-            Console.WriteLine("Building institution site...");
+        }
+
+        public void Build(Plot loc)
+        {
+            Debug.Log("Building institution site...");
             Thread.Sleep(3000);
-            Console.WriteLine("Construct building at location["+loc+"]");
+            Debug.Log("Construct building at location["+loc.x_pos +"," + loc.y_pos+"]");
         }
     }
 
     public class School : Institution
     {
-        private List<string> studentList;
-        public School(string owner, string location, string type) : base(owner, location, type)
+        private List<Person> studentList;
+
+        public School(Person owner, Plot location, string type) : base(owner, location, type)
         {
-            studentList = new List<string>();
+            studentList = new List<Person>();
         }
 
-        public void EnrollStudent(string student)
+        public void EnrollStudent(Person student)
         {
             studentList.Add(student);
         }
@@ -199,36 +113,38 @@ namespace Codes.Institution
 
     public class Hospital : Institution
     {
-        public Hospital(string owner, string location, string type) : base(owner, location, type)
+        public Hospital(Person owner, Plot location, string type) : base(owner, location, type)
         {
         }
 
-        public void TakePatient(string patient)
+        public void TakePatient(Person patient)
         {
             
         }
 
-        public string BabyDelivery()
+        public Person BabyDelivery()
         {
-            string newBaby = "";
+            // TODO: baby delivery
+            Person newBaby = new Person("baby", new List<Person>());
             return newBaby;
         }
     }
 
     public class ApartmentComplex : Institution
     {
-        private List<string> residents;
-        public ApartmentComplex(string owner, string location, string type) : base(owner, location, type)
+        private List<Person> residents;
+
+        public ApartmentComplex(Person owner, Plot location, string type) : base(owner, location, type)
         {
-            residents = new List<string>();
+            residents = new List<Person>();
         }
 
-        public void AddResidents(string r)
+        public void AddResidents(Person resident)
         {
-            residents.Add(r);
+            residents.Add(resident);
         }
 
-        public void AddResidents(List<string> rList)
+        public void AddResidents(List<Person> rList)
         {
             foreach (var r in rList)
             {
@@ -239,33 +155,35 @@ namespace Codes.Institution
 
     public class LawFirm : Institution
     {
-        public LawFirm(string owner, string location, string type) : base(owner, location, type)
+        public LawFirm(Person owner, Plot location, string type) : base(owner, location, type)
         {
         }
 
         public bool FireDivorce(string spouse1, string spouse2)
         {
+            // TODO: fire divorce for a couple
             return true;
         }
     }
     
-    public static class Helper {
-        
-    }
 
-    public class MainClass
-    {
-        public static void Main(string[] args)
-        {
-            string[] names = {"John", "Alice", "Nick", "Mike", "Sam"};
-            string[] locs = {"1, 2", "2, 8", "4, 6", "5, 9", "9, 5"};
 
-            for (int i = 0; i < 5; i++)
-            {
-                Institution ins = InstitutionManager.GeneratorInstitution(names[i], locs[i]);
-            }
-            Thread.Sleep(1000000);
-        }
-    }
+//    public class MainClass
+//    {
+//        public static void Main(string[] args)
+//        {
+//            Institution ins = InstitutionManager.GeneratorInstitution(new Person("brenda", new List<Person>()),
+//                new Plot(2, 3));
+////            string[] names = {"John", "Alice", "Nick", "Mike", "Sam"};
+////            string[] locs = {"1, 2", "2, 8", "4, 6", "5, 9", "9, 5"};
+////
+////            for (int i = 0; i < 5; i++)
+////            {
+////                Institution ins = InstitutionManager.GeneratorInstitution(names[i], locs[i]);
+////            }
+//
+//            Thread.Sleep(1000000);
+//        }
+//    }
     
 }
