@@ -137,7 +137,6 @@ namespace Institution
         private void Hiring(object state)
         {
             Hiring("someone");
-            Console.WriteLine("------------------\n"+ this.ToString());
         }
 
         public void Hiring(string person)
@@ -146,6 +145,7 @@ namespace Institution
             employeeList.Add(person);
             Console.WriteLine("\n----------HIRE----------");
             Console.WriteLine("["+type+ "] hires new employee ["+person+"]");
+            Console.WriteLine("------------------------\n");
         }
 
         public void ConstructCompanySite(string location)
@@ -180,7 +180,7 @@ namespace Institution
         {
             Console.WriteLine("Building institution site...");
             Thread.Sleep(3000);
-            Console.WriteLine("Construct building at "+loc);
+            Console.WriteLine("Construct building at location["+loc+"]");
         }
     }
 
