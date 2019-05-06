@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Threading;
-using UnityEngine;
 using Random = System.Random;
 
-namespace Institution
+namespace Codes.Institution
 {
     // the InstitutionGenerator includes methods needed to generate an Institution
     public static class InstitutionManager

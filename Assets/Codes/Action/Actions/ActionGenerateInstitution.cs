@@ -1,7 +1,7 @@
 // Actual Classes
 
 
-using Institution;
+using Codes.Institution;
 
 public class ActionGenerateInstitution : ActionType
 {
@@ -18,7 +18,7 @@ public class ActionGenerateInstitution : ActionType
     public override void modifications(object agent, object patient, Location location, Time time)
     {
         // TODO: modify the world
-        Institution.Institution ins = InstitutionManager.GeneratorInstitution(((Person) agent).name, location.ToString());
+        Institution ins = InstitutionManager.GeneratorInstitution(((Person) agent).name, location.ToString());
     }
     
     public override void triggers(object agent, object patient, Location location, Time time)
