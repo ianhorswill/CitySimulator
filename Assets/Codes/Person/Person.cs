@@ -8,7 +8,34 @@ public class Person
 {
     public int age {get; set;}
 
-    public string name {get; set;}
+    public string name
+    {
+        get { return firstName + " " + lastName; }
+        set { }
+    }
+
+    public string firstName;
+
+    public void setFirstName(NameManager.sex sex)
+    {
+        sex = biologicalSex ? NameManager.sex.male : NameManager.sex.female;
+        firstName = NameManager.getFirstname(sex);
+    }
+
+    public string lastName;
+    
+    public void setLastName()
+    {
+        List<string> parentNames = new List<string>();
+        if (parents != null)
+        {
+            for (int i = 0; i < parents.Length; i++)
+            {
+                parentNames.Add(parents[i].lastName);
+            }
+        }
+        lastName = NameManager.getSurname(parentNames);
+    }
 
     public bool alive {get; set;}
 
@@ -40,7 +67,7 @@ public class Person
     public Person(string nameAtBirth, List<Person> currSiblings)
     {
         age = 0;
-        name = nameAtBirth;
+        firstName = nameAtBirth;
         sigOther = null;
         siblings = new List<Person>();
         children = null;
@@ -66,9 +93,9 @@ public class Person
     }
 
     //Constructor for adults, those who may enter the town or are settlers
-    public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
+    public Person (string firstName, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
         this.age = age;
-        this.name = name;
+        this.firstName = firstName;
         this.sigOther = sigOther;
         this.siblings = currSiblings;
         this.children = children;
@@ -106,9 +133,7 @@ public class Person
            
                 if(birthChance <= conceptionRate)
                 {
-
-
-
+                    
                     string tempNameGen = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
                     List<Person> currSiblings = null;
                     if(p1.children != null)
@@ -134,7 +159,6 @@ public class Person
 
                     Person bornChild = new Person(tempNameGen, currSiblings);
                     bornChild.parents = new Person[] { p1, p2 };
-
                     return bornChild;
                 }
             }
