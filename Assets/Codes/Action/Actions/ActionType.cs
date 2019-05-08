@@ -32,7 +32,7 @@ public abstract class ActionType
         }
         else
         {
-            Debug.Log("Prerequisite check failed...");
+            //Debug.Log("Prerequisite check failed...");
             return false;
         }
          
