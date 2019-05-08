@@ -55,12 +55,14 @@ namespace Codes.Institution
             employeeList.Add(person);
             Debug.Log("\n----------HIRE----------\n["+type+ "] hires new employee ["+person+"]\n------------------------\n");
         }
-
+        
+        // possible deprecation 
+        // use Action class instead
         public void ConstructCompanySite(Plot location)
         {
             // randomly choose a construct company to construct a company site
-            ConstructionCompany cons = InstitutionManager.GetRandomConstructionCompany();
-            cons.Build(location);
+//            ConstructionCompany cons = InstitutionManager.GetRandomConstructionCompany();
+//            cons.Build(this, location);
         }
 
         public string getType()
@@ -84,11 +86,12 @@ namespace Codes.Institution
         {
         }
 
-        public void Build(Plot loc)
+        public void Build(Institution institution, Plot loc)
         {
-            Debug.Log("Building institution site...");
-            Thread.Sleep(3000);
-            Debug.Log("Construct building at location["+loc.x_pos +"," + loc.y_pos+"]");
+            // TODO: build institution on certain plot
+//            Debug.Log("Building institution site...");
+//            Thread.Sleep(3000);
+//            Debug.Log("Construct building at location["+loc.x_pos +"," + loc.y_pos+"]");
         }
     }
 
