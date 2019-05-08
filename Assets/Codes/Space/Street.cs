@@ -14,7 +14,7 @@ public class Street : Object
     public Street(int street_dir, string name)
     {
         direction = street_dir;
-        name = streetName;
+        streetName = name;
     }
 
 }

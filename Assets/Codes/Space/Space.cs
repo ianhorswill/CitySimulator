@@ -42,7 +42,7 @@ public class Space : Object
 
     Plot MakePlot(int x, int y)
     {
-        Plot newPlot = new Plot(x, y);
+        Plot newPlot = new Plot(x, y, this);
 
         return newPlot;
     }
