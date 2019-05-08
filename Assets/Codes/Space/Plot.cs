@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using Codes.Institution;
 
 public class Plot : Object
 {
     public int x_pos, y_pos; // x, y coords
     public Plot[] neighbor_plots = new Plot[4]; // stored N,E,S,W
     public bool occupied;
-    public List<Institution.Institution> institutions = new List<Institution.Institution>();
+    public List<Institution> institutions = new List<Institution>();
     private Space space;
 
     public Plot(int x, int y, Space the_space)
@@ -31,9 +32,9 @@ public class Plot : Object
         return neighbors;
     }
 
-    public List<Institution.Institution> get_nearby_institutions()
+    public List<Institution> get_nearby_institutions()
     {
-        List<Institution.Institution> nearby_institutions = institutions;
+        List<Institution> nearby_institutions = institutions;
         foreach (Plot neighbor_plot in neighbor_plots) {
             if (neighbor_plot != null)
             {
