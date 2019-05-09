@@ -13,6 +13,7 @@ public class ActionStatics
     public static List<Person> deceased = new List<Person>();
     
     public static System.Random randomNumberGenerator = new System.Random();
+    // seed based!
     
-    
+    // time?
 }
