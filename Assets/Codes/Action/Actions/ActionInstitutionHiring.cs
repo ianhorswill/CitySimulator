@@ -4,6 +4,8 @@ namespace Codes.Action.Actions
     {
         public int priority = 3;
         public override string actionName => "InstitutionHiring";
+        public override double chance => 1.0;
+
         public override bool prerequisites(object agent, object patient, Location location, Time time)
         {
             // TODO: check the prereqs of this specific action 

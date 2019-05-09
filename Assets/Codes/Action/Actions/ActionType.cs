@@ -4,6 +4,7 @@ public abstract class ActionType
 {
     public abstract string actionName { get;}
     public int priority = 0;
+    public abstract double chance { get; }
 
     // instead, pass in a list of roles that can be filled... this then means that prereq is not
     // something you write, it is some list (data) you provide that gets run by a default

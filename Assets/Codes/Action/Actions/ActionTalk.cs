@@ -7,6 +7,8 @@ public class ActionTalk : ActionType
 
     public override string actionName => "Talk";
 
+    public override double chance => 1.0;
+
     public override bool prerequisites(object agent, object patient, Location location, Time time)
     {
         // TODO: check the prereqs of this specific action 
