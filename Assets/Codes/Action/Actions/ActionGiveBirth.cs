@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class ActionGiveBirth : ActionType
 {
-    public int priority = 3;
-
     public override string actionName => "GiveBirth";
 
     public override bool prerequisites(object agent, object patient, Location location, Time time)

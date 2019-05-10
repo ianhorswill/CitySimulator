@@ -21,7 +21,8 @@ public class ActionStatics
     private static TimeSpan day_duration = new TimeSpan(0, 12, 0, 0);
     public DateTime current_time = world_start;
     
-    public void advance_time() {
-        current_time = current_time.Add(day_duration)
+    public void advance_time()
+    {
+        current_time = current_time.Add(day_duration);
     }
 }

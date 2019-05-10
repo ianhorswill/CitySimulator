@@ -6,7 +6,6 @@ using Codes.Institution;
 
 public class ActionGenerateInstitution : ActionType
 {
-    public int priority = 3;
     public Institution Institution;
 
     public override string actionName => "GenerateInstitution";
