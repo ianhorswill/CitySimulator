@@ -2,28 +2,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class Person
 {
     public int age {get; set;}
-
+    /// <summary>
+    /// The name of the person in the format of "firstname lastname"
+    /// </summary>
     public string name
     {
         get { return firstName + " " + lastName; }
         set { }
     }
-
+    
     public string firstName;
-
     public string GenerateRandomFirstName()
     {
         NameManager.sex sex = biologicalSex ? NameManager.sex.male : NameManager.sex.female;
         return NameManager.getFirstname(sex);
     }
-
-    public string lastName;
     
+    public string lastName;
     public string GenerateRandomLastName()
     {
         List<string> parentNames = new List<string>();
@@ -39,34 +40,72 @@ public class Person
 
     public bool alive {get; set;}
 
-    public int id {get; set;}
+    public Guid id {get; set;}
 
     // We will have things here eventually.
     // private var currentLocation;
     // private var relationships;
+    class Relationship
+    {
+        public int Charge;
+        public int Spark;
 
+        public Relationship(int c, int s)
+        {
+            Charge = c;
+            Spark = s;
+        }
+    }
+    private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
+    public void updateRelationshipSpark(Person p, int amount)
+    {
+        if (!relationshipDict.ContainsKey(p)) 
+            relationshipDict.Add(p,new Relationship(0,0));
+        else
+            relationshipDict[p].Spark += amount;
+    }
+    public void updateRelationshipCharge(Person p, int amount)
+    {
+        if (!relationshipDict.ContainsKey(p)) 
+            relationshipDict.Add(p,new Relationship(0,0));
+        else
+            relationshipDict[p].Charge += amount;
+    }
+
+    public int getRelationshipSpark(Person p)
+    {
+        return relationshipDict[p].Spark;
+    }
+    public int getRelationshipCharge(Person p)
+    {
+        return relationshipDict[p].Charge;
+    }
+    
     public Person sigOther;
     public List<Person> siblings;
     public  List<Person> children;
     public Person[] parents;
     private static double conceptionRate = 1.0; // Should be lower, but setting higher for the sake of it.
-
-    //If biologicalSex is true, the person is Male; if false, female.
+    
+    /// <summary>
+    /// The gender of the person: if biologicalSex is true, the person is Male; if false, female.
+    /// </summary>
     private bool biologicalSex;
     public bool isMale()
     {
         return biologicalSex;
     }
-
     public bool isFemale()
     {
         return !biologicalSex;
     }
     
-    //Default Constructor, takes no parameters and return a person with randomly generated properties
+    /// <summary>
+    /// Interface function to generate a person with randomly properties
+    /// </summary>
     public static Person generateRandomPerson()
     {
-        Person p = new Person("",null);
+        Person p = new Person("",null,null);
         System.Random rng = new System.Random();
         p.biologicalSex = (rng.Next(0, 2) == 1);
         p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
@@ -74,17 +113,19 @@ public class Person
         return p;
     }
     
-    /*Basic Constructor, takes in string nameAtBirth, and list of current siblings
-      string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
-    */
-    public Person(string nameAtBirth, List<Person> currSiblings)
+    /// <summary>
+    /// Basic Constructor for newborns, takes in string nameAtBirth, list of current siblings, and array of parents
+    /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
+    /// </summary>
+    public Person(string nameAtBirth, List<Person> currSiblings, Person[] parentsParam)
     {
         age = 0;
         sigOther = null;
         siblings = new List<Person>();
         children = null;
-        parents = new Person[2];
+        parents = parentsParam;
         System.Random rng = new System.Random();
+        id = Guid.NewGuid();
         if(rng.Next(0, 2) == 1)
         {
             biologicalSex = true;
@@ -105,10 +146,44 @@ public class Person
         this.firstName = (nameAtBirth.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
         this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
     }
-
-    /*Constructor for adults, those who may enter the town or are settlers
-      string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
-     */
+    
+    /// <summary>
+    /// Basic Constructor for newborns, takes in string nameAtBirth, and list of current siblings
+    /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
+    /// </summary>
+    public Person(string nameAtBirth, List<Person> currSiblings)
+    {
+        age = 0;
+        sigOther = null;
+        siblings = new List<Person>();
+        children = null;
+        parents = new Person[2];
+        System.Random rng = new System.Random();
+        id = Guid.NewGuid();
+        if(rng.Next(0, 2) == 1)
+        {
+            biologicalSex = true;
+        }
+        else
+        {
+            biologicalSex = false;
+        }
+        
+        if(currSiblings != null)
+        {
+            foreach (Person p in currSiblings)
+            {
+                siblings.Add(p);
+            }
+        }
+        string[] nameSplit = nameAtBirth.Split(' ');
+        this.firstName = (nameAtBirth.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
+        this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
+    }
+    /// <summary>
+    /// Constructor for adults, those who may enter the town or are settlers
+    /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
+    /// </summary>
     public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
         this.age = age;
         this.sigOther = sigOther;
@@ -116,12 +191,16 @@ public class Person
         this.children = children;
         this.parents = parents;
         this.biologicalSex = biologicalSex;
+        this.id = Guid.NewGuid();
         string[] nameSplit = name.Split(' ');
         
         this.firstName = (name.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
         this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
     }
-
+    
+    /// <summary>
+    /// Interface function for creating a child
+    /// </summary>
     public static Person createChild(Person p1, params Person[] otherParents)
     {
         // createChild(p1, p1.sigOther)
@@ -142,13 +221,13 @@ public class Person
         if(p2.age >= minAge && p1.age >= minAge)
         {
             // if both individuals are above the minimum age, then they may have a child
-            Debug.LogFormat("Adam and Eve Results: {0}, {1}, {2}", p1.isFemale(), p2.isMale(), p1.isFemale() && p2.isMale());
-            Debug.LogFormat("Other Result: {0}, {1}, {2}", p1.isMale(), p2.isFemale(), p1.isMale() && p2.isFemale());
+            // Debug.LogFormat("Adam and Eve Results: {0}, {1}, {2}", p1.isFemale(), p2.isMale(), p1.isFemale() && p2.isMale());
+            // Debug.LogFormat("Other Result: {0}, {1}, {2}", p1.isMale(), p2.isFemale(), p1.isMale() && p2.isFemale());
             if((p1.isFemale() && p2.isMale()) || (p1.isMale() && p2.isFemale()))
             {
                 System.Random rng = new System.Random();
                 double birthChance = rng.NextDouble();
-                Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
+                // Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
            
                 if(birthChance <= conceptionRate)
                 {
@@ -175,16 +254,50 @@ public class Person
                     {
                         currSiblings = p2.children;
                     }
-
-                    Person bornChild = new Person("", currSiblings);
-                    bornChild.parents = new Person[] { p1, p2 };
+                    
+                    Person bornChild = new Person("", currSiblings, new Person[] { p1, p2 });
+                    if (p1.children == null)
+                        p1.children = new List<Person>() {bornChild};
+                    else
+                        p1.children.Add(bornChild);
+                    if (p2.children == null)
+                        p2.children = new List<Person>() {bornChild};
+                    else
+                        p2.children.Add(bornChild);
                     return bornChild;
                 }
             }
 
         }
+        return null;  
+    }
 
-        return null;
-        
+    public string getNamesFromListOfPersons(List<Person> listOfPersons)
+    {
+        if (listOfPersons == null || listOfPersons.Count == 0) return "None";
+        string names = "";
+        for (int i = 0; i < listOfPersons.Count; i++)
+        {
+            names += listOfPersons[i].name;
+            names += ", ";
+        }
+        return names;
+    }
+    public override string ToString()
+    {
+        string parentNames = "";
+        if ((parents == null) || (parents.Length == 0))
+            parentNames = "None";
+        else
+        {
+            for (int i = 0; i < parents.Length; i++)
+            {
+                parentNames += parents[i].name;
+                parentNames += ", ";
+            }
+        }
+        return string.Format("Person Name: {0}, Age: {1}, Sex: {2}, Significant Other: {3}, Parents: {4}Siblings: {5}Children: {6}",
+            name, age, biologicalSex ? "M" : "F", sigOther == null ? "N/A" : sigOther.name, 
+            parentNames, getNamesFromListOfPersons(siblings), getNamesFromListOfPersons(children));
     }
 }

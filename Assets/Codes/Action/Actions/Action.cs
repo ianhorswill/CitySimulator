@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 public class Action
 {
@@ -26,7 +27,7 @@ public class Action
     // USED FOR DEBUG.LOG - need an alternative...
     public override string ToString()
     {
-        String res = ((Person) agent).name + " " + actionName + " " + ((Person) patient).name + " at " + location.ToString() + ", " + time.timestamp;
+        String res = ((Person) agent).name + " and " + ((Person) patient).name + " " + actionName + " at " + location.ToString() + ", " + time.timestamp;
         return res;
     }
 }

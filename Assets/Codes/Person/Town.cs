@@ -48,21 +48,21 @@ public class Town : MonoBehaviour
 
             var currAlive = currTown.aliveResidents;
             Debug.LogFormat("Settlers Alive: {0}", currAlive.Count);
-
+            //Logger.Log("person", ("Settlers Alive: {0}", currAlive.Count);
+            for (int i = 0; i < currAlive.Count; i++)
+            {
+                Debug.Log(currAlive[i]);
+                //Logger.Log("person", currAlive[i]);
+            }
             // Debug.LogFormat("List of Settlers: {0}", currAlive);
-
-
         }
-
+        
         if (UnityEngine.Time.time > stepTime)
         {
             currTown.step();
             stepTime = UnityEngine.Time.time + stepPeriod;
 
         }
-
-
-
     }
 }
 
@@ -116,6 +116,7 @@ public class PersonTown //: Settlement
 
     public void birth(Person baby){
         Debug.Log("Successful birth occurred! Baby's name: " + baby.name);
+        //Logger.Log("person", ("Successful birth occurred! Baby's name: " + baby.name + "Guid: " + baby.id);
         aliveResidents.Add(baby);
     }
 
@@ -186,6 +187,7 @@ public class PersonTown //: Settlement
             }
             if(!found){
                 Debug.Log("Birth Failed, parents not found or exceeded maximum attempts");
+                //Logger.Log("person", "Birth Failed, parents not found or exceeded maximum attempts");
             }
             else{
                 birth(baby);

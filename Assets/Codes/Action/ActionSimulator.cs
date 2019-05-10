@@ -43,10 +43,23 @@ public class ActionSimulator : MonoBehaviour
     void Start()
     {
         Debug.Log("Action Simulation Start");
-        sam = new Person("Sam", null);
-        jiawei = new Person("Jiawei", null);
-        sam.age = 22;
-        jiawei.age = 22;
+//        sam = new Person("Sam", null);
+//        jiawei = new Person("Jiawei", null);
+//        sam.age = 22;
+//        jiawei.age = 22;
+        var initialSettlerTest = new List<Person>();
+        Person p1 = new Person("Adam", null, 20, null, null, null, true);
+        Person p2 = new Person("Eve", null, 20, p1, null, null, false);
+        p1.sigOther = p2;
+        initialSettlerTest.Add(p1);
+        initialSettlerTest.Add(p2);
+        ActionStatics.settlers = initialSettlerTest;
+        ActionStatics.aliveResidents = initialSettlerTest;
+    }
+
+    Person RandomlyChoosePeople()
+    {
+        return ActionStatics.aliveResidents[ActionStatics.randomNumberGenerator.Next(ActionStatics.aliveResidents.Count)];
     }
 
     void Update()
@@ -55,7 +68,7 @@ public class ActionSimulator : MonoBehaviour
         ActionType randAction = ActionLibrary.RandomlyChoose();
         
         // TODO: execute the action
-        randAction.exec(sam, jiawei, new Location(new Random().Next(100), new Random().Next(100)), new Time(DateTime.Now.ToString("h:mm:ss tt")));
+        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(), new Location(new Random().Next(100), new Random().Next(100)), new Time(DateTime.Now.ToString("h:mm:ss tt")));
         
     }
 
