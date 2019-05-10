@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace Codes.Institution
 {
-    // the InstitutionGenerator includes methods needed to generate an Institution
-
     public class Institution
     {
         private Person owner;
-        private Plot location;
+
+        public Plot location;
         private List<Person> employeeList;
         private string type;
+        string SUB_SYSTEM = "Institution";
 
         public Institution(Person owner, Plot location,string type, bool needBuild = true)
         {
@@ -25,10 +25,7 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-
-            Debug.Log("------------------------\n" + this.ToString());
-//            Debug.Log("["+type+"] start hiring process...");
-//            StartHiringProcess();
+            Logger.Log(SUB_SYSTEM, ToString());
         }
         public Institution(Person owner, Plot location,string type)
         {
@@ -38,9 +35,6 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-            Debug.Log("------------------------\n" + this.ToString());
-//            Debug.Log("["+type+"] start hiring process...");
-//            StartHiringProcess();
         }
 
         public IEnumerable<WaitForSeconds> StartHiringProcess()

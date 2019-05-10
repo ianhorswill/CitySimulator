@@ -4,6 +4,7 @@ using System.IO;
 
 namespace Codes.Institution
 {
+    // the InstitutionGenerator includes methods needed to generate an Institution
     public static class InstitutionManager
     {
         // store all the institutions been constructed
@@ -77,6 +78,13 @@ namespace Codes.Institution
             Random rnd = new Random();
             int index = rnd.Next(0, constructionCompanyList.Count);
             return constructionCompanyList[index];
+        }
+
+        public static Institution GetRandomInstitution()
+        {
+            Random rnd = new Random();
+            int index = rnd.Next(0, institutionList.Count);
+            return institutionList[index];
         }
     }
 }
