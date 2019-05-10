@@ -116,7 +116,7 @@ public class PersonTown //: Settlement
 
     public void birth(Person baby){
         Debug.Log("Successful birth occurred! Baby's name: " + baby.name);
-        //Logger.Log("person", ("Successful birth occurred! Baby's name: " + baby.name + "Guid: " + baby.id);
+        //Logger.Log("person", ("Successful birth occurred! Details:"), baby.toString());
         aliveResidents.Add(baby);
     }
 
