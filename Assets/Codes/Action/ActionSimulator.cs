@@ -63,7 +63,8 @@ public class ActionSimulator : MonoBehaviour
         ActionType randAction = ActionLibrary.RandomlyChoose();
         
         // TODO: execute the action
-        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(), new Location(Random.Integer(100), Random.Integer(100)), new Time(DateTime.Now.ToString("h:mm:ss tt")));
+        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(), new Location(Random.Integer(100), Random.Integer(100)),
+            new Time(DateTime.Now.ToString("h:mm:ss tt")));
         
     }
 

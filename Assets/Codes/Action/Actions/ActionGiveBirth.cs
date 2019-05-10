@@ -9,7 +9,7 @@ public class ActionGiveBirth : ActionType
     public override bool prerequisites(object agent, object patient, Location location, Time time)
     {
         // TODO: check the prereqs of this specific action 
-        return Random.RandomNumberGenerator.Next(100) < ActionStatics.BIRTH_PROBABILITY &&
+        return Random.Integer(100) < ActionStatics.BIRTH_PROBABILITY &&
                ((Person) agent).age >= ActionStatics.MIN_AGE && ((Person) patient).age >= ActionStatics.MIN_AGE &&
                (((Person) agent).isFemale() && ((Person) patient).isMale() ||
                 (((Person) agent).isMale() && ((Person) patient).isFemale()));

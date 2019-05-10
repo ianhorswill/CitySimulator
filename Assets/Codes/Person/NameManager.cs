@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using System.IO;
-using System;
 
 public class NameManager
 {
-    private static string assetDir = "/Assets/Codes/Person";
+    private static readonly string assetDir = "/Assets/Codes/Person";
     private static readonly string path = Directory.GetCurrentDirectory();
     private static readonly string[] Surnames = File.ReadAllLines(path + assetDir + "/names/english_surnames.txt");
     private static readonly string[] MiscellaneousFeminineName = File.ReadAllLines(path + assetDir + "/names/feminine_names.txt");
@@ -26,16 +23,15 @@ public class NameManager
      */
     public static string getSurname(List<string> parent_name)
     {
-        System.Random rand = new System.Random();
         if (parent_name == null || parent_name.Count == 0)
         {
-            return Surnames[rand.Next(Surnames.Length)];
+            return Surnames.RandomElement();
         }
         else if (parent_name.Count == 1)
             return parent_name[0];
         else // return randomly from the parent name list
         {
-            return parent_name[rand.Next(parent_name.Count)];
+            return parent_name.RandomElement();
         } 
     }
 
@@ -60,14 +56,14 @@ public class NameManager
     public static string getMasculineName()
     {
         string name;
-        System.Random rand = new System.Random();
-        if (rand.Next(100) > 98) {
+
+        if (Random.Integer(100) > 98) {
             // choose masculine name from a rare name set 
-            name = MiscellaneousMasculineName[rand.Next(MiscellaneousMasculineName.Length)];
+            name = MiscellaneousMasculineName.RandomElement();
         }
         else
         {
-            name = CommonMasculineName[rand.Next(CommonMasculineName.Length)];
+            name = CommonMasculineName.RandomElement();
         }
 
         return name;
@@ -76,15 +72,14 @@ public class NameManager
     public static string getFemineName()
     {
         string name;
-        System.Random rand = new System.Random();
-        if (rand.Next(100) > 98)
+        if (Random.Integer(100) > 98)
         {
             // choose masculine name from a rare name set 
-            name = MiscellaneousFeminineName[rand.Next(MiscellaneousFeminineName.Length)];
+            name = MiscellaneousFeminineName.RandomElement();
         }
         else
         {
-            name = CommonFeminineName[rand.Next(CommonFeminineName.Length)];
+            name = CommonFeminineName.RandomElement();
         }
         return name;
     }

@@ -6,7 +6,7 @@ public class ActionDeath : ActionType
     public override bool prerequisites(object agent, object patient, Location location, Time time)
     {
         // TODO: check the prereqs of this specific action 
-        return Random.RandomNumberGenerator.Next(100) < ActionStatics.DEATH_PROBABILITY;
+        return Random.Integer(100) < ActionStatics.DEATH_PROBABILITY;
     }
     
     public override void modifications(object agent, object patient, Location location, Time time)

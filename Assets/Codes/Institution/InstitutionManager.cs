@@ -78,9 +78,7 @@ namespace Codes.Institution
 
         public static Institution GetRandomInstitution()
         {
-            Random rnd = new Random();
-            int index = rnd.Next(0, institutionList.Count);
-            return institutionList[index];
+            return institutionList.RandomElement();
         }
     }
 }
