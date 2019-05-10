@@ -40,7 +40,7 @@ public class Person
 
     public bool alive {get; set;}
 
-    public int id {get; set;}
+    public Guid id {get; set;}
 
     // We will have things here eventually.
     // private var currentLocation;
@@ -125,6 +125,7 @@ public class Person
         children = null;
         parents = parentsParam;
         System.Random rng = new System.Random();
+        id = Guid.NewGuid();
         if(rng.Next(0, 2) == 1)
         {
             biologicalSex = true;
@@ -158,6 +159,7 @@ public class Person
         children = null;
         parents = new Person[2];
         System.Random rng = new System.Random();
+        id = Guid.NewGuid();
         if(rng.Next(0, 2) == 1)
         {
             biologicalSex = true;
@@ -189,6 +191,7 @@ public class Person
         this.children = children;
         this.parents = parents;
         this.biologicalSex = biologicalSex;
+        this.id = Guid.NewGuid();
         string[] nameSplit = name.Split(' ');
         
         this.firstName = (name.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
