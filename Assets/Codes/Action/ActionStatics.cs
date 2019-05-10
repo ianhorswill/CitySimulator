@@ -22,6 +22,6 @@ public class ActionStatics
     public DateTime current_time = world_start;
     
     public void advance_time() {
-        current_time = current_time.Add(day_duration)
+        current_time = current_time.Add(day_duration);
     }
 }
