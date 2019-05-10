@@ -18,6 +18,15 @@ public class Plot : Object
         space = the_space;
     }
 
+    public List<int> get_coords()
+    {
+        return new List<int>
+        {
+            x_pos,
+            y_pos
+        };
+    }
+
     int distance_between_plots(Plot plot_1, Plot plot_2)
     {
         int x_diff = Math.Abs(plot_1.x_pos - plot_2.x_pos);

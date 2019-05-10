@@ -5,14 +5,14 @@ using UnityEngine;
 
 namespace Codes.Institution
 {
-    // the InstitutionGenerator includes methods needed to generate an Institution
-
     public class Institution
     {
         private Person owner;
-        private Plot location;
+
+        public Plot location;
         private List<Person> employeeList;
         private string type;
+        string SUB_SYSTEM = "Institution";
 
         public Institution(Person owner, Plot location,string type, bool needBuild = true)
         {
@@ -25,10 +25,7 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-
-            Debug.Log("------------------------\n" + this.ToString());
-//            Debug.Log("["+type+"] start hiring process...");
-//            StartHiringProcess();
+            Logger.Log(SUB_SYSTEM, ToString());
         }
         public Institution(Person owner, Plot location,string type)
         {
@@ -38,9 +35,6 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-            Debug.Log("------------------------\n" + this.ToString());
-//            Debug.Log("["+type+"] start hiring process...");
-//            StartHiringProcess();
         }
 
         public IEnumerable<WaitForSeconds> StartHiringProcess()
@@ -55,12 +49,14 @@ namespace Codes.Institution
             employeeList.Add(person);
             Debug.Log("\n----------HIRE----------\n["+type+ "] hires new employee ["+person+"]\n------------------------\n");
         }
-
+        
+        // possible deprecation 
+        // use Action class instead
         public void ConstructCompanySite(Plot location)
         {
             // randomly choose a construct company to construct a company site
-            ConstructionCompany cons = InstitutionManager.GetRandomConstructionCompany();
-            cons.Build(location);
+//            ConstructionCompany cons = InstitutionManager.GetRandomConstructionCompany();
+//            cons.Build(this, location);
         }
 
         public string getType()
@@ -84,11 +80,12 @@ namespace Codes.Institution
         {
         }
 
-        public void Build(Plot loc)
+        public void Build(Institution institution, Plot loc)
         {
-            Debug.Log("Building institution site...");
-            Thread.Sleep(3000);
-            Debug.Log("Construct building at location["+loc.x_pos +"," + loc.y_pos+"]");
+            // TODO: build institution on certain plot
+//            Debug.Log("Building institution site...");
+//            Thread.Sleep(3000);
+//            Debug.Log("Construct building at location["+loc.x_pos +"," + loc.y_pos+"]");
         }
     }
 

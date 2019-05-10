@@ -1,15 +1,15 @@
-﻿//using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class Space : Object
+public class Space : UnityEngine.Object
 {
     static public int MAX_PLOTS = 100;
     static public int MAX_STREETS = 1000;
     public Plot[,] PlotsList;
     public Street[,] StreetsList;
-    float streetStretch = 1.505f;
+    //float streetStretch = 1.505f;
     public int gridLen = 3;
 
     // Start is called before the first frame update
@@ -23,7 +23,7 @@ public class Space : Object
         {
             for (int x = 0; x < gridLen; x++)
             {
-                PlotsList[x,y] = MakePlot(x+x, y+y);
+                PlotsList[x,y] = MakePlot(x, y);
             }
         }
 
@@ -39,6 +39,14 @@ public class Space : Object
         setupStreetConnections();
     }
 
+    public Plot getRandomPlot()
+    {
+        System.Random rand = new System.Random();
+        int rand_x = rand.Next(0, gridLen);
+        int rand_y = rand.Next(0, gridLen);
+
+        return PlotsList[rand_x, rand_y];
+    }
 
     Plot MakePlot(int x, int y)
     {

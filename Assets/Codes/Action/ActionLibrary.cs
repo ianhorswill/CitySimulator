@@ -15,6 +15,7 @@ public class ActionLibrary : MonoBehaviour
         actionDict.Add("GenerateInstitution", new ActionGenerateInstitution());
         actionDict.Add("GiveBirth", new ActionGiveBirth());
         actionDict.Add("InstitutionHiring", new ActionInstitutionHiring());
+        actionDict.Add("ConstructInstitution", new ActionConstructInstitution());
         actionDict.Add("Death", new ActionDeath());
     }
 
