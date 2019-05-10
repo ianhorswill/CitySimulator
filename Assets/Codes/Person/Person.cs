@@ -57,6 +57,9 @@ public class Person
         }
     }
     private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
+    /// <summary>
+    /// Update the spark in a nonreciprocal relationship, takes in Person and the amount to change
+    /// </summary>
     public void updateRelationshipSpark(Person p, int amount)
     {
         if (!relationshipDict.ContainsKey(p)) 
@@ -64,6 +67,9 @@ public class Person
         else
             relationshipDict[p].Spark += amount;
     }
+    /// <summary>
+    /// Update the charge in a nonreciprocal relationship, takes in Person and the amount to change
+    /// </summary>
     public void updateRelationshipCharge(Person p, int amount)
     {
         if (!relationshipDict.ContainsKey(p)) 
@@ -71,11 +77,16 @@ public class Person
         else
             relationshipDict[p].Charge += amount;
     }
-
+    /// <summary>
+    /// Get the spark in a nonreciprocal relationship, takes in Person
+    /// </summary>
     public int getRelationshipSpark(Person p)
     {
         return relationshipDict[p].Spark;
     }
+    /// <summary>
+    /// Get the charge in a nonreciprocal relationship, takes in Person
+    /// </summary>
     public int getRelationshipCharge(Person p)
     {
         return relationshipDict[p].Charge;
@@ -274,7 +285,7 @@ public class Person
 
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
     {
-        if (listOfPersons == null || listOfPersons.Count == 0) return "None";
+        if (listOfPersons == null || listOfPersons.Count == 0) return "None, ";
         string names = "";
         for (int i = 0; i < listOfPersons.Count; i++)
         {
@@ -287,7 +298,7 @@ public class Person
     {
         string parentNames = "";
         if ((parents == null) || (parents.Length == 0))
-            parentNames = "None";
+            parentNames = "None, ";
         else
         {
             for (int i = 0; i < parents.Length; i++)
