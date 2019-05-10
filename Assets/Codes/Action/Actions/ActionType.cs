@@ -25,7 +25,7 @@ public abstract class ActionType
             // check roles...
             Action currAction = new Action(this.actionName, agent, patient, location, time);
             //Debug.Log("Prerequisite check succeed...");
-            Debug.Log(currAction.ToString());
+            Logger.Log("actions", currAction.ToString());
             modifications(agent, patient, location, time);
             triggers(agent, patient, location, time);
             return true;
