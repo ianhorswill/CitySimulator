@@ -24,11 +24,8 @@ public class ActionLibrary : MonoBehaviour
         {
             return null;
         }
-        Random rand = new Random();
-        List<ActionType> values = Enumerable.ToList(actionDict.Values);
-        int size = actionDict.Count;
-        int randNum = rand.Next(size);
-        return values[randNum];
+
+        return Enumerable.ToList(actionDict.Values).RandomElement();
     }
     
     public static ActionType GetActionByName(string actionName)

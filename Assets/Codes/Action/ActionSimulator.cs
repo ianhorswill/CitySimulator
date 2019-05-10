@@ -1,11 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.Experimental.PlayerLoop;
-using Random = System.Random;
 
 //  Pseudo Classes
 public class Location
@@ -59,7 +54,7 @@ public class ActionSimulator : MonoBehaviour
 
     Person RandomlyChoosePeople()
     {
-        return ActionStatics.aliveResidents[ActionStatics.randomNumberGenerator.Next(ActionStatics.aliveResidents.Count)];
+        return ActionStatics.aliveResidents.RandomElement();
     }
 
     void Update()
@@ -68,7 +63,7 @@ public class ActionSimulator : MonoBehaviour
         ActionType randAction = ActionLibrary.RandomlyChoose();
         
         // TODO: execute the action
-        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(), new Location(new Random().Next(100), new Random().Next(100)), new Time(DateTime.Now.ToString("h:mm:ss tt")));
+        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(), new Location(Random.Integer(100), Random.Integer(100)), new Time(DateTime.Now.ToString("h:mm:ss tt")));
         
     }
 

@@ -12,17 +12,10 @@ public class ActionStatics
     public static List<Person> departed = new List<Person>();
     [SerializeField] public static List<Person> aliveResidents = new List<Person>();
     public static List<Person> deceased = new List<Person>();
-    
-    private static int seed = Environment.TickCount;
-    // Logger.Log("seed", seed.ToString());
-    public static System.Random randomNumberGenerator = new System.Random(seed);
-    
-    private static DateTime world_start = new DateTime(1850, 1, 1, 10, 0, 0);
-    private static TimeSpan day_duration = new TimeSpan(0, 12, 0, 0);
-    public DateTime current_time = world_start;
-    
+    public DateTime current_time = Simulator.WorldStart;
+
     public void advance_time()
     {
-        current_time = current_time.Add(day_duration);
+        current_time = current_time.Add(Simulator.DayDuration);
     }
 }

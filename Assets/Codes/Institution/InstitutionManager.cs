@@ -30,9 +30,7 @@ namespace Codes.Institution
         // TODO: based on current institution numbers and types and city scale
         public static string GetRandomType()
         {
-            Random rnd = new Random();
-            int index = rnd.Next(0, institutionTypeList.Length);
-            return institutionTypeList[index];
+            return institutionTypeList.RandomElement();
         }
         
         
@@ -74,9 +72,7 @@ namespace Codes.Institution
 
         public static ConstructionCompany GetRandomConstructionCompany()
         {
-            Random rnd = new Random();
-            int index = rnd.Next(0, constructionCompanyList.Count);
-            return constructionCompanyList[index];
+            return constructionCompanyList.RandomElement();
         }
     }
 }
