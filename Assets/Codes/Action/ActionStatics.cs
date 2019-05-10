@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,8 +13,15 @@ public class ActionStatics
     [SerializeField] public static List<Person> aliveResidents = new List<Person>();
     public static List<Person> deceased = new List<Person>();
     
-    public static System.Random randomNumberGenerator = new System.Random();
-    // seed based!
+    private static int seed = Environment.TickCount;
+    // Logger.Log("seed", seed.ToString());
+    public static System.Random randomNumberGenerator = new System.Random(seed);
     
-    // time?
+    private static DateTime world_start = new DateTime(1850, 1, 1, 10, 0, 0);
+    private static TimeSpan day_duration = new TimeSpan(0, 12, 0, 0);
+    public DateTime current_time = world_start;
+    
+    public void advance_time() {
+        current_time = current_time.Add(day_duration)
+    }
 }
