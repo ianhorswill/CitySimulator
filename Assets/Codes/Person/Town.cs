@@ -48,7 +48,10 @@ public class Town : MonoBehaviour
 
             var currAlive = currTown.aliveResidents;
             Debug.LogFormat("Settlers Alive: {0}", currAlive.Count);
-
+            for (int i = 0; i < currAlive.Count; i++)
+            {
+                Debug.Log(currAlive[i]);
+            }
             // Debug.LogFormat("List of Settlers: {0}", currAlive);
 
 

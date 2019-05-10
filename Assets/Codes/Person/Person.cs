@@ -80,7 +80,7 @@ public class Person
     /// </summary>
     public static Person generateRandomPerson()
     {
-        Person p = new Person("",null);
+        Person p = new Person("",null,null);
         System.Random rng = new System.Random();
         p.biologicalSex = (rng.Next(0, 2) == 1);
         p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
@@ -92,13 +92,13 @@ public class Person
     /// Basic Constructor for newborns, takes in string nameAtBirth, and list of current siblings
     /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
     /// </summary>
-    public Person(string nameAtBirth, List<Person> currSiblings)
+    public Person(string nameAtBirth, List<Person> currSiblings, Person[] parentsParam)
     {
         age = 0;
         sigOther = null;
         siblings = new List<Person>();
         children = null;
-        parents = new Person[2];
+        parents = parentsParam;
         System.Random rng = new System.Random();
         if(rng.Next(0, 2) == 1)
         {
@@ -193,9 +193,16 @@ public class Person
                     {
                         currSiblings = p2.children;
                     }
-
-                    Person bornChild = new Person("", currSiblings);
-                    bornChild.parents = new Person[] { p1, p2 };
+                    
+                    Person bornChild = new Person("", currSiblings, new Person[] { p1, p2 });
+                    if (p1.children == null)
+                        p1.children = new List<Person>() {bornChild};
+                    else
+                        p1.children.Add(bornChild);
+                    if (p2.children == null)
+                        p2.children = new List<Person>() {bornChild};
+                    else
+                        p2.children.Add(bornChild);
                     return bornChild;
                 }
             }
@@ -210,7 +217,7 @@ public class Person
         string names = "";
         for (int i = 0; i < listOfPersons.Count; i++)
         {
-            names += listOfPersons[i];
+            names += listOfPersons[i].name;
             names += ", ";
         }
         return names;
