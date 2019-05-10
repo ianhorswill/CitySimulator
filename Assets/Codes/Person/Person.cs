@@ -120,6 +120,35 @@ public class Person
         this.firstName = (nameAtBirth.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
         this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
     }
+    
+    public Person(string nameAtBirth, List<Person> currSiblings)
+    {
+        age = 0;
+        sigOther = null;
+        siblings = new List<Person>();
+        children = null;
+        parents = new Person[2];
+        System.Random rng = new System.Random();
+        if(rng.Next(0, 2) == 1)
+        {
+            biologicalSex = true;
+        }
+        else
+        {
+            biologicalSex = false;
+        }
+        
+        if(currSiblings != null)
+        {
+            foreach (Person p in currSiblings)
+            {
+                siblings.Add(p);
+            }
+        }
+        string[] nameSplit = nameAtBirth.Split(' ');
+        this.firstName = (nameAtBirth.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
+        this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
+    }
     /// <summary>
     /// Constructor for adults, those who may enter the town or are settlers
     /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
