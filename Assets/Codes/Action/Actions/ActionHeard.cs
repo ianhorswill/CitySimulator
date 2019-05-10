@@ -1,8 +1,6 @@
 // Actual Classes
 public class ActionHeard : ActionType
 {
-    public int priority = 3;
-
     public override string actionName => "Heard";
 
     public override bool prerequisites(object agent, object patient, Location location, Time time)

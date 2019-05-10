@@ -1,8 +1,6 @@
 
 public class ActionDeath : ActionType
 {
-    public int priority = 3;
-
     public override string actionName => "Death";
 
     public override bool prerequisites(object agent, object patient, Location location, Time time)
