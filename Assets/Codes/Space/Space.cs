@@ -95,8 +95,21 @@ public class Space : Object
         
     }
 
-    int Pos2Idx(int x, int y)
+    public void DrawMap()
     {
-        return gridLen * y + x;
-    } 
+        for (int x = 0; x < gridLen; x++)
+        {
+            for (int y = 0; y < gridLen; y++)
+            {
+                Draw.Rect(new Rect(2 * x, 2 * y, 2f, 2f), Color.green, -1);
+            }
+        }
+
+        for (int level = 0; level < gridLen + 1; level++)
+        {
+            Draw.Rect(new Rect(2 * level, 0, 0.2f, (2 * gridLen) + 0.2f), Color.black);
+            Draw.Rect(new Rect(0, 2 * level, (2 * gridLen) + 0.2f, 0.2f), Color.black);
+        }
+
+    }
 }
