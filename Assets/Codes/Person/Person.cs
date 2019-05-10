@@ -39,6 +39,13 @@ public class Person
     }
 
     public bool alive {get; set;}
+    
+    //Right now a person's location is inferred from the institution they are presently at.
+    public Institution currentInstitution {get; set;}
+    public Plot currentLocation{
+        get { return currentInstitution.location; }  //Implies that Institution.location is public 
+        set { }  // Right now this shouldn't ever be called because location is more strictly bound to institution
+    }
 
     public Guid id {get; set;}
 
@@ -57,9 +64,6 @@ public class Person
         }
     }
     private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
-    /// <summary>
-    /// Update the spark in a nonreciprocal relationship, takes in Person and the amount to change
-    /// </summary>
     public void updateRelationshipSpark(Person p, int amount)
     {
         if (!relationshipDict.ContainsKey(p)) 
@@ -67,9 +71,6 @@ public class Person
         else
             relationshipDict[p].Spark += amount;
     }
-    /// <summary>
-    /// Update the charge in a nonreciprocal relationship, takes in Person and the amount to change
-    /// </summary>
     public void updateRelationshipCharge(Person p, int amount)
     {
         if (!relationshipDict.ContainsKey(p)) 
@@ -77,16 +78,11 @@ public class Person
         else
             relationshipDict[p].Charge += amount;
     }
-    /// <summary>
-    /// Get the spark in a nonreciprocal relationship, takes in Person
-    /// </summary>
+
     public int getRelationshipSpark(Person p)
     {
         return relationshipDict[p].Spark;
     }
-    /// <summary>
-    /// Get the charge in a nonreciprocal relationship, takes in Person
-    /// </summary>
     public int getRelationshipCharge(Person p)
     {
         return relationshipDict[p].Charge;
@@ -137,6 +133,7 @@ public class Person
         parents = parentsParam;
         System.Random rng = new System.Random();
         id = Guid.NewGuid();
+        currentInstitution = parents[0].currentInstitution;  // Location right now set to being in the insitution of the first parent
         if(rng.Next(0, 2) == 1)
         {
             biologicalSex = true;
@@ -170,7 +167,9 @@ public class Person
         children = null;
         parents = new Person[2];
         System.Random rng = new System.Random();
-        id = Guid.NewGuid();
+        id = Guid.NewGuid();   
+        //Likely location for a baby should be a home, but this is temp.  It should likely be the home location of the parents in the future.
+        currentInstitution = InstitutionManager.GetRandomInstitution();  // Unfinalized method name for random institution
         if(rng.Next(0, 2) == 1)
         {
             biologicalSex = true;
@@ -203,6 +202,7 @@ public class Person
         this.parents = parents;
         this.biologicalSex = biologicalSex;
         this.id = Guid.NewGuid();
+        currentInstitution = InstitutionManager.GetRandomInstitution();  // random institution
         string[] nameSplit = name.Split(' ');
         
         this.firstName = (name.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();
@@ -285,7 +285,7 @@ public class Person
 
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
     {
-        if (listOfPersons == null || listOfPersons.Count == 0) return "None, ";
+        if (listOfPersons == null || listOfPersons.Count == 0) return "None";
         string names = "";
         for (int i = 0; i < listOfPersons.Count; i++)
         {
@@ -298,7 +298,7 @@ public class Person
     {
         string parentNames = "";
         if ((parents == null) || (parents.Length == 0))
-            parentNames = "None, ";
+            parentNames = "None";
         else
         {
             for (int i = 0; i < parents.Length; i++)
