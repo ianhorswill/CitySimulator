@@ -15,6 +15,6 @@ public class SpaceManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        mySpace.DrawMap();
     }
 }
