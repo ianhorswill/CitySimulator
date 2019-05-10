@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 /// <summary>
@@ -10,15 +11,25 @@ public class Draw : MonoBehaviour
 {
     public Material Shader;
     private static Draw singleton;
+    public GUIStyle TextStyle;
 
     public Draw()
     {
         singleton = this;
+        textQueue = new PrimitiveQueue<TextInfo>(-1,
+            textInfo =>
+            {
+                var screenPoint = Camera.current.WorldToScreenPoint(textInfo.Position);
+                GUI.Label(new Rect(screenPoint.x, Screen.height-screenPoint.y, 0, 0),
+                    textInfo.TextToDraw,
+                    textInfo.Style);
+            });
     }
 
     /// <summary>
     /// Fills in Shader, if not already set.
     /// </summary>
+    // ReSharper disable once UnusedMember.Global
     public void Awake()
     {
         if (Shader == null)
@@ -30,11 +41,20 @@ public class Draw : MonoBehaviour
     // This is just for testing
     //public void Update()
     //{
-    //    for (var x = -10; x<=10; x += 5)
-    //    Rect(new Rect(new Vector2(x/10f,0), new Vector2(0.1f, 0.1f)), new Color(05f+x/20f, 0, 0.5f-x/20f), -1);
-    //    for (var y = -100; y<=100; y += 5)
-    //        Line(new Vector2(0,0), new Vector2(1,y/100.0f), new Color(05f+y/200f, 0.5f-y/200f, 0), 0);
+    //    Text("foo", new Vector2(1,1));
+    //    Text("bar", new Vector2(1,-1));
+    //    for (var x = -10; x <= 10; x += 5)
+    //        Rect(new Rect(new Vector2(x / 10f, 0), new Vector2(0.1f, 0.1f)), new Color(05f + x / 20f, 0, 0.5f - x / 20f), -1);
+    //    for (var y = -100; y <= 100; y += 5)
+    //        Line(new Vector2(0, 0), new Vector2(1, y / 100.0f), new Color(05f + y / 200f, 0.5f - y / 200f, 0));
     //}
+
+// ReSharper disable once UnusedMember.Global
+public void OnGUI()
+    {
+        if (Event.current.type == EventType.Repaint)
+            textQueue.DrawAll();
+    }
 
     // ReSharper disable once UnusedMember.Global
     public void OnRenderObject()
@@ -83,10 +103,10 @@ public class Draw : MonoBehaviour
         rectInfo =>
         {
             GL.Color(rectInfo.Color);
-            GL.Vertex3(rectInfo.Rect.xMin, rectInfo.Rect.yMax, rectInfo.Depth);
-            GL.Vertex3(rectInfo.Rect.xMax, rectInfo.Rect.yMax, rectInfo.Depth);
-            GL.Vertex3(rectInfo.Rect.xMax, rectInfo.Rect.yMin, rectInfo.Depth);
-            GL.Vertex3(rectInfo.Rect.xMin, rectInfo.Rect.yMin, rectInfo.Depth);
+            GL.Vertex3(rectInfo.RectToDraw.xMin, rectInfo.RectToDraw.yMax, rectInfo.Depth);
+            GL.Vertex3(rectInfo.RectToDraw.xMax, rectInfo.RectToDraw.yMax, rectInfo.Depth);
+            GL.Vertex3(rectInfo.RectToDraw.xMax, rectInfo.RectToDraw.yMin, rectInfo.Depth);
+            GL.Vertex3(rectInfo.RectToDraw.xMin, rectInfo.RectToDraw.yMin, rectInfo.Depth);
 
             //GL.Color(rectInfo.Color);
             //GL.Vertex3(rectInfo.Rect.xMin, rectInfo.Rect.yMin, rectInfo.Depth);
@@ -109,15 +129,42 @@ public class Draw : MonoBehaviour
 
     struct RectInfo
     {
-        public readonly Rect Rect;
+        public readonly Rect RectToDraw;
         public readonly Color Color;
         public readonly float Depth;
 
-        public RectInfo(Rect rect, Color color, float depth)
+        public RectInfo(Rect rectToDraw, Color color, float depth)
         {
-            Rect = rect;
+            RectToDraw = rectToDraw;
             Color = color;
             Depth = depth;
+        }
+    }
+
+    readonly PrimitiveQueue<TextInfo> textQueue;
+
+    /// <summary>
+    /// Draw Text in the specified style
+    /// </summary>
+    /// <param name="text">String to display</param>
+    /// <param name="position">Position in world coordinates</param>
+    /// <param name="style">Unity GUIStyle for drawing it</param>
+    public static void Text(string text, Vector2 position, [CanBeNull] GUIStyle style = null)
+    {
+        singleton.textQueue.Enqueue(new TextInfo(text, position, style??singleton.TextStyle));
+    }
+
+    struct TextInfo
+    {
+        public readonly string TextToDraw;
+        public readonly Vector2 Position;
+        public readonly GUIStyle Style;
+        
+        public TextInfo(string textToDraw, Vector2 position, GUIStyle style)
+        {
+            TextToDraw = textToDraw;
+            Position = position;
+            Style = style;
         }
     }
 
@@ -142,10 +189,12 @@ public class Draw : MonoBehaviour
         {
             if (queue.Count > 0)
             {
-                GL.Begin(drawMode);
+                if (drawMode>=0)
+                    GL.Begin(drawMode);
                 while (queue.Count > 0)
                     drawOperation(queue.Dequeue());
-                GL.End();
+                if (drawMode >=0)
+                    GL.End();
             }
         }
     }
