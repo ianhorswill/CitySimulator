@@ -45,15 +45,40 @@ public class Person
     // We will have things here eventually.
     // private var currentLocation;
     // private var relationships;
-    private Dictionary<Person, List<int>> relationshipDict = new Dictionary<Person, List<int>>();
+    class Relationship
+    {
+        public int Charge;
+        public int Spark;
 
-    public void updateRelationshipSpark()
-    {
-        
+        public Relationship(int c, int s)
+        {
+            Charge = c;
+            Spark = s;
+        }
     }
-    public void updateRelationshipCharge()
+    private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
+    public void updateRelationshipSpark(Person p, int amount)
     {
-        
+        if (!relationshipDict.ContainsKey(p)) 
+            relationshipDict.Add(p,new Relationship(0,0));
+        else
+            relationshipDict[p].Spark += amount;
+    }
+    public void updateRelationshipCharge(Person p, int amount)
+    {
+        if (!relationshipDict.ContainsKey(p)) 
+            relationshipDict.Add(p,new Relationship(0,0));
+        else
+            relationshipDict[p].Charge += amount;
+    }
+
+    public int getRelationshipSpark(Person p)
+    {
+        return relationshipDict[p].Spark;
+    }
+    public int getRelationshipCharge(Person p)
+    {
+        return relationshipDict[p].Charge;
     }
     
     public Person sigOther;
@@ -89,7 +114,7 @@ public class Person
     }
     
     /// <summary>
-    /// Basic Constructor for newborns, takes in string nameAtBirth, and list of current siblings
+    /// Basic Constructor for newborns, takes in string nameAtBirth, list of current siblings, and array of parents
     /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
     /// </summary>
     public Person(string nameAtBirth, List<Person> currSiblings, Person[] parentsParam)
@@ -121,6 +146,10 @@ public class Person
         this.lastName = (nameSplit.Length > 1) ? nameSplit[1] : GenerateRandomLastName();
     }
     
+    /// <summary>
+    /// Basic Constructor for newborns, takes in string nameAtBirth, and list of current siblings
+    /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
+    /// </summary>
     public Person(string nameAtBirth, List<Person> currSiblings)
     {
         age = 0;
@@ -264,7 +293,7 @@ public class Person
                 parentNames += ", ";
             }
         }
-        return string.Format("Person Name: {0}, Age: {1}, Sex: {2}, Significant Other: {3}, Parents: {4}, Siblings: {5}, Children: {6}",
+        return string.Format("Person Name: {0}, Age: {1}, Sex: {2}, Significant Other: {3}, Parents: {4}Siblings: {5}Children: {6}",
             name, age, biologicalSex ? "M" : "F", sigOther == null ? "N/A" : sigOther.name, 
             parentNames, getNamesFromListOfPersons(siblings), getNamesFromListOfPersons(children));
     }
