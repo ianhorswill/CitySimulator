@@ -41,16 +41,16 @@ public class Draw : MonoBehaviour
     // This is just for testing
     //public void Update()
     //{
-    //    Text("foo", new Vector2(1,1));
-    //    Text("bar", new Vector2(1,-1));
+    //    Text("foo", new Vector2(1, 1));
+    //    Text("bar", new Vector2(1, -1));
     //    for (var x = -10; x <= 10; x += 5)
     //        Rect(new Rect(new Vector2(x / 10f, 0), new Vector2(0.1f, 0.1f)), new Color(05f + x / 20f, 0, 0.5f - x / 20f), -1);
     //    for (var y = -100; y <= 100; y += 5)
     //        Line(new Vector2(0, 0), new Vector2(1, y / 100.0f), new Color(05f + y / 200f, 0.5f - y / 200f, 0));
     //}
 
-// ReSharper disable once UnusedMember.Global
-public void OnGUI()
+    // ReSharper disable once UnusedMember.Global
+    public void OnGUI()
     {
         if (Event.current.type == EventType.Repaint)
             textQueue.DrawAll();
