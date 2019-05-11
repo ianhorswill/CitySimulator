@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class SpaceManager : MonoBehaviour
 {
-    Space mySpace;
+    Space my_space;
     // Start is called before the first frame update
     void Start()
     {
-        mySpace = new Space();
-        mySpace.Init();
+        Logger.Log("space", "Creating initial space");
+        my_space = new Space();
+        my_space.init();
     }
 
     // Update is called once per frame
     void Update()
     {
-        mySpace.DrawMap();
+        my_space.draw_map();
     }
 }
