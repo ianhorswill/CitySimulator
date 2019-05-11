@@ -1,16 +1,20 @@
 ﻿using System;
+using Boo.Lang;
 
 /// <summary>
 /// Shared state for the simulator such as time
 /// </summary>
 public static class Simulator
 {
+    public static readonly List<SimulatorComponent> Components = new List<SimulatorComponent>();
     static Simulator()
     {
         CurrentTime = WorldStart;
     }
 
     public static DateTime WorldStart = new DateTime(1850, 1, 1, 10, 0, 0);
+    public static DateTime WorldEnd = new DateTime(2019, 1, 1, 10, 0, 0);
+
     public static TimeSpan TimeIncrement = new TimeSpan(0, 12, 0, 0);
 
     private static DateTime _currenTime;
@@ -26,8 +30,24 @@ public static class Simulator
     public static string CurrentTimeString { get; private set; }
     public static string DateTimeFormat = "yyyy-MM-dd tt";
 
-    public static void AdvanceTime()
+    /// <summary>
+    /// Run the simulator for one update cycle
+    /// </summary>
+    public static void Tick()
+    {
+        AdvanceTime();
+        foreach (var c in Components)
+            c.Tick();
+    }
+
+    private static void AdvanceTime()
     {
         CurrentTime = CurrentTime.Add(TimeIncrement);
+    }
+
+    public static void TickIfTimeRemaining()
+    {
+        if (CurrentTime < WorldEnd)
+            Tick();
     }
 }

@@ -83,11 +83,17 @@ public class PersonTown //: Settlement
     //For David: Going to add another constructor to People that allows the creation of adults
     //     public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
 
+    /// <summary>
+    /// So SimulationDriver can find this.
+    /// </summary>
+    public static PersonTown Singleton;
+
     //Constructor with settler input
     public PersonTown(List<Person> newSettlers)
     {
         settlers = newSettlers;
         aliveResidents = newSettlers;
+        Singleton = this;
     }
 
     //Default constructor with no settler input / Uses Adam/Eve
@@ -100,6 +106,7 @@ public class PersonTown //: Settlement
         initialSettlerTest.Add(p2);
         settlers = initialSettlerTest;
         aliveResidents = initialSettlerTest;
+        Singleton = this;
     }
 
     //Is this a life event?  Also may separate the system randomness / choosing from the exact method, instead using a parameter of a Person and just doing the effects on the Lists.
