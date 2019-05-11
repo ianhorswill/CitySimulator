@@ -55,9 +55,9 @@ public class Plot : Object
 
     public List<Street> get_bordering_streets()
     {
-        return new List<Street> { space.StreetsList[x_pos, 0],
-                                  space.StreetsList[x_pos + 1, 0],
-                                  space.StreetsList[y_pos, 1],
-                                  space.StreetsList[y_pos + 1, 1]};
+        return new List<Street> { space.streets_list[x_pos, 0],
+                                  space.streets_list[x_pos + 1, 0],
+                                  space.streets_list[y_pos, 1],
+                                  space.streets_list[y_pos + 1, 1]};
     }
 }

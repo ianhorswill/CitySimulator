@@ -7,55 +7,73 @@ public class Space : UnityEngine.Object
 {
     static public int MAX_PLOTS = 100;
     static public int MAX_STREETS = 1000;
-    public Plot[,] PlotsList;
-    public Street[,] StreetsList;
+    public Plot[,] plots_list;
+    public Street[,] streets_list;
     //float streetStretch = 1.505f;
-    public int gridLen = 3;
+    public int grid_len = 3;
 
     // Start is called before the first frame update
-    public void Init()
+    public void init()
     {
-        PlotsList = new Plot[gridLen,gridLen];
-        StreetsList = new Street[gridLen+1,2];
+        plots_list = new Plot[grid_len, grid_len];
+        streets_list = new Street[grid_len+1,2];
 
         // make starting plots and streets
-        for (int y = 0; y < gridLen; y++)
+        for (int y = 0; y < grid_len; y++)
         {
-            for (int x = 0; x < gridLen; x++)
+            for (int x = 0; x < grid_len; x++)
             {
-                PlotsList[x,y] = MakePlot(x, y);
+                plots_list[x,y] = make_plot(x, y);
             }
         }
 
         for (int dir = 0; dir < 2; dir++) // 0 : N and 1 : E
         {
-            for (int level = 0; level < gridLen + 1; level++)
+            for (int level = 0; level < grid_len + 1; level++)
             {
-                StreetsList[level,dir] = MakeStreet(level, dir);
+                streets_list[level,dir] = make_street(level, dir);
             }
         }
 
-        setupPlotNeighbors();
-        setupStreetConnections();
+        setup_plot_neighbors();
+        setup_street_connections();
     }
 
-    public Plot getRandomPlot()
+    public Plot get_random_plot()
     {
-        System.Random rand = new System.Random();
-        int rand_x = rand.Next(0, gridLen);
-        int rand_y = rand.Next(0, gridLen);
+        int rand_x = Random.Integer(0, grid_len);
+        int rand_y = Random.Integer(0, grid_len);
 
-        return PlotsList[rand_x, rand_y];
+        return plots_list[rand_x, rand_y];
     }
 
-    Plot MakePlot(int x, int y)
+    /// <summary>
+    /// Returns the plot with the highest value when evaluated by plot_eval.
+    /// If there is a tie, the first-considered tied plot is always returned
+    /// </summary>
+    public Plot get_best_plot(Func<Plot, float> plot_eval)
+    {
+        Plot best_plot = null;
+        float best_plot_val = 0;
+        foreach(Plot p in plots_list)
+        {
+            if (best_plot == null || plot_eval(p) > best_plot_val)
+            {
+                best_plot = p;
+                best_plot_val = plot_eval(p);
+            }
+        }
+        return best_plot;
+    }
+
+    Plot make_plot(int x, int y)
     {
         Plot newPlot = new Plot(x, y, this);
 
         return newPlot;
     }
 
-    Street MakeStreet(int lvl, int dir)
+    Street make_street(int lvl, int dir)
     {
         string dir_name = dir == 0 ? "N. " : "E. ";
         Street new_street = new Street(dir, dir_name + lvl + " Street");
@@ -65,17 +83,17 @@ public class Space : UnityEngine.Object
 
     // hard-coded method for setting up plot neighbors
     // will likely need to change if we want new plots to be created during simulation
-    void setupPlotNeighbors()
+    void setup_plot_neighbors()
     {
-        for(int x = 0; x < gridLen; x++)
+        for(int x = 0; x < grid_len; x++)
         {
-            for (int y = 0; y < gridLen; y++)
+            for (int y = 0; y < grid_len; y++)
             {
-                Plot curr_plot = PlotsList[x, y];
-                Plot north = (y == gridLen - 1) ? null : PlotsList[x, y + 1];
-                Plot east = (x == gridLen - 1) ? null : PlotsList[x + 1, y];
-                Plot south = (y == 0) ? null : PlotsList[x, y - 1];
-                Plot west = (x == 0) ? null : PlotsList[x-1, y];
+                Plot curr_plot = plots_list[x, y];
+                Plot north = (y == grid_len - 1) ? null : plots_list[x, y + 1];
+                Plot east = (x == grid_len - 1) ? null : plots_list[x + 1, y];
+                Plot south = (y == 0) ? null : plots_list[x, y - 1];
+                Plot west = (x == 0) ? null : plots_list[x-1, y];
                 curr_plot.neighbor_plots[0] = north;
                 curr_plot.neighbor_plots[1] = east;
                 curr_plot.neighbor_plots[2] = south;
@@ -86,38 +104,43 @@ public class Space : UnityEngine.Object
 
     // hard-coded method for setting street connections
     // will likely need to change if we want new plots to be created during simulation
-    void setupStreetConnections()
+    void setup_street_connections()
     {
-        for (int level = 0; level < (gridLen + 1); level++)
+        for (int level = 0; level < (grid_len + 1); level++)
         {
             for (int dir = 0; dir < 2; dir++)
             {
-                Street currStreet = StreetsList[level,dir];
+                Street curr_street = streets_list[level,dir];
                 int other_dir = (dir == 0) ? 1 : 0;
-                for (int j = 0; j < gridLen + 1; j++)
+                for (int j = 0; j < grid_len + 1; j++)
                 {
-                    currStreet.connected_streets[j] = StreetsList[j,other_dir];
+                    curr_street.connected_streets[j] = streets_list[j,other_dir];
                 }
             }
         }
         
     }
 
-    public void DrawMap()
+    public void draw_map()
     {
-        for (int x = 0; x < gridLen; x++)
+        float scale = 2f;
+
+        // draw all square plots
+        for (int x = 0; x < grid_len; x++)
         {
-            for (int y = 0; y < gridLen; y++)
+            for (int y = 0; y < grid_len; y++)
             {
-                Draw.Rect(new Rect(2 * x, 2 * y, 2f, 2f), Color.green, -1);
+                Draw.Rect(new Rect(scale * x, scale * y, scale, scale), Color.green, -1);
             }
         }
 
-        for (int level = 0; level < gridLen + 1; level++)
+        // draw all streets
+        for (int level = 0; level < grid_len + 1; level++)
         {
-            Draw.Rect(new Rect(2 * level, 0, 0.2f, (2 * gridLen) + 0.2f), Color.black);
-            Draw.Rect(new Rect(0, 2 * level, (2 * gridLen) + 0.2f, 0.2f), Color.black);
+            Rect hori_rect = new Rect(0, scale * level, scale * (grid_len + 0.1f), scale * 0.1f);
+            Rect vert_rect = new Rect(scale * level, 0, scale * 0.1f, scale * (grid_len + 0.1f));
+            Draw.Rect(vert_rect, Color.black);
+            Draw.Rect(hori_rect, Color.black);
         }
-
     }
 }
