@@ -1,151 +1,145 @@
-Institution	Institution: ConstructionCompany
-Owner: government Coppock
+Time	Subsystem	Information
+1850-01-01 AM	Institution	Institution: ConstructionCompany
+Owner: government Thatcher
 Location: (0,0)
 	
-actions	Eve Coppock and Adam Coppock GenerateInstitution at (x = 51, y = 51), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Talk at (x = 43, y = 48), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Heard at (x = 43, y = 48), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock Heard at (x = 43, y = 48), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Talk at (x = 14, y = 63), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Heard at (x = 14, y = 63), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock Heard at (x = 14, y = 63), 5:17:02 PM	
-actions	Adam Coppock and Adam Coppock GenerateInstitution at (x = 27, y = 50), 5:17:02 PM	
-actions	Adam Coppock and Adam Coppock ConstructInstitution at (x = 54, y = 23), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock GenerateInstitution at (x = 47, y = 84), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock ConstructInstitution at (x = 68, y = 58), 5:17:02 PM	
-actions	Adam Coppock and Adam Coppock Talk at (x = 66, y = 11), 5:17:02 PM	
-actions	Adam Coppock and Adam Coppock Heard at (x = 66, y = 11), 5:17:02 PM	
-actions	Adam Coppock and Adam Coppock Heard at (x = 66, y = 11), 5:17:02 PM	
-actions	Eve Coppock and Eve Coppock Heard at (x = 85, y = 14), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Talk at (x = 52, y = 32), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Heard at (x = 52, y = 32), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock Heard at (x = 52, y = 32), 5:17:02 PM	
-actions	Eve Coppock and Eve Coppock ConstructInstitution at (x = 26, y = 76), 5:17:02 PM	
-actions	Eve Coppock and Eve Coppock Talk at (x = 91, y = 96), 5:17:02 PM	
-actions	Eve Coppock and Eve Coppock Heard at (x = 91, y = 96), 5:17:02 PM	
-actions	Eve Coppock and Eve Coppock Heard at (x = 91, y = 96), 5:17:02 PM	
-actions	Eve Coppock and Eve Coppock ConstructInstitution at (x = 94, y = 70), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock ConstructInstitution at (x = 88, y = 99), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Talk at (x = 51, y = 93), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock Heard at (x = 51, y = 93), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock Heard at (x = 51, y = 93), 5:17:02 PM	
-actions	Adam Coppock and Adam Coppock ConstructInstitution at (x = 26, y = 18), 5:17:02 PM	
-actions	Eve Coppock and Adam Coppock GiveBirth at (x = 62, y = 90), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock Heard at (x = 58, y = 16), 5:17:02 PM	
-actions	Filip Coppock and Eve Coppock Death at (x = 57, y = 73), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock GenerateInstitution at (x = 44, y = 89), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock Heard at (x = 48, y = 33), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock GiveBirth at (x = 87, y = 0), 5:17:02 PM	
-actions	Adam Coppock and Wilhelm Coppock InstitutionHiring at (x = 69, y = 87), 5:17:02 PM	
-actions	Wilhelm Coppock and Adam Coppock GenerateInstitution at (x = 25, y = 37), 5:17:02 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock ConstructInstitution at (x = 66, y = 20), 5:17:02 PM	
-actions	Adam Coppock and Wilhelm Coppock Talk at (x = 11, y = 43), 5:17:02 PM	
-actions	Adam Coppock and Wilhelm Coppock Heard at (x = 11, y = 43), 5:17:02 PM	
-actions	Wilhelm Coppock and Adam Coppock Heard at (x = 11, y = 43), 5:17:02 PM	
-actions	Adam Coppock and Eve Coppock InstitutionHiring at (x = 15, y = 48), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 30, y = 46), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock Heard at (x = 44, y = 57), 5:17:03 PM	
-actions	Eve Coppock and Wilhelm Coppock ConstructInstitution at (x = 98, y = 31), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Talk at (x = 56, y = 83), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 56, y = 83), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 56, y = 83), 5:17:03 PM	
-actions	Wilhelm Coppock and Adam Coppock Talk at (x = 42, y = 70), 5:17:03 PM	
-actions	Wilhelm Coppock and Adam Coppock Heard at (x = 42, y = 70), 5:17:03 PM	
-actions	Adam Coppock and Wilhelm Coppock Heard at (x = 42, y = 70), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Talk at (x = 81, y = 35), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 81, y = 35), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 81, y = 35), 5:17:03 PM	
-actions	Adam Coppock and Wilhelm Coppock GenerateInstitution at (x = 19, y = 20), 5:17:03 PM	
-actions	Eve Coppock and Wilhelm Coppock Talk at (x = 7, y = 98), 5:17:03 PM	
-actions	Eve Coppock and Wilhelm Coppock Heard at (x = 7, y = 98), 5:17:03 PM	
-actions	Wilhelm Coppock and Eve Coppock Heard at (x = 7, y = 98), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock ConstructInstitution at (x = 51, y = 63), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock InstitutionHiring at (x = 10, y = 98), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock ConstructInstitution at (x = 91, y = 2), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Talk at (x = 63, y = 10), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 63, y = 10), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 63, y = 10), 5:17:03 PM	
-actions	Wilhelm Coppock and Eve Coppock Heard at (x = 51, y = 85), 5:17:03 PM	
-actions	Adam Coppock and Eve Coppock ConstructInstitution at (x = 73, y = 74), 5:17:03 PM	
-actions	Adam Coppock and Eve Coppock GenerateInstitution at (x = 3, y = 46), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock GiveBirth at (x = 4, y = 29), 5:17:03 PM	
-actions	Adam Coppock and Wilhelm Coppock GenerateInstitution at (x = 7, y = 97), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Talk at (x = 84, y = 43), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 84, y = 43), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock Heard at (x = 84, y = 43), 5:17:03 PM	
-actions	Eve Coppock and Eve Coppock ConstructInstitution at (x = 48, y = 88), 5:17:03 PM	
-actions	Wilhelm Coppock and Wilhelm Coppock GenerateInstitution at (x = 46, y = 70), 5:17:03 PM	
-actions	Wilhelm Coppock and matilda Coppock ConstructInstitution at (x = 12, y = 44), 5:17:03 PM	
-actions	matilda Coppock and Wilhelm Coppock GiveBirth at (x = 59, y = 59), 5:17:03 PM	
-actions	Artie Coppock and Artie Coppock GenerateInstitution at (x = 45, y = 17), 5:17:03 PM	
-actions	matilda Coppock and Wilhelm Coppock Talk at (x = 24, y = 47), 5:17:03 PM	
-actions	matilda Coppock and Wilhelm Coppock Heard at (x = 24, y = 47), 5:17:03 PM	
-actions	Wilhelm Coppock and matilda Coppock Heard at (x = 24, y = 47), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock GenerateInstitution at (x = 11, y = 34), 5:17:03 PM	
-actions	matilda Coppock and Artie Coppock GiveBirth at (x = 83, y = 57), 5:17:03 PM	
-actions	darla Coppock and Adam Coppock Talk at (x = 92, y = 71), 5:17:03 PM	
-actions	darla Coppock and Adam Coppock Heard at (x = 92, y = 71), 5:17:03 PM	
-actions	Adam Coppock and darla Coppock Heard at (x = 92, y = 71), 5:17:03 PM	
-actions	Artie Coppock and Adam Coppock Heard at (x = 96, y = 13), 5:17:03 PM	
-actions	Adam Coppock and Artie Coppock ConstructInstitution at (x = 62, y = 80), 5:17:03 PM	
-actions	Adam Coppock and Artie Coppock InstitutionHiring at (x = 99, y = 66), 5:17:03 PM	
-actions	Wilhelm Coppock and darla Coppock GenerateInstitution at (x = 88, y = 37), 5:17:03 PM	
-actions	Adam Coppock and darla Coppock GiveBirth at (x = 40, y = 4), 5:17:03 PM	
-actions	Adam Coppock and Adam Coppock GenerateInstitution at (x = 24, y = 12), 5:17:03 PM	
-actions	matilda Coppock and Wilhelm Coppock GiveBirth at (x = 21, y = 31), 5:17:03 PM	
-actions	Eve Coppock and Wilhelm Coppock InstitutionHiring at (x = 76, y = 61), 5:17:03 PM	
-actions	Linus Coppock and Nickie Coppock Heard at (x = 81, y = 64), 5:17:03 PM	
-actions	Linus Coppock and Adam Coppock Heard at (x = 67, y = 57), 5:17:03 PM	
-actions	Nickie Coppock and matilda Coppock GenerateInstitution at (x = 20, y = 36), 5:17:03 PM	
-actions	matilda Coppock and Artie Coppock Heard at (x = 44, y = 10), 5:17:03 PM	
-actions	Artie Coppock and Linus Coppock Talk at (x = 86, y = 24), 5:17:03 PM	
-actions	Artie Coppock and Linus Coppock Heard at (x = 86, y = 24), 5:17:03 PM	
-actions	Linus Coppock and Artie Coppock Heard at (x = 86, y = 24), 5:17:03 PM	
-actions	matilda Coppock and matilda Coppock InstitutionHiring at (x = 53, y = 36), 5:17:03 PM	
-actions	darla Coppock and Artie Coppock Heard at (x = 30, y = 67), 5:17:03 PM	
-actions	Eve Coppock and darla Coppock GenerateInstitution at (x = 99, y = 56), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock Heard at (x = 5, y = 49), 5:17:03 PM	
-actions	matilda Coppock and Artie Coppock InstitutionHiring at (x = 22, y = 83), 5:17:03 PM	
-actions	Artie Coppock and Wilhelm Coppock Talk at (x = 36, y = 99), 5:17:03 PM	
-actions	Artie Coppock and Wilhelm Coppock Heard at (x = 36, y = 99), 5:17:03 PM	
-actions	Wilhelm Coppock and Artie Coppock Heard at (x = 36, y = 99), 5:17:03 PM	
-actions	Nickie Coppock and Eve Coppock ConstructInstitution at (x = 68, y = 19), 5:17:03 PM	
-actions	Nickie Coppock and darla Coppock Talk at (x = 70, y = 63), 5:17:03 PM	
-actions	Nickie Coppock and darla Coppock Heard at (x = 70, y = 63), 5:17:03 PM	
-actions	darla Coppock and Nickie Coppock Heard at (x = 70, y = 63), 5:17:03 PM	
-actions	darla Coppock and Linus Coppock Talk at (x = 97, y = 71), 5:17:03 PM	
-actions	darla Coppock and Linus Coppock Heard at (x = 97, y = 71), 5:17:03 PM	
-actions	Linus Coppock and darla Coppock Heard at (x = 97, y = 71), 5:17:03 PM	
-actions	Eve Coppock and Adam Coppock ConstructInstitution at (x = 78, y = 99), 5:17:03 PM	
-actions	matilda Coppock and matilda Coppock GenerateInstitution at (x = 82, y = 79), 5:17:04 PM	
-actions	darla Coppock and Adam Coppock ConstructInstitution at (x = 43, y = 98), 5:17:04 PM	
-actions	Adam Coppock and Nickie Coppock ConstructInstitution at (x = 19, y = 9), 5:17:04 PM	
-actions	Eve Coppock and Adam Coppock ConstructInstitution at (x = 69, y = 8), 5:17:04 PM	
-actions	matilda Coppock and Artie Coppock GenerateInstitution at (x = 88, y = 74), 5:17:04 PM	
-actions	Adam Coppock and Nickie Coppock Talk at (x = 38, y = 78), 5:17:04 PM	
-actions	Adam Coppock and Nickie Coppock Heard at (x = 38, y = 78), 5:17:04 PM	
-actions	Nickie Coppock and Adam Coppock Heard at (x = 38, y = 78), 5:17:04 PM	
-actions	Nickie Coppock and Wilhelm Coppock InstitutionHiring at (x = 34, y = 62), 5:17:04 PM	
-actions	matilda Coppock and Eve Coppock Talk at (x = 24, y = 30), 5:17:04 PM	
-actions	matilda Coppock and Eve Coppock Heard at (x = 24, y = 30), 5:17:04 PM	
-actions	Eve Coppock and matilda Coppock Heard at (x = 24, y = 30), 5:17:04 PM	
-actions	matilda Coppock and Wilhelm Coppock GenerateInstitution at (x = 29, y = 72), 5:17:04 PM	
-actions	Adam Coppock and darla Coppock Heard at (x = 55, y = 21), 5:17:04 PM	
-actions	darla Coppock and Nickie Coppock Talk at (x = 47, y = 59), 5:17:04 PM	
-actions	darla Coppock and Nickie Coppock Heard at (x = 47, y = 59), 5:17:04 PM	
-actions	Nickie Coppock and darla Coppock Heard at (x = 47, y = 59), 5:17:04 PM	
-actions	darla Coppock and Artie Coppock Talk at (x = 84, y = 8), 5:17:04 PM	
-actions	darla Coppock and Artie Coppock Heard at (x = 84, y = 8), 5:17:04 PM	
-actions	Artie Coppock and darla Coppock Heard at (x = 84, y = 8), 5:17:04 PM	
-actions	Artie Coppock and Artie Coppock InstitutionHiring at (x = 9, y = 6), 5:17:04 PM	
-actions	Wilhelm Coppock and Eve Coppock GenerateInstitution at (x = 24, y = 99), 5:17:04 PM	
-actions	Artie Coppock and Wilhelm Coppock Talk at (x = 47, y = 88), 5:17:04 PM	
-actions	Artie Coppock and Wilhelm Coppock Heard at (x = 47, y = 88), 5:17:04 PM	
-actions	Wilhelm Coppock and Artie Coppock Heard at (x = 47, y = 88), 5:17:04 PM	
-actions	Wilhelm Coppock and Nickie Coppock Heard at (x = 8, y = 65), 5:17:04 PM	
-actions	Wilhelm Coppock and Artie Coppock Heard at (x = 16, y = 50), 5:17:04 PM	
-actions	darla Coppock and Adam Coppock GiveBirth at (x = 84, y = 50), 5:17:04 PM	
-actions	Quentin Coppock and Wilhelm Coppock Heard at (x = 87, y = 50), 5:17:04 PM	
-actions	darla Coppock and Linus Coppock Heard at (x = 4, y = 72), 5:17:04 PM	
-actions	matilda Coppock and matilda Coppock Talk at (x = 48, y = 89), 5:17:04 PM	
-actions	matilda Coppo
+1850-01-01 AM	Actions	Start	
+1850-01-01 AM	actions	Eve Coley and Adam Northrup GiveBirth at (x = 87, y = 71), 4:54:54 PM	
+1850-01-01 AM	actions	aurlie Northrup and Adam Northrup GenerateInstitution at (x = 34, y = 65), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and Eve Coley Talk at (x = 28, y = 16), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and Eve Coley Heard at (x = 28, y = 16), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and Adam Northrup Heard at (x = 28, y = 16), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and aurlie Northrup Heard at (x = 30, y = 95), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and Adam Northrup GenerateInstitution at (x = 22, y = 30), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and Eve Coley GiveBirth at (x = 74, y = 39), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 70, y = 1), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and aurlie Northrup Talk at (x = 99, y = 81), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and aurlie Northrup Heard at (x = 99, y = 81), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Adam Northrup Heard at (x = 99, y = 81), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Adam Northrup GenerateInstitution at (x = 67, y = 99), 4:54:55 PM	
+1850-01-01 AM	actions	fanya Northrup and fanya Northrup Heard at (x = 64, y = 82), 4:54:55 PM	
+1850-01-01 AM	actions	fanya Northrup and Adam Northrup GenerateInstitution at (x = 38, y = 69), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and Eve Coley InstitutionHiring at (x = 81, y = 0), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and fanya Northrup Talk at (x = 83, y = 35), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and fanya Northrup Heard at (x = 83, y = 35), 4:54:55 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup Heard at (x = 83, y = 35), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup InstitutionHiring at (x = 7, y = 14), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 30, y = 71), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and aurlie Northrup InstitutionHiring at (x = 73, y = 80), 4:54:55 PM	
+1850-01-01 AM	actions	Adam Northrup and fanya Northrup Death at (x = 90, y = 88), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley InstitutionHiring at (x = 62, y = 28), 4:54:55 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup Heard at (x = 30, y = 58), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup GenerateInstitution at (x = 53, y = 55), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and fanya Northrup Heard at (x = 5, y = 5), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley InstitutionHiring at (x = 21, y = 38), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley InstitutionHiring at (x = 5, y = 65), 4:54:55 PM	
+1850-01-01 AM	actions	fanya Northrup and Eve Coley Talk at (x = 37, y = 39), 4:54:55 PM	
+1850-01-01 AM	actions	fanya Northrup and Eve Coley Heard at (x = 37, y = 39), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and fanya Northrup Heard at (x = 37, y = 39), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley GenerateInstitution at (x = 74, y = 71), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley Talk at (x = 51, y = 25), 4:54:55 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley Heard at (x = 51, y = 25), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup Heard at (x = 51, y = 25), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Talk at (x = 70, y = 10), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 70, y = 10), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 70, y = 10), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and fanya Northrup InstitutionHiring at (x = 43, y = 87), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and fanya Northrup ConstructInstitution at (x = 9, y = 90), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and fanya Northrup Heard at (x = 74, y = 86), 4:54:55 PM	
+1850-01-01 AM	actions	Eve Coley and fanya Northrup GenerateInstitution at (x = 1, y = 75), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup GenerateInstitution at (x = 66, y = 62), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley GenerateInstitution at (x = 66, y = 84), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and Eve Coley Talk at (x = 52, y = 57), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and Eve Coley Heard at (x = 52, y = 57), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and fanya Northrup Heard at (x = 52, y = 57), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup Talk at (x = 68, y = 75), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup Heard at (x = 68, y = 75), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and fanya Northrup Heard at (x = 68, y = 75), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup Talk at (x = 79, y = 87), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup Heard at (x = 79, y = 87), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and fanya Northrup Heard at (x = 79, y = 87), 4:54:56 PM	
+1850-01-01 AM	actions	fanya Northrup and aurlie Northrup Death at (x = 94, y = 21), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup InstitutionHiring at (x = 41, y = 2), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley ConstructInstitution at (x = 40, y = 94), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 62, y = 7), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Talk at (x = 24, y = 58), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 24, y = 58), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 24, y = 58), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley Talk at (x = 94, y = 31), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley Heard at (x = 94, y = 31), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup Heard at (x = 94, y = 31), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Talk at (x = 98, y = 55), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 98, y = 55), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 98, y = 55), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Talk at (x = 83, y = 49), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 83, y = 49), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 83, y = 49), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup InstitutionHiring at (x = 64, y = 41), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 35, y = 36), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Talk at (x = 70, y = 1), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 70, y = 1), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 70, y = 1), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup GenerateInstitution at (x = 84, y = 38), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley GenerateInstitution at (x = 13, y = 98), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Talk at (x = 7, y = 76), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 7, y = 76), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 7, y = 76), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup Heard at (x = 95, y = 28), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Talk at (x = 21, y = 68), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 21, y = 68), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 21, y = 68), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 74, y = 82), 4:54:56 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley InstitutionHiring at (x = 34, y = 40), 4:54:56 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley GenerateInstitution at (x = 36, y = 38), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup Heard at (x = 63, y = 22), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley InstitutionHiring at (x = 4, y = 86), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley InstitutionHiring at (x = 49, y = 61), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup Heard at (x = 89, y = 63), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup ConstructInstitution at (x = 89, y = 14), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley Heard at (x = 70, y = 63), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley Talk at (x = 8, y = 28), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and Eve Coley Heard at (x = 8, y = 28), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup Heard at (x = 8, y = 28), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Talk at (x = 46, y = 66), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 46, y = 66), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 46, y = 66), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup InstitutionHiring at (x = 21, y = 50), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and Eve Coley Heard at (x = 85, y = 37), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup ConstructInstitution at (x = 37, y = 72), 4:54:57 PM	
+1850-01-01 AM	actions	Eve Coley and aurlie Northrup Death at (x = 97, y = 27), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 43, y = 86), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 88, y = 71), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 22, y = 41), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Talk at (x = 22, y = 87), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 22, y = 87), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 22, y = 87), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 18, y = 6), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup InstitutionHiring at (x = 3, y = 80), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 38, y = 29), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Talk at (x = 64, y = 44), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 64, y = 44), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 64, y = 44), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup InstitutionHiring at (x = 90, y = 1), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 22, y = 86), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 61, y = 1), 4:54:57 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 85, y = 31), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup ConstructInstitution at (x = 28, y = 98), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Talk at (x = 46, y = 38), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 46, y = 38), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 46, y = 38), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup InstitutionHiring at (x = 85, y = 67), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup InstitutionHiring at (x = 57, y = 15), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 98, y = 17), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup ConstructInstitution at (x = 72, y = 58), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 50, y = 44), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Talk at (x = 45, y = 59), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 45, y = 59), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 45, y = 59), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Talk at (x = 68, y = 21), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 68, y = 21), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Heard at (x = 68, y = 21), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup GenerateInstitution at (x = 32, y = 60), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup ConstructInstitution at (x = 49, y = 51), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup InstitutionHiring at (x = 7, y = 61), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup ConstructInstitution at (x = 95, y = 20), 4:54:58 PM	
+1850-01-01 AM	actions	aurlie Northrup and aurlie Northrup Death at (x = 13, y = 72), 4:54:58 PM	

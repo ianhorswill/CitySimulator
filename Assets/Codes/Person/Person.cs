@@ -167,7 +167,7 @@ public class Person
         System.Random rng = new System.Random();
         id = Guid.NewGuid();   
         //Likely location for a baby should be a home, but this is temp.  It should likely be the home location of the parents in the future.
-        currentInstitution = InstitutionManager.GetRandomInstitution();  // Unfinalized method name for random institution
+        currentInstitution = InstitutionManager.RandomInstitutionIfAny();  // Unfinalized method name for random institution
         if(rng.Next(0, 2) == 1)
         {
             biologicalSex = true;
@@ -200,7 +200,7 @@ public class Person
         this.parents = parents;
         this.biologicalSex = biologicalSex;
         this.id = Guid.NewGuid();
-        currentInstitution = InstitutionManager.GetRandomInstitution();  // random institution
+        currentInstitution = InstitutionManager.RandomInstitution();  // random institution
         string[] nameSplit = name.Split(' ');
         
         this.firstName = (name.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();

@@ -16,6 +16,6 @@ public class ActionStatics
 
     public void advance_time()
     {
-        current_time = current_time.Add(Simulator.DayDuration);
+        current_time = current_time.Add(Simulator.TimeIncrement);
     }
 }

@@ -76,7 +76,20 @@ namespace Codes.Institution
             return constructionCompanyList.RandomElement();
         }
 
-        public static Institution GetRandomInstitution()
+        /// <summary>
+        /// Pick a random institution, or return null if there are currently no institutions.
+        /// </summary>
+        public static Institution RandomInstitutionIfAny()
+        {
+            if (institutionList.Count == 0)
+                return null;
+            return RandomInstitution();
+        }
+
+        /// <summary>
+        /// Randomly chooses a currently existing institution
+        /// </summary>
+        public static Institution RandomInstitution()
         {
             return institutionList.RandomElement();
         }

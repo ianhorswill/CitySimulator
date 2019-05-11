@@ -37,7 +37,8 @@ public class ActionSimulator : MonoBehaviour
     
     void Start()
     {
-        Debug.Log("Action Simulation Start");
+        Logger.Log("Actions", "Start");
+        //Debug.Log("Action Simulation Start");
 //        sam = new Person("Sam", null);
 //        jiawei = new Person("Jiawei", null);
 //        sam.age = 22;

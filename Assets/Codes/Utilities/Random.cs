@@ -48,6 +48,8 @@ public static class Random
     /// <param name="list">List to choose from</param>
     public static T RandomElement<T>(this IList<T> list)
     {
-        return list[RandomNumberGenerator.Next(list.Count)];
+        var size = list.Count;
+        System.Diagnostics.Debug.Assert(size>0, "Attempt to choose random element from empty list");
+        return list[RandomNumberGenerator.Next(size)];
     }
 }
