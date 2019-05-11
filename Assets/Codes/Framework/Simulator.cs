@@ -21,7 +21,7 @@ public static class Simulator
     public static DateTime CurrentTime
     {
         get => _currenTime;
-        set
+        private set
         {
             _currenTime = value;
             CurrentTimeString = _currenTime.ToString(DateTimeFormat);
@@ -33,11 +33,11 @@ public static class Simulator
     /// <summary>
     /// Run the simulator for one update cycle
     /// </summary>
-    public static void Tick()
+    public static void Step()
     {
         AdvanceTime();
         foreach (var c in Components)
-            c.Tick();
+            c.Step();
     }
 
     private static void AdvanceTime()
@@ -45,9 +45,9 @@ public static class Simulator
         CurrentTime = CurrentTime.Add(TimeIncrement);
     }
 
-    public static void TickIfTimeRemaining()
+    public static void StepIfTimeRemaining()
     {
         if (CurrentTime < WorldEnd)
-            Tick();
+            Step();
     }
 }

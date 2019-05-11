@@ -9,5 +9,5 @@ using System.Threading.Tasks;
 /// </summary>
 public abstract class SimulatorComponent
 {
-    public abstract void Tick();
+    public abstract void Step();
 }

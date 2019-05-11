@@ -38,7 +38,7 @@ public static class Logger
             logFile.Write('\t');
         }
         logFile.Write('\n');
-        recent[nextRecent++] = FormatLogString(subsystem, arguments);
+        recent[(nextRecent++)%recent.Length] = FormatLogString(subsystem, arguments);
     }
 
     private static StringBuilder logBuffer = new StringBuilder();

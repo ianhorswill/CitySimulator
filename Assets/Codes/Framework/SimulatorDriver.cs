@@ -13,12 +13,12 @@ public class SimulatorDriver : MonoBehaviour
     internal void Update()
     {
         if (IsRunning)
-            Simulator.TickIfTimeRemaining();
+            Simulator.StepIfTimeRemaining();
     }
 
     internal void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(200,100, 500, 2000));
+        GUILayout.BeginArea(new Rect(200,100, 1000, 2000));
         GUILayout.Label("Welcome to the town of <insert name here>", TextStyle);
         GUILayout.Label($"Population: {PersonTown.Singleton.aliveResidents.Count}", TextStyle);
         GUILayout.Label(Simulator.CurrentTimeString, TextStyle);
