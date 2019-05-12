@@ -94,14 +94,28 @@ public static class Simulator
 
             if (CurrentTime >= WorldEnd)
                 IsRunning = false;
-
-            foreach (var c in Components)
-                foreach (var t in c.StopTriggers)
-                    if (t())
+            string trigger = null;
+            SimulatorComponent currentComponent = null;
+            try
+            {
+                foreach (var c in Components)
+                {
+                    currentComponent = c;
+                    foreach (var t in c.StopTriggers)
+                {
+                    trigger = t.Key;
+                    if (t.Value())
                     {
                         IsRunning = false;
                         return;
                     }
+                }}
+            }
+            catch (Exception e)
+            {
+                IsRunning = false;
+                Logger.Log(currentComponent, $"Trigger {trigger} threw exception", e.Message);
+            }
         }
     }
 }

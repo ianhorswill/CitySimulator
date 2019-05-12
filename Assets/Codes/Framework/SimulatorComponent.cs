@@ -15,29 +15,31 @@ public abstract class SimulatorComponent
     /// <summary>
     /// List of functions to call to generate strings to display on the screen
     /// </summary>
-    internal readonly List<Func<string>> WatchPoints = new List<Func<string>>();
+    internal readonly Dictionary<string, Func<string>> WatchPoints = new Dictionary<string, Func<string>>();
 
     /// <summary>
     /// Display the value of function on every frame.
     /// </summary>
+    /// <param name="description">Description of the watch point</param>
     /// <param name="function">Function to call to generate a string to display</param>
-    protected void Watch(Func<string> function)
+    protected void Watch(string description, Func<string> function)
     {
-        WatchPoints.Add(function);
+        WatchPoints[description] = function;
     }
 
     /// <summary>
     /// List of functions to call to test whether to stop the simulation
     /// </summary>
-    internal readonly List<Func<bool>> StopTriggers = new List<Func<bool>>();
+    internal readonly Dictionary<string, Func<bool>> StopTriggers = new Dictionary<string, Func<bool>>();
 
     /// <summary>
     /// Declares that the simulation should pause if/when the function returns true.
     /// </summary>
+    /// <param name="description">Description of the trigger</param>
     /// <param name="trigger"></param>
-    protected void StopWhen(Func<bool> trigger)
+    protected void StopWhen(string description, Func<bool> trigger)
     {
-        StopTriggers.Add(trigger);
+        StopTriggers[description] = trigger;
     }
 
     /// <summary>
