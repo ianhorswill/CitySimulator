@@ -356,7 +356,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9926afc089dc0744781c0aa630a820b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsRunning: 0
   TextStyle:
     m_Name: 
     m_Normal:
@@ -422,7 +421,7 @@ MonoBehaviour:
     m_ContentOffset: {x: 0, y: 0}
     m_FixedWidth: 0
     m_FixedHeight: 0
-    m_StretchWidth: 1
+    m_StretchWidth: 0
     m_StretchHeight: 0
 --- !u!4 &1543635303
 Transform:
