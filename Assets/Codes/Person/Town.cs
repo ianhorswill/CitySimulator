@@ -1,74 +1,17 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-//Is this action related?
-/*  Commenting out this interface because uncertain necessity
-public interface Settlement
+public class PersonTown : SimulatorComponent
 {
-    PersonAgent[] agents  {get; set;}
-    //PersonAgent[] settlers {get; set;} - Make a component isSettler as a tag?
-    //PersonAgent[] departed {get; set;} - Make a component hasDeparted as a tag?
-    //PersonAgent[] deceased {get; set;} - Make a component hasDied as a tag?
-    
-    //Companies[] companies {get; set;} 
-    varLocationStructure Location { get; set; }
-    int foundingYear {get; set;}
-    void death();
-    void birth();
-    void departed();
-}
-*/
-
-public class Town : MonoBehaviour
-{
-    // Start is called before the first frame update
-    public PersonTown currTown;
-
-    void Start()
+    public override void Initialize()
     {
-        currTown = new PersonTown();
+        Watch("Display population", () => $"Population: {aliveResidents.Count}");
+        StopWhen("Population died off", () =>
+            aliveResidents.Count == 0 &&
+            Simulator.CurrentTime > Simulator.WorldStart + new TimeSpan(30, 0, 0, 0));
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        float nextTime = 0.0f;
-        float period = 100000f;
-
-        float stepTime = 0.0f;
-        float stepPeriod = 10000f;
-
-
-        if (UnityEngine.Time.time > nextTime)
-        {
-            nextTime = UnityEngine.Time.time + period;
-
-            var currAlive = currTown.aliveResidents;
-            Debug.LogFormat("Settlers Alive: {0}", currAlive.Count);
-            //Logger.Log("person", ("Settlers Alive: {0}", currAlive.Count);
-            for (int i = 0; i < currAlive.Count; i++)
-            {
-                Debug.Log(currAlive[i]);
-                //Logger.Log("person", currAlive[i]);
-            }
-            // Debug.LogFormat("List of Settlers: {0}", currAlive);
-        }
-        
-        if (UnityEngine.Time.time > stepTime)
-        {
-            currTown.step();
-            stepTime = UnityEngine.Time.time + stepPeriod;
-
-        }
-    }
-}
-
-
-public class PersonTown //: Settlement
-{
     //LINQ version: Just do one array/list, "Person[] people {get; set;}" or "var people = new List<Person>();" and perform queries on them
 
     //OOP version: Series of arrays that hold people pertaining to each property: original settlers, departed townsfolk, current alive residents, and deceased residents.
@@ -122,14 +65,13 @@ public class PersonTown //: Settlement
     }
 
     public void birth(Person baby){
-        Debug.Log("Successful birth occurred! Baby's name: " + baby.name);
+        Log("Successful birth", baby.name);
         //Logger.Log("person", ("Successful birth occurred! Details:"), baby.toString());
         aliveResidents.Add(baby);
     }
 
     //Every timestep this method is called.
-    public void step(){
-        System.Random rng = new System.Random();
+    public override void Step(){
         /* Birth, right now can only occur once per step */
 
         //Select Parent Randomly: LINQ
@@ -168,7 +110,7 @@ public class PersonTown //: Settlement
         }
 
 
-        int birthDice = rng.Next(100);
+        int birthDice = global::Random.Integer(100);
         if(birthDice < PersonTown.birthProbability){
 
             bool found = false;
@@ -179,8 +121,7 @@ public class PersonTown //: Settlement
             Person baby = null;
 
             while(found != true && maxAttempts>0){
-                System.Random r = new System.Random();
-                Person selectedParent = aliveResidents.ElementAt(r.Next(aliveResidents.Count));
+                Person selectedParent = aliveResidents.ElementAt(Random.Integer(aliveResidents.Count));
 
                 // Debug.LogFormat("Selected {0} with sigOther {1}", selectedParent.name, selectedParent.sigOther.name);
 
@@ -193,8 +134,7 @@ public class PersonTown //: Settlement
                 maxAttempts--;                
             }
             if(!found){
-                Debug.Log("Birth Failed, parents not found or exceeded maximum attempts");
-                //Logger.Log("person", "Birth Failed, parents not found or exceeded maximum attempts");
+                Log("Birth Failed, parents not found or exceeded maximum attempts");
             }
             else{
                 birth(baby);
@@ -212,10 +152,10 @@ public class PersonTown //: Settlement
         //OOP Method:
         //Now that have all living Agents, randomly select one to die, at a 10% chance
 
-        int deathDice = rng.Next(100);
+        int deathDice = Random.Integer(100);
         if(deathDice < deathProbability){
             //Someone is dying
-            Person selectedToDie = aliveResidents.ElementAt(rng.Next(0, aliveResidents.Count()));
+            Person selectedToDie = aliveResidents.ElementAt(Random.Integer(0, aliveResidents.Count()));
 
             //Set flag of selectedAgent to non-living or deceased?
             //Is Agent a GameObject?
