@@ -111,8 +111,7 @@ public class Person
     public static Person generateRandomPerson()
     {
         Person p = new Person("",null,null);
-        System.Random rng = new System.Random();
-        p.biologicalSex = (rng.Next(0, 2) == 1);
+        p.biologicalSex = (Random.Integer(0, 2) == 1);
         p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
         p.lastName = NameManager.getSurname(null);
         return p;
@@ -129,10 +128,9 @@ public class Person
         siblings = new List<Person>();
         children = null;
         parents = parentsParam;
-        System.Random rng = new System.Random();
         id = Guid.NewGuid();
         currentInstitution = parents[0].currentInstitution;  // Location right now set to being in the insitution of the first parent
-        if(rng.Next(0, 2) == 1)
+        if(Random.Integer(0, 2) == 1)
         {
             biologicalSex = true;
         }
@@ -164,11 +162,10 @@ public class Person
         siblings = new List<Person>();
         children = null;
         parents = new Person[2];
-        System.Random rng = new System.Random();
         id = Guid.NewGuid();   
         //Likely location for a baby should be a home, but this is temp.  It should likely be the home location of the parents in the future.
         currentInstitution = InstitutionManager.RandomInstitutionIfAny();  // Unfinalized method name for random institution
-        if(rng.Next(0, 2) == 1)
+        if(Random.Integer(0, 2) == 1)
         {
             biologicalSex = true;
         }
@@ -234,8 +231,7 @@ public class Person
             // Debug.LogFormat("Other Result: {0}, {1}, {2}", p1.isMale(), p2.isFemale(), p1.isMale() && p2.isFemale());
             if((p1.isFemale() && p2.isMale()) || (p1.isMale() && p2.isFemale()))
             {
-                System.Random rng = new System.Random();
-                double birthChance = rng.NextDouble();
+                float birthChance = Random.Float(0,1);
                 // Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
            
                 if(birthChance <= conceptionRate)

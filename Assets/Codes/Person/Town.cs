@@ -110,7 +110,7 @@ public class PersonTown : SimulatorComponent
         }
 
 
-        int birthDice = global::Random.Integer(100);
+        int birthDice = Random.Integer(100);
         if(birthDice < PersonTown.birthProbability){
 
             bool found = false;
