@@ -10,11 +10,9 @@ public class Street : Object
     static int CONNECTED_STREETS_MAX = 10; // arbitrary max of 10
     public Street[] connected_streets = new Street[CONNECTED_STREETS_MAX];
 
-
     public Street(int street_dir, string name)
     {
         direction = street_dir;
         streetName = name;
     }
-
 }

@@ -11,6 +11,7 @@ public class SimulatorDriver : MonoBehaviour
     {
         if (Simulator.IsRunning)
             Simulator.StepIfTimeRemaining();
+        Simulator.Visualize();
     }
 
     internal void OnGUI()

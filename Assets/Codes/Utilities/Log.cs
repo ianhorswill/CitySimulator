@@ -76,7 +76,10 @@ public static class Logger
     /// </summary>
     public static string Recent(int time)
     {
-        return RecentLogMessages[((nextRecent - 1) - time) % RecentLogMessages.Length] ?? "";
+        // Have to add in length here because C#'s modulus operator is non-standard and
+        // returns a value with the same sign as the first argument.
+        var index = (RecentLogMessages.Length + (nextRecent - 1) - time) % RecentLogMessages.Length;
+        return RecentLogMessages[index] ?? "";
     }
 
 

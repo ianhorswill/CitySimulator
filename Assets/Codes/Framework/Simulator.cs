@@ -9,6 +9,12 @@ public static class Simulator
     static Simulator()
     {
         CurrentTime = WorldStart;
+        AddComponent(new Space());
+    }
+
+    private static void AddComponent(SimulatorComponent simulatorComponent)
+    {
+        Components.Add(simulatorComponent);
     }
 
     /// <summary>
@@ -20,6 +26,26 @@ public static class Simulator
     /// List of components to tick for the simulation
     /// </summary>
     public static readonly List<SimulatorComponent> Components = new List<SimulatorComponent>();
+
+    #region Time
+    
+    /// <summary>
+    /// Current date and time within the simulator
+    /// </summary>
+    public static DateTime CurrentTime
+    {
+        get => _currenTime;
+        private set
+        {
+            _currenTime = value;
+            CurrentTimeString = _currenTime.ToString(DateTimeFormat);
+        }
+    }
+
+    /// <summary>
+    /// String representation of the current time and date within the simulation
+    /// </summary>
+    public static string CurrentTimeString { get; private set; }
 
     /// <summary>
     /// Time at which the simulation should start
@@ -38,25 +64,15 @@ public static class Simulator
 
     private static DateTime _currenTime;
 
-    /// <summary>
-    /// Current date and time within the simulator
-    /// </summary>
-    public static DateTime CurrentTime
-    {
-        get => _currenTime;
-        private set
-        {
-            _currenTime = value;
-            CurrentTimeString = _currenTime.ToString(DateTimeFormat);
-        }
-    }
-
-    /// <summary>
-    /// String representation of the current time and date within the simulation
-    /// </summary>
-    public static string CurrentTimeString { get; private set; }
     public static string DateTimeFormat = "yyyy-MM-dd tt";
 
+    private static void AdvanceTime()
+    {
+        CurrentTime = CurrentTime.Add(TimeIncrement);
+    }
+    #endregion
+
+    #region Stepping
     /// <summary>
     /// Run the simulator for one update cycle
     /// </summary>
@@ -79,11 +95,6 @@ public static class Simulator
             Logger.FlushLog();   // Preserve log in case of crash
             throw;
         }
-    }
-
-    private static void AdvanceTime()
-    {
-        CurrentTime = CurrentTime.Add(TimeIncrement);
     }
 
     public static void StepIfTimeRemaining()
@@ -118,5 +129,15 @@ public static class Simulator
                 Logger.Log(currentComponent, $"Trigger {trigger} threw exception", e.Message);
             }
         }
+    }
+    #endregion
+
+    /// <summary>
+    /// Call visualizers for all components
+    /// </summary>
+    public static void Visualize()
+    {
+        foreach (var c in Components)
+            c.Visualize();
     }
 }

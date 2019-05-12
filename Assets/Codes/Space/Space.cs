@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Space : UnityEngine.Object
+public class Space : SimulatorComponent
 {
-    static public int MAX_PLOTS = 100;
-    static public int MAX_STREETS = 1000;
+    public static int MAX_PLOTS = 100;
+    public static int MAX_STREETS = 1000;
     public Plot[,] plots_list;
     public Street[,] streets_list;
     //float streetStretch = 1.505f;
     public int grid_len = 3;
 
     // Start is called before the first frame update
-    public void init()
+    public override void Initialize()
     {
         plots_list = new Plot[grid_len, grid_len];
         streets_list = new Street[grid_len+1,2];
@@ -121,7 +121,7 @@ public class Space : UnityEngine.Object
         
     }
 
-    public void draw_map()
+    public override void Visualize()
     {
         float scale = 2f;
 

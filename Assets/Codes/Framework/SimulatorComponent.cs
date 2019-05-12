@@ -7,9 +7,19 @@ using System.Collections.Generic;
 public abstract class SimulatorComponent
 {
     /// <summary>
+    /// Called at simulator startup
+    /// </summary>
+    public virtual void Initialize() { }
+
+    /// <summary>
     /// Called once per time-step of the simulation
     /// </summary>
-    public abstract void Step();
+    public virtual void Step() { }
+
+    /// <summary>
+    /// Called from SimulationDriver to visualize output of component
+    /// </summary>
+    public virtual void Visualize() {}
 
     #region Debugging support
     /// <summary>
