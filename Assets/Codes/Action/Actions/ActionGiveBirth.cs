@@ -1,12 +1,13 @@
 // Actual Classes
 
+using System;
 using UnityEngine;
 
 public class ActionGiveBirth : ActionType
 {
     public override string actionName => "GiveBirth";
 
-    public override bool prerequisites(object agent, object patient, Location location, Time time)
+    public override bool prerequisites(object agent, object patient, Location location, DateTime time)
     {
         // TODO: check the prereqs of this specific action 
         return Random.Integer(100) < ActionStatics.BIRTH_PROBABILITY &&
@@ -15,15 +16,15 @@ public class ActionGiveBirth : ActionType
                 (((Person) agent).isMale() && ((Person) patient).isFemale()));
     }
 
-    public override void modifications(object agent, object patient, Location location, Time time)
+    public override void modifications(object agent, object patient, Location location, DateTime time)
     {
         // TODO: modify the world
         Person[] otherPersons = {(Person) patient};
         Person baby = Person.createChild((Person) agent, otherPersons);
-        ActionStatics.aliveResidents.Add(baby);
+        PersonTown.Singleton.aliveResidents.Add(baby);
     }
 
-    public override void triggers(object agent, object patient, Location location, Time time)
+    public override void triggers(object agent, object patient, Location location, DateTime time)
     {
         // TODO: call all the actions that will be triggered by this action
     }

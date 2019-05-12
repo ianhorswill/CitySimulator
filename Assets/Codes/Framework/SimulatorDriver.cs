@@ -21,7 +21,7 @@ public class SimulatorDriver : MonoBehaviour
         GUILayout.Label($"Population: {PersonTown.Singleton.aliveResidents.Count}", TextStyle);
         GUILayout.Label(Simulator.CurrentTimeString, TextStyle);
 
-        if (GUILayout.Button(Simulator.IsRunning ? "Stop" : "Start", GUILayout.Width(100)))
+        if (GUILayout.Button(Simulator.IsRunning ? "Pause" : "Start", GUILayout.Width(100)))
             Simulator.IsRunning = !Simulator.IsRunning;
 
         foreach (var c in Simulator.Components)

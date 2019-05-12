@@ -11,6 +11,7 @@ public static class Simulator
         CurrentTime = WorldStart;
         AddComponent(new Space());
         AddComponent(new PersonTown());
+        AddComponent(new ActionSimulator());
     }
 
     private static void AddComponent(SimulatorComponent simulatorComponent)

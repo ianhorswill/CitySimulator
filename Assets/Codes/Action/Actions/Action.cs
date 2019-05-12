@@ -7,7 +7,7 @@ public class Action
     object agent;
     object patient;
     Location location;
-    Time time;
+    DateTime time;
     // Each of these should be a role, provided in some list or dict that gets filled in...
     // role desc:
     //  - name
@@ -15,7 +15,7 @@ public class Action
     //  - attr (e.g. must like the person who -stored in other role- ...) | prolog-like (enum, flags..)
     //  - lambda (filter) <-- delegate types... vs func<int, string> | data driven
 
-    public Action(string actionName, object agent, object patient, Location location, Time time)
+    public Action(string actionName, object agent, object patient, Location location, DateTime time)
     {
         this.actionName = actionName;
         this.agent = agent;
@@ -27,7 +27,7 @@ public class Action
     // USED FOR DEBUG.LOG - need an alternative...
     public override string ToString()
     {
-        String res = ((Person) agent).name + " and " + ((Person) patient).name + " " + actionName + " at " + location.ToString() + ", " + time.timestamp;
+        String res = ((Person) agent).name + " and " + ((Person) patient).name + " " + actionName + " at " + location.ToString() + ", " + time;
         return res;
     }
 }

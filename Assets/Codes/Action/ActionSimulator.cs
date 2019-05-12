@@ -30,43 +30,39 @@ public class Time
     }
 }
 
-public class ActionSimulator : MonoBehaviour
+public class ActionSimulator : SimulatorComponent
 {
     private Person sam;
     private Person jiawei;
     
-    void Start()
+    public override void Initialize()
     {
-        Logger.Log("Actions", "Start");
+        //Log("Start");
         //Debug.Log("Action Simulation Start");
 //        sam = new Person("Sam", null);
 //        jiawei = new Person("Jiawei", null);
 //        sam.age = 22;
 //        jiawei.age = 22;
-        var initialSettlerTest = new List<Person>();
-        Person p1 = new Person("Adam", null, 20, null, null, null, true);
-        Person p2 = new Person("Eve", null, 20, p1, null, null, false);
-        p1.sigOther = p2;
-        initialSettlerTest.Add(p1);
-        initialSettlerTest.Add(p2);
-        ActionStatics.settlers = initialSettlerTest;
-        ActionStatics.aliveResidents = initialSettlerTest;
     }
 
     Person RandomlyChoosePeople()
     {
-        return ActionStatics.aliveResidents.RandomElement();
+        return PersonTown.Singleton.aliveResidents.RandomElement();
     }
 
-    void Update()
+    public override void Step()
     {
+        if (PersonTown.Singleton.aliveResidents.Count == 0)
+            // Town is dead
+            return;
+
         // TODO: randomly select an action
         ActionType randAction = ActionLibrary.RandomlyChoose();
         
         // TODO: execute the action
-        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(), new Location(Random.Integer(100), Random.Integer(100)),
-            new Time(DateTime.Now.ToString("h:mm:ss tt")));
-        
+        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(),
+            new Location(Random.Integer(100), Random.Integer(100)),
+            Simulator.CurrentTime);
     }
 
 }

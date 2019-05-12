@@ -1,6 +1,7 @@
 // Actual Classes
 
 
+using System;
 using Codes.Action.Actions;
 using Codes.Institution;
 
@@ -10,19 +11,19 @@ public class ActionGenerateInstitution : ActionType
 
     public override string actionName => "GenerateInstitution";
 
-    public override bool prerequisites(object agent, object patient, Location location, Time time)
+    public override bool prerequisites(object agent, object patient, Location location, DateTime time)
     {
         // TODO: check the prereqs of this specific action 
         return true;
     }
     
-    public override void modifications(object agent, object patient, Location location, Time time)
+    public override void modifications(object agent, object patient, Location location, DateTime time)
     {
         // TODO: modify the world
         Institution = InstitutionManager.GeneratorInstitution(agent as Person, new Plot(location.x, location.y, new Space()));
     }
     
-    public override void triggers(object agent, object patient, Location location, Time time)
+    public override void triggers(object agent, object patient, Location location, DateTime time)
     {
         // TODO: call all the actions that will be triggered by this action
         
