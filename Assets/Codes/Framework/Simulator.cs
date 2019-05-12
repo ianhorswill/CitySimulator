@@ -106,6 +106,7 @@ public static class Simulator
                     trigger = t.Key;
                     if (t.Value())
                     {
+                        Logger.Log(c, "Stopped by trigger", trigger);
                         IsRunning = false;
                         return;
                     }
