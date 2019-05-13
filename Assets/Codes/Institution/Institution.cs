@@ -50,15 +50,6 @@ namespace Codes.Institution
             employeeList.Add(person);
             Logger.Log(SUB_SYSTEM,  ToString(), "hires", person.ToString());
         }
-        
-        // possible deprecation 
-        // use Action class instead
-        public void ConstructCompanySite(Plot location)
-        {
-            // randomly choose a construct company to construct a company site
-//            ConstructionCompany cons = InstitutionManager.GetRandomConstructionCompany();
-//            cons.Build(this, location);
-        }
 
         public string getType()
         {

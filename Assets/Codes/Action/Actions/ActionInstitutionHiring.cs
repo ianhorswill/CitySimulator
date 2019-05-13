@@ -14,7 +14,7 @@ namespace Codes.Action.Actions
         public override void modifications(object agent, object patient, Location location, DateTime time)
         {
             // TODO: modify the world
-//            (agent as Institution.Institution)?.Hiring(patient as Person);
+            (agent as Institution.Institution)?.Hiring(patient as Person);
             
         }
     

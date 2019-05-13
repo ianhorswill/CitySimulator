@@ -28,10 +28,10 @@ public class ActionGenerateInstitution : ActionType
         // TODO: call all the actions that will be triggered by this action
         
         // hiring process and construction will be triggered by the generation of institution
-        ActionInstitutionHiring actionInstitutionHiring = (ActionInstitutionHiring) ActionLibrary.GetActionByName("InstitutionHiring");
-        ConstructionCompany constructionCompany = InstitutionManager.GetRandomConstructionCompany();
         ActionConstructInstitution actionConstructInstitution = (ActionConstructInstitution)
             ActionLibrary.GetActionByName("ConstructInstitution");
+        ActionInstitutionHiring actionInstitutionHiring = (ActionInstitutionHiring) ActionLibrary.GetActionByName("InstitutionHiring");
+        ConstructionCompany constructionCompany = InstitutionManager.GetRandomConstructionCompany();
         
         // build the institution
         actionConstructInstitution.exec(constructionCompany, Institution, location, time);
