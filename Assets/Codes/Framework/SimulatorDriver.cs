@@ -39,7 +39,7 @@ public class SimulatorDriver : MonoBehaviour
 
         if (GUILayout.Button(Simulator.IsRunning ? "Pause" : "Start", GUILayout.Width(100)))
             Simulator.IsRunning = !Simulator.IsRunning;
-        if (GUILayout.Button(Simulator.IsRunning ? "Disable threads" : "Enable threads", GUILayout.Width(100)))
+        if (GUILayout.Button(isThreaded ? "Turnbo Off" : "Turbo On", GUILayout.Width(100)))
         {
             isThreaded = !isThreaded;
             if (!isThreaded)
