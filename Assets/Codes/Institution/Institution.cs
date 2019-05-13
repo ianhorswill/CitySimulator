@@ -47,6 +47,8 @@ namespace Codes.Institution
         {
             // TODO : hiring process
             employeeList.Add(person);
+            float pay = 100; //Need to alter this based on the job / wage / position.  100 right now is arbitary.
+            person.workStatus.getNewJob(this, pay);  //Tells the person that they are now employed with wage "pay".
             Debug.Log("\n----------HIRE----------\n["+type+ "] hires new employee ["+person+"]\n------------------------\n");
         }
         

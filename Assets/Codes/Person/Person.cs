@@ -49,7 +49,7 @@ public class Person
 
     // We will have things here eventually.
     // private var currentLocation;
-    // private var relationships;
+
     class Relationship
     {
         public int Charge;
@@ -105,6 +105,85 @@ public class Person
         return !biologicalSex;
     }
     
+
+    public Occupation workStatus;
+    public float money {get; set;}
+
+    /// <summary>
+    /// The Occupation of the person which corresponds to their job within the town.
+    /// </summary>
+    class Occupation
+    {
+        public Institution workplace; //Presently only supports a single job at a time.
+        public List<Institution> former_workplaces;
+        public float wage;
+        public bool looking_for_job;
+        public bool working;
+        public bool retired;
+
+        //Constructor to be used for children / new people who are not yet looking to enter the workforce
+        public Occupation(bool lookingForJob){
+            workplace = null;
+            money = 0;
+            looking_for_job = lookingForJob;
+            working = false;
+            retired = false;
+        }
+
+        //Default constructor to be used for adults in the workforce
+        public Occupation(Institution[] wp, Institution[] fwp, bool lfj, bool w, bool r, float m){
+            workplace = wp;
+            former_workplaces = fwp;
+            looking_for_job = lfj;
+            working = w;
+            retired = r;
+            money = m;
+        }
+
+        //On obtaining a new job, updates the Occupation fields accordingly.  Presently only supports a single job at a time.
+        public void getNewJob(Institution newWorkplace, float newWage){
+            working = true;
+            if(workplace != null)
+                former_workplaces.Add(workplace);
+            workplace = newWorkplace;
+            wage = newWage;
+        }
+
+        //Removal of present workplace due to being fired or laid off or quitting.  Input determines whether the person is looking for a job now.
+        public void loseJob(bool lookingForJob){
+            working = false;
+            former_workplaces.Add(workplace);
+            workplace = null;
+            wage = 0;
+            looking_for_job = lookingForJob;
+        }
+
+        public void retire(){
+            working = false;
+            former_workplaces.Add(workplace);
+            workplace = null;
+            wage = 0;
+            looking_for_job = false;
+            retired = true;
+        }
+    }
+
+    private Education personalEducation;
+    class Education{
+        public bool student {get; set;}
+        public bool high_school_graduate {get; set;}
+        public bool college_graduate {get; set;}
+
+        public Education(bool s, bool hsg, bool cg){
+            student = s;
+            high_school_graduate = hsg;
+            college_graduate = cg;
+        }
+    }
+
+
+    /// -----------------------------------------------------------------------------------------------------------------------------///
+    /// -----------------------------------------------------------------------------------------------------------------------------///
     /// <summary>
     /// Interface function to generate a person with randomly properties
     /// </summary>
