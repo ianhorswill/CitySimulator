@@ -12,7 +12,7 @@ namespace Codes.Institution
         public Plot location;
         private List<Person> employeeList;
         private string type;
-        string SUB_SYSTEM = "Institution";
+        public const string SUB_SYSTEM = "Institution";
 
         public Institution(Person owner, Plot location,string type, bool needBuild = true)
         {
@@ -35,6 +35,7 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
+            Logger.Log(SUB_SYSTEM, ToString());
         }
 
         public IEnumerable<WaitForSeconds> StartHiringProcess()
@@ -47,7 +48,7 @@ namespace Codes.Institution
         {
             // TODO : hiring process
             employeeList.Add(person);
-            Debug.Log("\n----------HIRE----------\n["+type+ "] hires new employee ["+person+"]\n------------------------\n");
+            Logger.Log(SUB_SYSTEM,  ToString(), "hires", person.ToString());
         }
         
         // possible deprecation 
@@ -83,9 +84,7 @@ namespace Codes.Institution
         public void Build(Institution institution, Plot loc)
         {
             // TODO: build institution on certain plot
-//            Debug.Log("Building institution site...");
-//            Thread.Sleep(3000);
-//            Debug.Log("Construct building at location["+loc.x_pos +"," + loc.y_pos+"]");
+            Logger.Log(SUB_SYSTEM,  ToString(), "build", institution.ToString(), loc.ToString());
         }
     }
 
@@ -101,6 +100,7 @@ namespace Codes.Institution
         public void EnrollStudent(Person student)
         {
             studentList.Add(student);
+            Logger.Log(SUB_SYSTEM, ToString(), "enroll student", student.ToString());
         }
     }
 
@@ -119,6 +119,7 @@ namespace Codes.Institution
         {
             // TODO: baby delivery
             Person newBaby = new Person("baby", new List<Person>());
+            Logger.Log(SUB_SYSTEM, ToString(), "give birth to", newBaby.ToString());
             return newBaby;
         }
     }
@@ -158,25 +159,4 @@ namespace Codes.Institution
             return true;
         }
     }
-    
-
-
-//    public class MainClass
-//    {
-//        public static void Main(string[] args)
-//        {
-//            Institution ins = InstitutionManager.GeneratorInstitution(new Person("brenda", new List<Person>()),
-//                new Plot(2, 3));
-////            string[] names = {"John", "Alice", "Nick", "Mike", "Sam"};
-////            string[] locs = {"1, 2", "2, 8", "4, 6", "5, 9", "9, 5"};
-////
-////            for (int i = 0; i < 5; i++)
-////            {
-////                Institution ins = InstitutionManager.GeneratorInstitution(names[i], locs[i]);
-////            }
-//
-//            Thread.Sleep(1000000);
-//        }
-//    }
-    
 }
