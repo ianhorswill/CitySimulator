@@ -49,7 +49,7 @@ public class Person
 
     // We will have things here eventually.
     // private var currentLocation;
-    // private var relationships;
+
     class Relationship
     {
         public int Charge;
@@ -105,6 +105,123 @@ public class Person
         return !biologicalSex;
     }
     
+
+    public Personality individualPersonality;
+    public class Personality
+    {
+        public List<Tuple<string, int>> facets;
+        private List<string> facet_names = new List<string>() { "LOVE_PROPENSITY", "HATE_PROPENSITY", "ENVY_PROPENSITY", "CHEER_PROPENSITY", "DEPRESSION_PROPENSITY", "ANGER_PROPENSITY",
+                                                                "ANXIETY_PROPENSITY", "LUST_PROPENSITY", "STRESS_VULNERABILITY", "GREED", "IMMODERATION", "VIOLENT", "PERSEVERANCE",
+                                                                "WASTEFULNESS", "DISCORD", "FRIENDLINESS", "POLITENESS", "DISDAIN_ADVICE", "BRAVERY", "CONFIDENCE", "VANITY", "AMBITION",
+                                                                "GRATITUDE", "IMMODESTY", "HUMOR", "VENGEFUL", "PRIDE", "CRUELTY", "SINGLEMINDED", "HOPEFUL", "CURIOUS", "BASHFUL", "PRIVACY",
+                                                                "PERFECTIONIST", "CLOSEMINDED", "TOLERANT", "EMOTIONALLY_OBSESSIVE", "SWAYED_BY_EMOTIONS", "ALTRUISM", "DUTIFULNESS",
+                                                                "THOUGHTLESSNESS", "ORDERLINESS", "TRUST", "GREGARIOIUSNESS", "ASSERTIVENESS", "ACTIVITY_LEVEL", "EXCITEMENT_SEEKING",
+                                                                "IMAGINATION", "ABSTRACT_INCLINED", "ART_INCLINED"};
+
+        public Personality()
+        {
+            facets = new List<Tuple<string, int>>();
+
+            foreach(var facet_type in facet_names)
+            {
+                // Get 10 random values from 0 to 10, and add them
+                // This allows us to simulate a normal distribution from 0 to 100
+                var facet_value = 0;
+
+                for (int i = 0; i < 10; i++)
+                {
+                    facet_value += Random.Integer(0, 11);
+                }
+
+
+                facets.Add(Tuple.Create<string, int>(facet_type, facet_value));
+            }
+
+        }
+    }
+
+
+    public Occupation workStatus;
+
+
+    /// <summary>
+    /// The Occupation of the person which corresponds to their job within the town.
+    /// </summary>
+    public class Occupation
+    {
+        public Institution workplace; //Presently only supports a single job at a time.
+        public List<Institution> former_workplaces;
+        public float wage;
+        public bool looking_for_job;
+        public bool working;
+        public bool retired;
+        public float money { get; set; }
+
+        //Constructor to be used for children / new people who are not yet looking to enter the workforce
+        public Occupation(bool lookingForJob){
+            workplace = null;
+            money = 0;
+            looking_for_job = lookingForJob;
+            working = false;
+            retired = false;
+        }
+
+        //Default constructor to be used for adults in the workforce
+        public Occupation(Institution wp, Institution[] fwp, bool lfj, bool w, bool r, float m){
+            workplace = wp;
+            former_workplaces = fwp.ToList();
+            looking_for_job = lfj;
+            working = w;
+            retired = r;
+            money = m;
+        }
+
+        public void updateJobSearchStatus(bool looking){
+            looking_for_job = looking;
+        }
+
+        //On obtaining a new job, updates the Occupation fields accordingly.  Presently only supports a single job at a time.
+        public void getNewJob(Institution newWorkplace, float newWage){
+            working = true;
+            if(workplace != null)
+                former_workplaces.Add(workplace);
+            workplace = newWorkplace;
+            wage = newWage;
+        }
+
+        //Removal of present workplace due to being fired or laid off or quitting. 
+        public void loseJob(){
+            working = false;
+            former_workplaces.Add(workplace);
+            workplace = null;
+            wage = 0;
+        }
+
+        public void retire(){
+            working = false;
+            former_workplaces.Add(workplace);
+            workplace = null;
+            wage = 0;
+            looking_for_job = false;
+            retired = true;
+        }
+    }
+
+    private Education personalEducation;
+    class Education{
+        public bool student {get; set;}
+        public bool high_school_graduate {get; set;}
+        public bool college_graduate {get; set;}
+        public Education(bool s, bool hsg, bool cg){
+            student = s;
+            high_school_graduate = hsg;
+            college_graduate = cg;
+        }
+    }
+
+
+    /// -----------------------------------------------------------------------------------------------------------------------------///
+    /// -----------------------------------------------------------------------------------------------------------------------------///
     /// <summary>
     /// Interface function to generate a person with randomly properties
     /// </summary>
@@ -128,6 +245,7 @@ public class Person
         siblings = new List<Person>();
         children = null;
         parents = parentsParam;
+        individualPersonality = new Personality();
         id = Guid.NewGuid();
         currentInstitution = parents[0].currentInstitution;  // Location right now set to being in the insitution of the first parent
         if(Random.Integer(0, 2) == 1)
@@ -162,7 +280,9 @@ public class Person
         siblings = new List<Person>();
         children = null;
         parents = new Person[2];
-        id = Guid.NewGuid();   
+        id = Guid.NewGuid();
+        individualPersonality = new Personality();
+
         //Likely location for a baby should be a home, but this is temp.  It should likely be the home location of the parents in the future.
         currentInstitution = InstitutionManager.RandomInstitutionIfAny();  // Unfinalized method name for random institution
         if(Random.Integer(0, 2) == 1)
@@ -196,6 +316,7 @@ public class Person
         this.children = children;
         this.parents = parents;
         this.biologicalSex = biologicalSex;
+        this.individualPersonality = new Personality();
         this.id = Guid.NewGuid();
         currentInstitution = InstitutionManager.RandomInstitution();  // random institution
         string[] nameSplit = name.Split(' ');
