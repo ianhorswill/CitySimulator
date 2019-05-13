@@ -140,6 +140,10 @@ public class Person
             money = m;
         }
 
+        public void updateJobSearchStatus(bool looking){
+            looking_for_job = looking;
+        }
+
         //On obtaining a new job, updates the Occupation fields accordingly.  Presently only supports a single job at a time.
         public void getNewJob(Institution newWorkplace, float newWage){
             working = true;
@@ -149,13 +153,12 @@ public class Person
             wage = newWage;
         }
 
-        //Removal of present workplace due to being fired or laid off or quitting.  Input determines whether the person is looking for a job now.
-        public void loseJob(bool lookingForJob){
+        //Removal of present workplace due to being fired or laid off or quitting. 
+        public void loseJob(){
             working = false;
             former_workplaces.Add(workplace);
             workplace = null;
             wage = 0;
-            looking_for_job = lookingForJob;
         }
 
         public void retire(){
@@ -173,7 +176,6 @@ public class Person
         public bool student {get; set;}
         public bool high_school_graduate {get; set;}
         public bool college_graduate {get; set;}
-
         public Education(bool s, bool hsg, bool cg){
             student = s;
             high_school_graduate = hsg;
