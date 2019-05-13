@@ -24,10 +24,10 @@ public class ActionLibrary : MonoBehaviour
         {
             return null;
         }
+        // TODO: Change this over to the seed based random number generator
         Random rand = new Random();
         List<ActionType> values = Enumerable.ToList(actionDict.Values);
-        int size = actionDict.Count;
-        int randNum = rand.Next(size);
+        int randNum = rand.Next(actionDict.Count);
         return values[randNum];
     }
     
