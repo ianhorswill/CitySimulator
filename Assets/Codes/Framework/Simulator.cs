@@ -132,6 +132,15 @@ public static class Simulator
             }
         }
     }
+
+    /// <summary>
+    /// Keep stepping until simulation pauses
+    /// </summary>
+    public static void StepUntilPaused()
+    {
+        while (IsRunning)
+            StepIfTimeRemaining();
+    }
     #endregion
 
     /// <summary>

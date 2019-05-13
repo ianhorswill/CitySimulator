@@ -1,17 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Threading;
 using UnityEngine;
 
 public class SimulatorDriver : MonoBehaviour
 {
     public GUIStyle TextStyle;
+    private bool isThreaded;
+    private Thread simulatorThread;
 
     internal void Update()
     {
         if (Simulator.IsRunning)
-            Simulator.StepIfTimeRemaining();
+        {
+            if (isThreaded)
+                KickSimulatorThread();
+            else
+                Simulator.StepIfTimeRemaining();
+        }
         Simulator.Visualize();
+    }
+
+    void KickSimulatorThread()
+    {
+        if (simulatorThread == null || !simulatorThread.IsAlive)
+        {
+            simulatorThread = new Thread(Simulator.StepUntilPaused);
+            simulatorThread.Start();
+        }
     }
 
     internal void OnGUI()
@@ -23,6 +39,12 @@ public class SimulatorDriver : MonoBehaviour
 
         if (GUILayout.Button(Simulator.IsRunning ? "Pause" : "Start", GUILayout.Width(100)))
             Simulator.IsRunning = !Simulator.IsRunning;
+        if (GUILayout.Button(Simulator.IsRunning ? "Disable threads" : "Enable threads", GUILayout.Width(100)))
+        {
+            isThreaded = !isThreaded;
+            if (!isThreaded)
+                Simulator.IsRunning = false;
+        }
 
         foreach (var c in Simulator.Components)
             foreach (var w in c.WatchPoints)
