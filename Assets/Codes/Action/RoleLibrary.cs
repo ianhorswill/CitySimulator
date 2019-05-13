@@ -4,7 +4,7 @@ using Codes.Action.Actions;
 
 public class RoleLibrary
 {
-    private static Dictionary<string, RoleType<object>> roleDict = new Dictionary<string, RoleType<object>>();
+    private static Dictionary<string, RoleTypeBase> roleDict = new Dictionary<string, RoleTypeBase>();
 
     private void Start()
     {
@@ -13,19 +13,19 @@ public class RoleLibrary
 
     public static ActionType RandomlyChoose()
     {
-        if (actionDict.Count == 0)
+        if (roleDict.Count == 0)
         {
             return null;
         }
+        // TODO: Change this over to the seed based random number generator
         Random rand = new Random();
-        List<ActionType> values = Enumerable.ToList(actionDict.Values);
-        int size = actionDict.Count;
-        int randNum = rand.Next(size);
+        List<RoleTypeBase> values = Enumerable.ToList(roleDict.Values);
+        int randNum = rand.Next(roleDict.Count);
         return values[randNum];
     }
     
     public static ActionType GetActionByName(string actionName)
     {
-        return actionDict[actionName];
+        return roleDict[actionName];
     }
 }

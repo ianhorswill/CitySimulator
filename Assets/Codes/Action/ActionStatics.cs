@@ -13,6 +13,6 @@ public class ActionStatics
     public static List<Person> deceased = new List<Person>();
     
     public static System.Random randomNumberGenerator = new System.Random();
-    
-    
+
+    public static Time t = new Time("May 5 1850");
 }
