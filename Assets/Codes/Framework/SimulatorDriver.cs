@@ -9,6 +9,11 @@ public class SimulatorDriver : MonoBehaviour
     private bool isThreaded;
     private Thread simulatorThread;
 
+    internal void Start()
+    {
+        Simulator.Initialize();
+    }
+
     internal void Update()
     {
         if (Simulator.IsRunning)
@@ -33,10 +38,7 @@ public class SimulatorDriver : MonoBehaviour
     internal void OnGUI()
     {
         GUILayout.BeginArea(new Rect(200,100, 1000, 2000));
-        GUILayout.Label("Welcome to the town of <insert name here>", TextStyle);
-        GUILayout.Label($"Population: {PersonTown.Singleton.aliveResidents.Count}", TextStyle);
-        GUILayout.Label(Simulator.CurrentTimeString, TextStyle);
-
+        GUILayout.BeginHorizontal();
         if (GUILayout.Button(Simulator.IsRunning ? "Pause" : "Start", GUILayout.Width(100)))
             Simulator.IsRunning = !Simulator.IsRunning;
         if (GUILayout.Button(isThreaded ? "Turnbo Off" : "Turbo On", GUILayout.Width(100)))
@@ -45,10 +47,13 @@ public class SimulatorDriver : MonoBehaviour
             if (!isThreaded)
                 Simulator.IsRunning = false;
         }
+        GUILayout.EndHorizontal();
+        GUILayout.Label("Welcome to the town of <insert name here>", TextStyle);
+        GUILayout.Label(Simulator.CurrentTimeString, TextStyle);
 
         foreach (var c in Simulator.Components)
             foreach (var w in c.WatchPoints)
-                GUILayout.Label(RunWatchpoint(w));
+                GUILayout.Label(RunWatchpoint(w),TextStyle);
 
         for (var i = 0; i < 40; i++)
             GUILayout.Label(Logger.Recent(i),TextStyle);

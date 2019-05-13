@@ -8,6 +8,7 @@ public class PersonTown : SimulatorComponent
     public override void Initialize()
     {
         Watch("Display population", () => $"Population: {aliveResidents.Count}");
+        Watch("Display deceased", () => $"Deceased: {deceased.Count}");
         StopWhen("Population died off", () =>
             aliveResidents.Count == 0 &&
             Simulator.CurrentTime > Simulator.WorldStart + new TimeSpan(30, 0, 0, 0));
@@ -15,10 +16,10 @@ public class PersonTown : SimulatorComponent
     //LINQ version: Just do one array/list, "Person[] people {get; set;}" or "var people = new List<Person>();" and perform queries on them
 
     //OOP version: Series of arrays that hold people pertaining to each property: original settlers, departed townsfolk, current alive residents, and deceased residents.
-    [SerializeField] public List<Person> settlers = new List<Person>();
-    public List<Person> departed = new List<Person>();
-    [SerializeField] public List<Person> aliveResidents = new List<Person>();
-    public List<Person> deceased = new List<Person>();
+    public readonly List<Person> settlers = new List<Person>();
+    public readonly List<Person> departed = new List<Person>();
+    public readonly List<Person> aliveResidents = new List<Person>();
+    public readonly  List<Person> deceased = new List<Person>();
 
     private static int deathProbability = 5;
     private static int birthProbability = 100;

@@ -19,6 +19,12 @@ public static class Simulator
         Components.Add(simulatorComponent);
     }
 
+    public static void Initialize()
+    {
+        foreach (var c in Components)
+            c.Initialize();
+    }
+
     /// <summary>
     /// True if simulator is not paused.
     /// </summary>
