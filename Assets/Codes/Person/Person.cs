@@ -428,8 +428,15 @@ public class Person
         }
         return names;
     }
+
+    //For the time being, making ToString only return the name to make it less verbose
     public override string ToString()
     {
+        return string.Format("Person Name: {0}", name);
+    }
+
+    //Original ToString 
+    public string ToStringMore(){
         string parentNames = "";
         if ((parents == null) || (parents.Length == 0))
             parentNames = "None";
