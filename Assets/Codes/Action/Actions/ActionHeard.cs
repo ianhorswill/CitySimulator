@@ -6,9 +6,9 @@ public class ActionHeard : ActionType
 {
     public int priority = 3;
 
-    public override string actionName => "Heard";
+    public override string ActionName => "Heard";
 
-    public override double chance => 1.0;
+    public override double Chance => 1.0;
 
     public List<RoleType<object>> roleList;
 

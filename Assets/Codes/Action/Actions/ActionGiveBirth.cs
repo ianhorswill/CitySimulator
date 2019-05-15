@@ -6,9 +6,9 @@ public class ActionGiveBirth : ActionType
 {
     public int priority = 3;
 
-    public override string actionName => "GiveBirth";
+    public override string ActionName => "GiveBirth";
 
-    public override double chance => 1.0;
+    public override double Chance => 1.0;
 
     public override bool prerequisites(object agent, object patient, Location location, Time time)
     {

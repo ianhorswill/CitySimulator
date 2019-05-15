@@ -6,7 +6,7 @@ using Random = System.Random;
 
 public class ActionLibrary : MonoBehaviour
 {
-    private static Dictionary<string, ActionType> actionDict = new Dictionary<string, ActionType>();
+    private static readonly Dictionary<string, ActionType> actionDict = new Dictionary<string, ActionType>();
 
     private void Start()
     {
@@ -24,11 +24,10 @@ public class ActionLibrary : MonoBehaviour
         {
             return null;
         }
-        // TODO: Change this over to the seed based random number generator
-        Random rand = new Random();
+        // TODO: replace with framework random
+        Random rnd = new Random();
         List<ActionType> values = Enumerable.ToList(actionDict.Values);
-        int randNum = rand.Next(actionDict.Count);
-        return values[randNum];
+        return values[rnd.Next(actionDict.Count)];
     }
     
     public static ActionType GetActionByName(string actionName)

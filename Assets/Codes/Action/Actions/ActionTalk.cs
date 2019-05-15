@@ -5,9 +5,9 @@ public class ActionTalk : ActionType
     
     public int priority = 3;
 
-    public override string actionName => "Talk";
+    public override string ActionName => "Talk";
 
-    public override double chance => 1.0;
+    public override double Chance => 1.0;
 
     public override bool prerequisites(object agent, object patient, Location location, Time time)
     {

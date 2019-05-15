@@ -1,91 +1,98 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public abstract class ActionType
 {
-    public abstract string actionName { get;}
-    public abstract int priority { get; }
-    public abstract double chance { get; }
-    public abstract List<RoleTypeBase> role_list { get; }
+    public abstract string ActionName { get;}
+    public abstract int Priority { get; }
+    public abstract double Chance { get; }
+    public abstract List<RoleTypeBase> Role_list { get; }
 
-    public abstract void modifications(Action a);
-    public abstract void triggers(Action a);
+    public abstract void Modifications(Action a);
+    public abstract void Triggers(Action a);
 
-    public Action attemptAction()
+    private RoleTypeBase GetRoleTypeByAttribute(AttributeTypes Attributes)
     {
-        // TODO: Change this over to the seed based random number generator
-        Random rand = new Random();
+        IEnumerable<RoleTypeBase> temp = from r in this.Role_list
+                                         where r.Attributes == Attributes
+                                         select r;
+        List<RoleTypeBase> tempList = temp.ToList();
+        // We only allow ONE role of each AttributeType per list (other than None type)
+        if (tempList.Count > 0) { return tempList[0]; }
+        else { return null; }
+    }
 
-        List<Role> filled_roles = new List<Role>();
-        
-        // Check for init role...
-        var init = from i in role_list
-                   where i.tag == "init"
-                   select i;
-        var init = init.ToList();
-        if (!init.Any())
+    private List<Role> RoleFiller(List<Role> filled_roles)
+    {
+        // Look for a build object...
+        RoleTypeBase build = GetRoleTypeByAttribute(AttributeTypes.Build);
+        if (build != null)
         {
-            foreach (var role in role_list)
+            // Create dummy...
+            // TODO: 'smart' object creation based on underlying type?
+            Role buildRole = new Role(build.Name, new object());
+            filled_roles.Add(buildRole);
+        }
+        foreach (var role in Role_list)
+        {
+            if (role.Attributes == AttributeTypes.None)
             {
-                // TODO: fill each role in list
+                Role temp = role.GetRole();
+                if (temp != null) { filled_roles.Add(temp); }
+                else { return null; }
             }
         }
-        // If there is an init role...
-        else
+        return filled_roles;
+    }
+
+    public Action AttemptAction()
+    {
+        List<Role> filled_roles = new List<Role>();
+        // Start with the initiator...
+        RoleTypeBase initiator = GetRoleTypeByAttribute(AttributeTypes.Initiator);
+        if (initiator != null)
         {
-            var i = from i in init[0].list
-                    where init[0].attribute(i)
-                    select i;
-            var i = i.ToList();
-            if (!i.Any())
-            {
-                return null; // nothing could fill it
-            }
+            // Fill in the init if we have one...
+            Role initiatorRole = initiator.GetRole();
+            if (initiatorRole == null) { return null; }
             else
             {
-                Role init_filled = new Role(init[0].name, i[rand.Next(i.Length)]);
-                filled_roles.Add(init_filled);
-
-                // Check for recipient role...
-                var recipient = from r in role_list
-                                where r.tag == "init"
-                                select r;
-                var recipient = recipient.ToList();
-                if (!recipient.Any())
+                filled_roles.Add(initiatorRole);
+                // Check for a recipient
+                RoleTypeBase recipient = GetRoleTypeByAttribute(AttributeTypes.Recipient);
+                if (recipient != null)
                 {
-                    // TODO: fill remaining roles in list
-                }
-                // If there is a recipient...
-                else
-                {
-                    var r = from r in recipient[0].list
-                            where recipient[0].attribute(r, i)
-                            select r;
-                    var r = r.ToList();
-                    if (!r.Any())
-                    {
-                        return null; // nothing could fill it
-                    }
+                    // Fill in the recipient...
+                    Role recipientRole = recipient.GetRole(initiatorRole.binding);
+                    if (recipientRole == null) { return null; }
                     else
                     {
-                        Role recipient_filled = new Role(recipient[0].name, r[rand.Next(r.Length)]);
-                        filled_roles.Add(recipient_filled);
-                        // TODO: fill remaining roles in list
+                        filled_roles.Add(recipientRole);
+                        // In any case, check the remaining roles...
+                        filled_roles = RoleFiller(filled_roles);
                     }
                 }
+                else { filled_roles = RoleFiller(filled_roles); }
             }
         }
-        Action a = new Action(this.actionName, ActionStatics.t, filled_roles);
-        return a;
+        else { filled_roles = RoleFiller(filled_roles); }
+        // Final check of if all roles were filled...
+        if (filled_roles != null)
+        {
+            return new Action(this.ActionName, ActionStatics.t, filled_roles);
+        }
+        else { return null; }
     }
     
-    public void execute(Action a)
+    public void Execute(Action a)
     {
-        modifications(a);
-        triggers(a);
+        Modifications(a);
+        Triggers(a);
     }
 
-    public void attemptExecute()
+    public void AttemptExecute()
     {
-        execute(attemptAction());
+        Execute(AttemptAction());
     }
 }

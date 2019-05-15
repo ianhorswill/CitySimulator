@@ -1,7 +1,9 @@
 public class Role
 {
-    string name;
-    object binding;
+    public string name;
+    public object binding;
+    // public AttributeTypes Attributes;
+    // public List<T> Collection { get; }
 
     public Role(string name, object binding)
     {

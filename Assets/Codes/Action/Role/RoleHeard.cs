@@ -3,13 +3,12 @@ using System.Linq;
 
 public class RoleHeard : RoleType<Person>
 {
-    public override string name => "RoleHeard";
-    public override string tag => "";
-    public override List<Person> list => ActionStatics.aliveResidents;
+    public override string Name => "RoleHeard";
+    public override AttributeTypes Attributes => AttributeTypes.None;
+    public override List<Person> Collection => ActionStatics.aliveResidents;
 
-    public override bool attribute(Person self, params object[] args)
+    public override bool Filter(Person self, object opt_initializer = null)
     {
-        // TODO: filter by location
         return true;
     }
 }
