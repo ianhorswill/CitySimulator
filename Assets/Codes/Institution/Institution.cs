@@ -7,11 +7,11 @@ namespace Codes.Institution
 {
     public class Institution
     {
-        private Person owner;
+        public Person owner;
 
         public Plot location;
         private List<Person> employeeList;
-        private string type;
+        public string type;
         public const string SUB_SYSTEM = "Institution";
 
         public Institution(Person owner, Plot location,string type, bool needBuild = true)
@@ -25,7 +25,7 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-            Logger.Log(SUB_SYSTEM, ToString());
+            Logger.Log(SUB_SYSTEM, type, owner.name, "("+location.x_pos+","+location.y_pos+")");
         }
         public Institution(Person owner, Plot location,string type)
         {
@@ -35,7 +35,7 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-            Logger.Log(SUB_SYSTEM, ToString());
+            Logger.Log(SUB_SYSTEM, type, owner.name, "("+location.x_pos+","+location.y_pos+")");
         }
 
         public IEnumerable<WaitForSeconds> StartHiringProcess()
@@ -50,7 +50,7 @@ namespace Codes.Institution
             employeeList.Add(person);
             float pay = 100; //Need to alter this based on the job / wage / position.  100 right now is arbitary.
             person.workStatus.getNewJob(this, pay);  //Tells the person that they are now employed with wage "pay".
-            Logger.Log(SUB_SYSTEM,  ToString(), "hires", person.ToString());
+            Logger.Log(SUB_SYSTEM,  type, "hires", person.name);
         }
 
         public string getType()
@@ -60,7 +60,7 @@ namespace Codes.Institution
 
         public override string ToString()
         {
-            return "Institution: " + type + "\nOwner: " + owner.name + "\nLocation: (" + location.x_pos +"," + location.y_pos+ ")\n";
+            return type +  " Owner: " + owner.name + "， Location: （" + location.x_pos +"," + location.y_pos+ ")";
         }
     }
 
@@ -77,7 +77,7 @@ namespace Codes.Institution
         public void Build(Institution institution, Plot loc)
         {
             // TODO: build institution on certain plot
-            Logger.Log(SUB_SYSTEM,  ToString(), "build", institution.ToString(), loc.ToString());
+            Logger.Log(SUB_SYSTEM,  type, "build", institution.owner +":"+ institution.type, "("+location.x_pos+","+location.y_pos+")");
         }
     }
 
@@ -93,7 +93,7 @@ namespace Codes.Institution
         public void EnrollStudent(Person student)
         {
             studentList.Add(student);
-            Logger.Log(SUB_SYSTEM, ToString(), "enroll student", student.ToString());
+            Logger.Log(SUB_SYSTEM, type, "enroll student", student.name);
         }
     }
 
@@ -112,7 +112,7 @@ namespace Codes.Institution
         {
             // TODO: baby delivery
             Person newBaby = new Person("baby", new List<Person>());
-            Logger.Log(SUB_SYSTEM, ToString(), "give birth to", newBaby.ToString());
+            Logger.Log(SUB_SYSTEM, type, "give birth to", newBaby.name);
             return newBaby;
         }
     }
