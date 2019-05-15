@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Codes.Institution;
 using UnityEngine;
 
 //  Pseudo Classes
@@ -58,11 +59,26 @@ public class ActionSimulator : SimulatorComponent
 
         // TODO: randomly select an action
         ActionType randAction = ActionLibrary.RandomlyChoose();
-        
-        // TODO: execute the action
-        randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(),
-            new Location(Random.Integer(100), Random.Integer(100)),
-            Simulator.CurrentTime);
+
+        switch (randAction.actionName)
+        {
+            case "GenerateInstitution":
+                randAction.exec(RandomlyChoosePeople(), InstitutionManager.GetRandomType(),
+                    new Location(Random.Integer(100), Random.Integer(100)),
+                    Simulator.CurrentTime);
+                break;
+            // ignore these two action types in the simulator
+            case "InstitutionHiring":
+                break;
+            case "ConstructInstitution":
+                break;
+            default:
+                // TODO: execute the action
+                randAction.exec(RandomlyChoosePeople(), RandomlyChoosePeople(),
+                    new Location(Random.Integer(100), Random.Integer(100)),
+                    Simulator.CurrentTime);
+                break;
+        }
     }
 
 }

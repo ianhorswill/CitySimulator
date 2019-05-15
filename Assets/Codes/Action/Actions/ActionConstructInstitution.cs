@@ -20,7 +20,7 @@ namespace Codes.Action.Actions
 
         public override void triggers(object agent, object patient, Location location, DateTime time)
         {
-            throw new System.NotImplementedException();
+            // TODO: construction triggers
         }
     }
 }

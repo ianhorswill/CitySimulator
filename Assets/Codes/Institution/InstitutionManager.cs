@@ -36,9 +36,9 @@ namespace Codes.Institution
         
         
         // generate a new institution
-        public static Institution GeneratorInstitution(Person owner, Plot location)
+        public static Institution GeneratorInstitution(Person owner,String type, Plot location)
         {
-            string type = GetRandomType();
+//            string type = GetRandomType();
             Institution newInstitution;
             switch (type)
             {
@@ -67,6 +67,7 @@ namespace Codes.Institution
                 constructionCompanyList.Add(newInstitution as ConstructionCompany);
             }
             institutionList.Add(newInstitution);
+            Logger.Log("Institution", type, owner.name, "("+location.x_pos+","+location.y_pos+")");
             
             return newInstitution;
         }

@@ -25,7 +25,6 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-            Logger.Log(SUB_SYSTEM, type, owner.name, "("+location.x_pos+","+location.y_pos+")");
         }
         public Institution(Person owner, Plot location,string type)
         {
@@ -35,7 +34,6 @@ namespace Codes.Institution
             this.location = location;
             this.type = type;
             employeeList = new List<Person>();
-            Logger.Log(SUB_SYSTEM, type, owner.name, "("+location.x_pos+","+location.y_pos+")");
         }
 
         public IEnumerable<WaitForSeconds> StartHiringProcess()
@@ -77,6 +75,9 @@ namespace Codes.Institution
         public void Build(Institution institution, Plot loc)
         {
             // TODO: build institution on certain plot
+            Color[] colors = new[] {Color.red, Color.blue, Color.gray, Color.white, Color.yellow, Color.magenta};
+            Color color = colors.RandomElement();
+            loc.set_color(color);
             Logger.Log(SUB_SYSTEM,  type, "build", institution.owner +":"+ institution.type, "("+location.x_pos+","+location.y_pos+")");
         }
     }

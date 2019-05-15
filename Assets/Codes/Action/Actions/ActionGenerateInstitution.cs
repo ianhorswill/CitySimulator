@@ -20,7 +20,9 @@ public class ActionGenerateInstitution : ActionType
     public override void modifications(object agent, object patient, Location location, DateTime time)
     {
         // TODO: modify the world
-        Institution = InstitutionManager.GeneratorInstitution(agent as Person, new Plot(location.x, location.y, new Space()));
+        Institution = InstitutionManager.GeneratorInstitution(agent as Person,
+            patient as string,
+            new Plot(location.x, location.y, new Space()));
     }
     
     public override void triggers(object agent, object patient, Location location, DateTime time)

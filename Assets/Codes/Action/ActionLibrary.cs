@@ -10,10 +10,10 @@ public static class ActionLibrary
     {
         actionDict.Add("Talk", new ActionTalk());
         actionDict.Add("Heard", new ActionHeard());
-        //actionDict.Add("GenerateInstitution", new ActionGenerateInstitution());
+        actionDict.Add("GenerateInstitution", new ActionGenerateInstitution());
         actionDict.Add("GiveBirth", new ActionGiveBirth());
-        //actionDict.Add("InstitutionHiring", new ActionInstitutionHiring());
-        //actionDict.Add("ConstructInstitution", new ActionConstructInstitution());
+        actionDict.Add("InstitutionHiring", new ActionInstitutionHiring());
+        actionDict.Add("ConstructInstitution", new ActionConstructInstitution());
         actionDict.Add("Death", new ActionDeath());
     }
 
