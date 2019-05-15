@@ -21,11 +21,9 @@ public class PersonTown : SimulatorComponent
     public readonly List<Person> aliveResidents = new List<Person>();
     public readonly  List<Person> deceased = new List<Person>();
 
-    private static int deathProbability = 5;
-    private static int birthProbability = 100;
+    private static int deathProbability = 2;
+    private static int birthProbability = 15;
 
-    //For David: Going to add another constructor to People that allows the creation of adults
-    //     public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
 
     /// <summary>
     /// So SimulationDriver can find this.
@@ -66,13 +64,17 @@ public class PersonTown : SimulatorComponent
     }
 
     public void birth(Person baby){
-        Log("Successful birth", baby.name);
-        //Logger.Log("person", ("Successful birth occurred! Details:"), baby.toString());
-        aliveResidents.Add(baby);
+        if(baby != null)
+        {
+            Log("Successful birth", baby.name);
+            //Logger.Log("person", ("Successful birth occurred! Details:"), baby.toString());
+            aliveResidents.Add(baby);
+        }
+
     }
 
     //Every timestep this method is called.
-    public override void Step(){
+    public override void Step() {
         /* Birth, right now can only occur once per step */
 
         //Select Parent Randomly: LINQ
@@ -84,32 +86,34 @@ public class PersonTown : SimulatorComponent
         //OOP Method:
 
         var noSigOtherFem = from women in aliveResidents
-                            where (women.isFemale() && women.sigOther == null)
+                            where (women != null && women.isFemale() && women.sigOther == null)
                             select women;
 
         var noSigOtherMale = from men in aliveResidents
-                             where (men.isMale() && men.sigOther == null)
+                             where (men != null && men.isMale() && men.sigOther == null)
                              select men;
 
-        foreach(Person pm in noSigOtherMale)
+        if (noSigOtherMale != null && noSigOtherFem != null)
         {
-            foreach(Person pf in noSigOtherFem)
+            foreach (Person pm in noSigOtherMale)
             {
-                if(pm.sigOther != null)
+                foreach (Person pf in noSigOtherFem)
                 {
-                    continue;
-                }
-                else
-                {
-                    if(pf.sigOther == null)
+                    if (pm.sigOther != null)
                     {
-                        pm.sigOther = pf;
-                        pf.sigOther = pm;
+                        continue;
+                    }
+                    else
+                    {
+                        if (pf.sigOther == null)
+                        {
+                            pm.sigOther = pf;
+                            pf.sigOther = pm;
+                        }
                     }
                 }
             }
-        }
-
+        }   
 
         int birthDice = Random.Integer(100);
         if(birthDice < PersonTown.birthProbability){
@@ -121,14 +125,34 @@ public class PersonTown : SimulatorComponent
             int maxAttempts = 5;
             Person baby = null;
 
+            // May want to consider changing how we decide to choose a "selected parent"
+            // Currently, part of the reason birth rates are so low is due to the fact that this will also randomly
+            // attempt to choose children.
+            // Going to see how changing this selection to only be of "ofAgeIndividuals" effects this.
             while(found != true && maxAttempts>0){
-                Person selectedParent = aliveResidents.ElementAt(Random.Integer(aliveResidents.Count));
+                var ofAgeIndividuals = from people in aliveResidents
+                                       where (people.age >= 18)
+                                       select people;
+
+                //Person selectedParent = aliveResidents.ElementAt(Random.Integer(aliveResidents.Count));
+                Person selectedParent = null;
+                var possibleIndex = Random.Integer(ofAgeIndividuals.Count());
+
+                if(ofAgeIndividuals.Count() != 0)
+                {
+                    selectedParent = ofAgeIndividuals.ElementAt(possibleIndex);
+                }
 
                 // Debug.LogFormat("Selected {0} with sigOther {1}", selectedParent.name, selectedParent.sigOther.name);
 
-                Person newborn = Person.createChild(selectedParent, selectedParent.sigOther);
+                Person newborn = null;
 
-                if(newborn != null){
+                if (selectedParent != null && selectedParent.sigOther != null)
+                {
+                   newborn = Person.createChild(selectedParent, selectedParent.sigOther);
+                }
+
+                if (newborn != null){
                     found = true;
                     baby = newborn;
                 }

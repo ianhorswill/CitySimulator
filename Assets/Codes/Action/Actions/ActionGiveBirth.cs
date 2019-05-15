@@ -21,7 +21,10 @@ public class ActionGiveBirth : ActionType
         // TODO: modify the world
         Person[] otherPersons = {(Person) patient};
         Person baby = Person.createChild((Person) agent, otherPersons);
-        PersonTown.Singleton.aliveResidents.Add(baby);
+        if(baby != null)
+        {
+            PersonTown.Singleton.aliveResidents.Add(baby);
+        }
     }
 
     public override void triggers(object agent, object patient, Location location, DateTime time)
