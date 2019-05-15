@@ -13,11 +13,11 @@ public class Plot : System.Object
     private Space space;
     public Color color = Color.green;
 
-    public Plot(int x, int y, Space the_space)
+    public Plot(int x, int y)
     {
         x_pos = x;
         y_pos = y;
-        space = the_space;
+        space = Space.Singleton;
     }
 
     public List<int> get_coords()

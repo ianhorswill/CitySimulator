@@ -19,10 +19,10 @@ namespace Codes.Institution
             institutionList = new List<Institution>();
             constructionCompanyList =  new List<ConstructionCompany>();
             institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/institutionTypes.txt");
-            
+
             // hard-codly assign one initial construction company
             ConstructionCompany cons = new ConstructionCompany(new Person("government", new List<Person>()),
-                new Plot(0, 0, new Space()), "ConstructionCompany", false);
+                new Plot(0, 0), "ConstructionCompany", false);
             constructionCompanyList.Add(cons);
             institutionList.Add(cons);
         }

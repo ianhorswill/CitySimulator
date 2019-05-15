@@ -11,6 +11,12 @@ public class Space : SimulatorComponent
     public Street[,] streets_list;
     //float streetStretch = 1.505f;
     public int grid_len = 10;
+    public static Space Singleton;
+
+    public Space()
+    {
+        Singleton = this; 
+    }
 
     // Start is called before the first frame update
     public override void Initialize()
@@ -69,7 +75,7 @@ public class Space : SimulatorComponent
 
     Plot make_plot(int x, int y)
     {
-        Plot newPlot = new Plot(x, y, this);
+        Plot newPlot = new Plot(x, y);
 
         return newPlot;
     }
