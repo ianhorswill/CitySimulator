@@ -261,7 +261,10 @@ public class Person
         parents = parentsParam;
         individualPersonality = new Personality();
         id = Guid.NewGuid();
-        currentInstitution = parents[0].currentInstitution;  // Location right now set to being in the insitution of the first parent
+        if (parents != null && parents[0] != null)
+            currentInstitution =
+                parents[0].currentInstitution; // Location right now set to being in the insitution of the first parent
+        else currentInstitution = InstitutionManager.RandomInstitutionIfAny();
         if(Random.Integer(0, 2) == 1)
         {
             biologicalSex = true;

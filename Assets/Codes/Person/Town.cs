@@ -84,7 +84,7 @@ public class PersonTown : SimulatorComponent
                             select Agent;
         */
         //OOP Method:
-
+        StopWhen("No one is alive", ()=> aliveResidents.Count == 0);
         var noSigOtherFem = from women in aliveResidents
                             where (women != null && women.isFemale() && women.sigOther == null)
                             select women;
