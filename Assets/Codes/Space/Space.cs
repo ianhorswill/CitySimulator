@@ -10,7 +10,7 @@ public class Space : SimulatorComponent
     public Plot[,] plots_list;
     public Street[,] streets_list;
     //float streetStretch = 1.505f;
-    public int grid_len = 3;
+    public int grid_len = 10;
 
     // Start is called before the first frame update
     public override void Initialize()
@@ -37,6 +37,7 @@ public class Space : SimulatorComponent
 
         setup_plot_neighbors();
         setup_street_connections();
+        plots_list[0, 0].set_color(Color.blue);
     }
 
     public Plot get_random_plot()
@@ -114,7 +115,7 @@ public class Space : SimulatorComponent
                 int other_dir = (dir == 0) ? 1 : 0;
                 for (int j = 0; j < grid_len + 1; j++)
                 {
-                    curr_street.connected_streets[j] = streets_list[j,other_dir];
+                    curr_street.connected_streets.Add(streets_list[j,other_dir]);
                 }
             }
         }
@@ -130,7 +131,7 @@ public class Space : SimulatorComponent
         {
             for (int y = 0; y < grid_len; y++)
             {
-                Draw.Rect(new Rect(scale * x, scale * y, scale, scale), Color.green, -1);
+                Draw.Rect(new Rect(scale * x, scale * y, scale, scale), plots_list[x, y].color, -1);
             }
         }
 
