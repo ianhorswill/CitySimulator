@@ -12,6 +12,10 @@ public class Space : SimulatorComponent
     //float streetStretch = 1.505f;
     public int grid_len = 10;
     public static Space Singleton;
+    Dictionary<Vector2, Plot> empty_plots =
+            new Dictionary<Vector2, Plot>();
+    Dictionary<Vector2, Plot> occupied_plots =
+            new Dictionary<Vector2, Plot>();
 
     public Space()
     {
@@ -126,6 +130,12 @@ public class Space : SimulatorComponent
             }
         }
         
+    }
+
+    public void mark_occupied(Vector2 coords, Plot p)
+    {
+        occupied_plots.Add(coords, p);
+        p.occupied = true; 
     }
 
     public override void Visualize()

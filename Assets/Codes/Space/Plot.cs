@@ -15,18 +15,16 @@ public class Plot : System.Object
 
     public Plot(int x, int y)
     {
+        occupied = false; 
         x_pos = x;
         y_pos = y;
         space = Space.Singleton;
     }
 
-    public List<int> get_coords()
+    public Vector2 get_coords()
     {
-        return new List<int>
-        {
-            x_pos,
-            y_pos
-        };
+        Vector2 coord = new Vector2(x_pos, y_pos);
+        return coord; 
     }
 
     int distance_between_plots(Plot plot_1, Plot plot_2)
