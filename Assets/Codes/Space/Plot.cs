@@ -1,15 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System;
+using UnityEngine;
 using Codes.Institution;
 
-public class Plot : Object
+public class Plot : System.Object
 {
     public int x_pos, y_pos; // x, y coords
     public Plot[] neighbor_plots = new Plot[4]; // stored N,E,S,W
     public bool occupied;
     public List<Institution> institutions = new List<Institution>();
     private Space space;
+    public Color color = Color.green;
 
     public Plot(int x, int y, Space the_space)
     {
@@ -59,5 +61,10 @@ public class Plot : Object
                                   space.streets_list[x_pos + 1, 0],
                                   space.streets_list[y_pos, 1],
                                   space.streets_list[y_pos + 1, 1]};
+    }
+
+    public void set_color(Color plot_color)
+    {
+        color = plot_color;
     }
 }
