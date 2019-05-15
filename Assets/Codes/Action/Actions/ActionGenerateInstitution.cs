@@ -20,9 +20,11 @@ public class ActionGenerateInstitution : ActionType
     public override void modifications(object agent, object patient, Location location, DateTime time)
     {
         // TODO: modify the world
+        Space space = new Space();
+        space.Initialize();
         Institution = InstitutionManager.GeneratorInstitution(agent as Person,
             patient as string,
-            new Plot(location.x, location.y, new Space()));
+            space.get_random_plot());
     }
     
     public override void triggers(object agent, object patient, Location location, DateTime time)
@@ -33,11 +35,13 @@ public class ActionGenerateInstitution : ActionType
         ActionConstructInstitution actionConstructInstitution = (ActionConstructInstitution)
             ActionLibrary.GetActionByName("ConstructInstitution");
         ActionInstitutionHiring actionInstitutionHiring = (ActionInstitutionHiring) ActionLibrary.GetActionByName("InstitutionHiring");
+        
+        // get a construction company from Institution Manager
         ConstructionCompany constructionCompany = InstitutionManager.GetRandomConstructionCompany();
         
         // build the institution
         actionConstructInstitution.exec(constructionCompany, Institution, location, time);
         // start hiring process
-        actionInstitutionHiring.exec(agent, patient, location, time);
+        actionInstitutionHiring.exec(Institution, Person.generateRandomPerson(), location, time);
     }
 }

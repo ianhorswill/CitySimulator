@@ -15,7 +15,8 @@ namespace Codes.Action.Actions
         // Patient is the institution to be constructed
         public override void modifications(object agent, object patient, Location location, DateTime time)
         {
-            (agent as ConstructionCompany).Build(patient as Institution.Institution, new Plot(location.x, location.y, new Space()));
+            (agent as ConstructionCompany).Build(patient as Institution.Institution,
+                (patient as Institution.Institution).location);
         }
 
         public override void triggers(object agent, object patient, Location location, DateTime time)

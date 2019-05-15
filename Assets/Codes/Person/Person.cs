@@ -5,7 +5,20 @@ using Codes.Institution;
 
 public class Person
 {
-    public int age {get; set;}
+    public DateTime DateOfBirth;
+
+    public int age
+    {
+        get
+        {
+            var today = Simulator.CurrentTime;
+            var age = today.Year - DateOfBirth.Year;
+            if (DateOfBirth.Date > today.AddYears(-age)) age--;
+            return age;
+        }
+        set { }
+    }
+
     /// <summary>
     /// The name of the person in the format of "firstname lastname"
     /// </summary>
@@ -141,7 +154,7 @@ public class Person
     }
 
 
-    public Occupation workStatus;
+    public Occupation workStatus = new Occupation(false);
 
 
     /// <summary>
@@ -229,6 +242,7 @@ public class Person
     {
         Person p = new Person("",null,null);
         p.biologicalSex = (Random.Integer(0, 2) == 1);
+        p.DateOfBirth = Simulator.CurrentTime;
         p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
         p.lastName = NameManager.getSurname(null);
         return p;
@@ -240,14 +254,17 @@ public class Person
     /// </summary>
     public Person(string nameAtBirth, List<Person> currSiblings, Person[] parentsParam)
     {
-        age = 0;
+        DateOfBirth = Simulator.CurrentTime;
         sigOther = null;
         siblings = new List<Person>();
         children = null;
         parents = parentsParam;
         individualPersonality = new Personality();
         id = Guid.NewGuid();
-        currentInstitution = parents[0].currentInstitution;  // Location right now set to being in the insitution of the first parent
+        if (parents != null && parents[0] != null)
+            currentInstitution =
+                parents[0].currentInstitution; // Location right now set to being in the insitution of the first parent
+        else currentInstitution = InstitutionManager.RandomInstitutionIfAny();
         if(Random.Integer(0, 2) == 1)
         {
             biologicalSex = true;
@@ -275,6 +292,7 @@ public class Person
     /// </summary>
     public Person(string nameAtBirth, List<Person> currSiblings)
     {
+        DateOfBirth = Simulator.CurrentTime;
         age = 0;
         sigOther = null;
         siblings = new List<Person>();
@@ -310,6 +328,7 @@ public class Person
     /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
     /// </summary>
     public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
+        DateOfBirth = Simulator.CurrentTime.AddYears(-age);
         this.age = age;
         this.sigOther = sigOther;
         this.siblings = currSiblings;
@@ -339,7 +358,7 @@ public class Person
         }
 
 
-        int minAge = 0; // Change this to like 18 when we actually have age incrementing properly
+        int minAge = 18; // Change this to like 18 when we actually have age incrementing properly
         if(p1 == null || p2 == null)
         {
             return null;
