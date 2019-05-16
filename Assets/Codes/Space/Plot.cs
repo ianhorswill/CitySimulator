@@ -65,4 +65,16 @@ public class Plot : System.Object
     {
         color = plot_color;
     }
+
+    public Vector2 world_midpoint_coords()
+    {
+        float x_coord = (x_pos + 0.5f) * Space.Singleton.draw_scale;
+        float y_coord = (y_pos + 0.5f) * Space.Singleton.draw_scale;
+        return new Vector2(x_coord, y_coord);
+    }
+
+    public override string ToString()
+    {
+        return base.ToString() + "(" + x_pos + ", " + y_pos + ")";
+    }
 }
