@@ -21,8 +21,8 @@ public class PersonTown : SimulatorComponent
     public readonly List<Person> aliveResidents = new List<Person>();
     public readonly  List<Person> deceased = new List<Person>();
 
-    private static int deathProbability = 2;
-    private static int birthProbability = 15;
+    private static int deathProbability = 1;
+    private static int birthProbability = 8;
 
 
     /// <summary>
@@ -46,6 +46,14 @@ public class PersonTown : SimulatorComponent
         p1.sigOther = p2;
         initialSettlerTest.Add(p1);
         initialSettlerTest.Add(p2);
+
+        int randPeopleCount = 10;
+        for(int i = 0; i < randPeopleCount; i++)
+        {
+            Person newRandPerson = Person.generateRandomPerson();
+            initialSettlerTest.Add(newRandPerson);
+        }
+
         settlers = initialSettlerTest;
         aliveResidents = initialSettlerTest;
         Singleton = this;
@@ -69,6 +77,9 @@ public class PersonTown : SimulatorComponent
             Log("Successful birth", baby.name);
             //Logger.Log("person", ("Successful birth occurred! Details:"), baby.toString());
             aliveResidents.Add(baby);
+
+
+
         }
 
     }
@@ -85,6 +96,8 @@ public class PersonTown : SimulatorComponent
         */
         //OOP Method:
         StopWhen("No one is alive", ()=> aliveResidents.Count == 0);
+
+
         var noSigOtherFem = from women in aliveResidents
                             where (women != null && women.isFemale() && women.sigOther == null)
                             select women;
@@ -189,6 +202,33 @@ public class PersonTown : SimulatorComponent
             death(selectedToDie);
         }
     }
+
+
+
+    public override void Visualize()
+    {
+        int nameCount = 0;
+        int nameLimit = 500;
+
+        var tempAliveResidents = new List<Person>(aliveResidents);
+        foreach (var p in tempAliveResidents)
+        {
+            if (nameCount <= nameLimit)
+            {
+                var currCoords = p.currentLocation.world_midpoint_coords();
+                Draw.Text(p.name, currCoords);
+                nameCount++;
+            }
+            else
+            {
+                break;
+            }
+
+        }
+
+    }
 }
+
+
 
 

@@ -73,6 +73,13 @@ public class Plot : System.Object
         return new Vector2(x_coord, y_coord);
     }
 
+    public Vector2 world_random_coords()
+    {
+        float x_coord = (x_pos + Random.Float(-0.25f, 0.25f)) * Space.Singleton.draw_scale;
+        float y_coord = (y_pos + Random.Float(-0.25f, 0.25f)) * Space.Singleton.draw_scale;
+        return new Vector2(x_coord, y_coord);
+    }
+
     public override string ToString()
     {
         return base.ToString() + "(" + x_pos + ", " + y_pos + ")";
