@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class RoleHeard : RoleType<Person>
+public class RoleHeard : RoleType<Person> // Person has new?
 {
     public override string Name => "RoleHeard";
-    public override AttributeTypes Attributes => AttributeTypes.None;
+    // TODO: switch this over to framework collections
     public override List<Person> Collection => ActionStatics.aliveResidents;
 
-    public override bool Filter(Person self, object opt_initializer = null)
+    public override Func<Person, List<RoleBase>, bool> Filter => HeardFilter;
+    //public override Func<Person, List<RoleBase>, bool> Filter = (p, l) => p == null;
+
+    public bool HeardFilter(Person p, List<RoleBase> role_list)
     {
         return true;
     }

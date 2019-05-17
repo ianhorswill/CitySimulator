@@ -1,13 +1,20 @@
-public class Role
+public class Role<T> : RoleBase
 {
-    public string name;
-    public object binding;
-    // public AttributeTypes Attributes;
-    // public List<T> Collection { get; }
+    public T binding;
 
-    public Role(string name, object binding)
+    public Role(string name, T binding)
     {
-        this.name = name;
+        this.Name = name;
         this.binding = binding;
+    }
+
+    public T GetBinding()
+    {
+        return binding;
+    }
+
+    public override object GetBindingUntyped()
+    {
+        return GetBinding();
     }
 }

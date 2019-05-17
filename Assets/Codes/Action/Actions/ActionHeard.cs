@@ -1,36 +1,20 @@
-// Actual Classes
-
-using Boo.Lang;
+using System.Collections.Generic;
 
 public class ActionHeard : ActionType
 {
-    public int priority = 3;
-
     public override string ActionName => "Heard";
+    public override List<RoleTypeBase> Role_list => new List<RoleTypeBase> { ActionLibrary.roleLibrary.GetRoleByName("RoleHeard") };
 
-    public override double Chance => 1.0;
+    public override int Priority => 5;
+    public override double Chance => 0.5;
 
-    public List<RoleType<object>> roleList;
-
-    public ActionHeard()
+    public override void Modifications(Action a)
     {
-        roleList.Add(new RoleHeard());
+        throw new System.NotImplementedException();
     }
 
-    public override bool prerequisites(object agent, object patient, Location location, Time time)
+    public override void Triggers(Action a)
     {
-        // TODO: check the prereqs of this specific action 
-        return true;
-    }
-    
-    public override void modifications(object agent, object patient, Location location, Time time)
-    {
-        // TODO: modify the world
-         
-    }
-    
-    public override void triggers(object agent, object patient, Location location, Time time)
-    {
-        // TODO: call all the actions that will be triggered by this action
+        throw new System.NotImplementedException();
     }
 }

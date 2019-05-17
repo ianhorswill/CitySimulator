@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
 
-public enum AttributeTypes
-{
-    None,
-    Initiator,
-    Recipient,
-    Build
-}
-
 public abstract class RoleTypeBase
 {
     public abstract string Name { get; }
-    public abstract AttributeTypes Attributes { get; }
+    public virtual bool BuildFlag { get { return false; } }
 
-    public abstract Role GetRole(object opt_initializer = null);
+    // Allows us to get filled roles from the base class. RoleBase is used to
+    // hold the various types of bindings in filled roles which is needed so that
+    // each RoleType can access all previously filled roles in its Filtering...
+    //  - RoleTypeBase allows for lists of roles to fill (in ActionTypes)
+    //  - RoleBase allows for lists of filled roles (in RoleTypes and Actions)
+    public abstract RoleBase GetRoleUntyped(List<RoleBase> filled_roles = null);
 }

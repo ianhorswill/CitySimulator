@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 public class RoleLibrary
@@ -6,10 +7,10 @@ public class RoleLibrary
 
     private void Build()
     {
-        roleDict.Add("Heard", new RoleHeard());
+        roleDict.Add("RoleHeard", new RoleHeard());
     }
-    
-    public static RoleTypeBase GetRoleByName(string roleName)
+
+    internal RoleTypeBase GetRoleByName(string roleName)
     {
         return roleDict[roleName];
     }
