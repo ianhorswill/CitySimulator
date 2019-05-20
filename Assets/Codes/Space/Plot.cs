@@ -13,18 +13,20 @@ public class Plot : System.Object
     private Space space;
     public Color color = Color.green;
 
-    public Plot(int x, int y)
+    public Plot(int x, int y, Space the_space)
     {
-        occupied = false; 
         x_pos = x;
         y_pos = y;
-        space = Space.Singleton;
+        space = the_space;
     }
 
-    public Vector2 get_coords()
+    public List<int> get_coords()
     {
-        Vector2 coord = new Vector2(x_pos, y_pos);
-        return coord; 
+        return new List<int>
+        {
+            x_pos,
+            y_pos
+        };
     }
 
     int distance_between_plots(Plot plot_1, Plot plot_2)
@@ -64,30 +66,5 @@ public class Plot : System.Object
     public void set_color(Color plot_color)
     {
         color = plot_color;
-    }
-
-    public Vector2 world_midpoint_coords()
-    {
-        float x_coord = (x_pos + 0.5f) * Space.Singleton.draw_scale;
-        float y_coord = (y_pos + 0.5f) * Space.Singleton.draw_scale;
-        return new Vector2(x_coord, y_coord);
-    }
-
-    public Vector2 world_random_coords()
-    {
-        float x_coord = (x_pos + Random.Float(-0.25f, 0.25f)) * Space.Singleton.draw_scale;
-        float y_coord = (y_pos + Random.Float(-0.25f, 0.25f)) * Space.Singleton.draw_scale;
-        return new Vector2(x_coord, y_coord);
-    }
-
-    public void add_institution(Institution ittn)
-    {
-        space.mark_occupied(this);
-        institutions.Add(ittn);
-    }
-
-    public override string ToString()
-    {
-        return base.ToString() + "(" + x_pos + ", " + y_pos + ")";
     }
 }

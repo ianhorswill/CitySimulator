@@ -1,6 +1,5 @@
 ﻿using System;
 using Boo.Lang;
-using Codes.Institution;
 
 /// <summary>
 /// Shared state for the simulator such as time
@@ -13,7 +12,6 @@ public static class Simulator
         AddComponent(new Space());
         AddComponent(new PersonTown());
         AddComponent(new ActionSimulator());
-        AddComponent(new InstitutionManager(Space.Singleton));
     }
 
     private static void AddComponent(SimulatorComponent simulatorComponent)

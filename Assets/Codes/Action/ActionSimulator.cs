@@ -63,9 +63,9 @@ public class ActionSimulator : SimulatorComponent
         switch (randAction.actionName)
         {
             case "GenerateInstitution":
-//                randAction.exec(RandomlyChoosePeople(), InstitutionManager.GetRandomType(),
-//                    new Location(Random.Integer(100), Random.Integer(100)), 
-//                    Simulator.CurrentTime);
+                randAction.exec(RandomlyChoosePeople(), InstitutionManager.GetRandomType(),
+                    new Location(Random.Integer(100), Random.Integer(100)), 
+                    Simulator.CurrentTime);
                 break;
             // ignore these two action types in the simulator
             case "InstitutionHiring":
