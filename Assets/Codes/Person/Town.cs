@@ -201,6 +201,34 @@ public class PersonTown : SimulatorComponent
 
             death(selectedToDie);
         }
+
+    /* If there exists a school and there are people under 18, sets their current occupation to the school */
+        var under18NotInSchool = from child in aliveResidents
+                            where (child != null && child.age <= 18 && child.workStatus.workplace == null)
+                            select child;
+        //Right now since construction companies are the most fleshed out, choose to send students to one; later when framework supports schools change this.
+        ConstructionCompany randomSchoolIfAny = InstitutionManager.GetRandomConstructionCompany();
+
+        if (under18NotInSchool != null && randomSchoolIfAny != null)
+        {
+            foreach (Person pc in under18NotInSchool)
+            {
+                pc.workStatus.getNewJob(randomSchoolIfAny, 0);        
+                pc.personalEducation.is_student = true; 
+            }
+        } 
+
+        //If someone turns 19 and they were in school, they "graduate" and lose the school occupation status and their education field is updated.
+        var is19InSchool = from newAdult in aliveResidents
+                            where (newAdult != null && newAdult.age <= 18 && newAdult.workStatus.workplace.getType().Equals("ConstructionCompany"))
+                            select newAdult;
+        foreach (Person pa in is19InSchool)
+        {
+            pa.workStatus.loseJob();
+            pa.is_high_school_graduate = true;
+            pa.is_student = false;
+        }        
+
     }
 
 

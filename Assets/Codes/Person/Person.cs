@@ -220,11 +220,11 @@ public class Person
         }
     }
 
-    private Education personalEducation;
+    public Education personalEducation;
     class Education{
-        public bool student {get; set;}
-        public bool high_school_graduate {get; set;}
-        public bool college_graduate {get; set;}
+        public bool is_student {get; set;}
+        public bool is_high_school_graduate {get; set;}
+        public bool is_college_graduate {get; set;}
         public Education(bool s, bool hsg, bool cg){
             student = s;
             high_school_graduate = hsg;
