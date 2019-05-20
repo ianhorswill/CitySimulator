@@ -75,8 +75,8 @@ namespace Codes.Institution
         public void Build(Institution institution, Plot loc)
         {
             // TODO: build institution on certain plot
-            Color[] colors = new[] {Color.red, Color.blue, Color.gray, Color.white, Color.yellow, Color.magenta};
-            Color color = colors.RandomElement();
+            Color color = InstitutionManager.colorMap[institution.type];
+            loc.add_institution(institution);
             loc.set_color(color);
             Logger.Log(SUB_SYSTEM,  type, "build", institution.owner +":"+ institution.type, "("+location.x_pos+","+location.y_pos+")");
         }
