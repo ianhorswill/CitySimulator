@@ -12,10 +12,10 @@ public class Space : SimulatorComponent
     //float streetStretch = 1.505f;
     public int grid_len = 10;
     public static Space Singleton;
-    Dictionary<Vector2, Plot> empty_plots =
-            new Dictionary<Vector2, Plot>();
-    Dictionary<Vector2, Plot> occupied_plots =
-            new Dictionary<Vector2, Plot>();
+    List<Plot> empty_plots =
+            new List<Plot>();
+    List<Plot> occupied_plots =
+            new List<Plot>();
     public float draw_scale = 2;
 
     public Space()
@@ -34,7 +34,9 @@ public class Space : SimulatorComponent
         {
             for (int x = 0; x < grid_len; x++)
             {
-                plots_list[x,y] = make_plot(x, y);
+                Plot new_plot = make_plot(x, y);
+                plots_list[x, y] = new_plot;
+                empty_plots.Add(new_plot);
             }
         }
 
@@ -59,6 +61,19 @@ public class Space : SimulatorComponent
         int rand_y = Random.Integer(0, grid_len);
 
         return plots_list[rand_x, rand_y];
+    }
+
+    /// <summary>
+    /// Returns a random plot with no institutions on it. Returns null if no 
+    /// empty plots.
+    /// </summary>
+    public Plot get_random_empty_plot()
+    {
+        if (empty_plots.Count == 0)
+        {
+            return null;
+        }
+        return Random.RandomElement(empty_plots);
     }
 
     /// <summary>
@@ -135,10 +150,10 @@ public class Space : SimulatorComponent
         
     }
 
-    public void mark_occupied(Vector2 coords, Plot p)
+    public void mark_occupied(Plot p)
     {
-        occupied_plots.Add(coords, p);
-        p.occupied = true; 
+        empty_plots.Remove(p);
+        occupied_plots.Add(p);
     }
 
     public override void Visualize()

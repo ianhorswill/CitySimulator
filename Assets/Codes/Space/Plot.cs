@@ -80,6 +80,12 @@ public class Plot : System.Object
         return new Vector2(x_coord, y_coord);
     }
 
+    public void add_institution(Institution ittn)
+    {
+        space.mark_occupied(this);
+        institutions.Add(ittn);
+    }
+
     public override string ToString()
     {
         return base.ToString() + "(" + x_pos + ", " + y_pos + ")";
