@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Codes.Institution;
 
 public class PersonTown : SimulatorComponent
 {
@@ -225,8 +226,8 @@ public class PersonTown : SimulatorComponent
         foreach (Person pa in is19InSchool)
         {
             pa.workStatus.loseJob();
-            pa.is_high_school_graduate = true;
-            pa.is_student = false;
+            pa.personalEducation.is_high_school_graduate = true;
+            pa.personalEducation.is_student = false;
         }        
 
     }

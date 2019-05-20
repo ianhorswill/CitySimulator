@@ -220,8 +220,8 @@ public class Person
         }
     }
 
-    public Education personalEducation = Education();
-    class Education{
+    public Education personalEducation = new Education();
+    public class Education{
         public bool is_student {get; set;}
         public bool is_high_school_graduate {get; set;}
         public bool is_college_graduate {get; set;}
