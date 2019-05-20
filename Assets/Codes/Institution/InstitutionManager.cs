@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Codes.Institution
 {
@@ -11,6 +13,8 @@ namespace Codes.Institution
         private static List<Institution> institutionList;
         // store the hardcode institution types
         private static string[] institutionTypeList;
+        // the color map for each institution type
+        public static Dictionary<String, Color> colorMap;
         // store the construction companies
         private static List<ConstructionCompany> constructionCompanyList;
 
@@ -24,6 +28,17 @@ namespace Codes.Institution
             constructionCompanyList =  new List<ConstructionCompany>();
             institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/institutionTypes.txt");
 
+            string[] colorStr =
+                File.ReadAllLines(Directory.GetCurrentDirectory() +
+                                  "/Assets/Codes/Institution/institutionColorMap.txt");
+            
+            colorMap = new Dictionary<string, Color>();
+            foreach (var line in colorStr)
+            {
+                String[] str = line.Split('|');
+                Color color = new Color32(Convert.ToByte(str[1]), Convert.ToByte(str[2]), Convert.ToByte(str[3]), 255);
+                colorMap[str[0]] = color;
+            }
             // hard-codly assign one initial construction company
             ConstructionCompany cons = new ConstructionCompany(Person.generateRandomPerson(), new Plot(0, 0), "ConstructionCompany", false);
             constructionCompanyList.Add(cons);
