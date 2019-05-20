@@ -1,28 +1,31 @@
-using System;
-using UnityEngine;
+using System.Collections.Generic;
 
 public class ActionTalk : ActionType
 {
-    public override string actionName => "Talk";
+    public override string ActionName => "Talk";
+    public override List<RoleTypeBase> Role_list => new List<RoleTypeBase>
+    {
+        ActionLibrary.roleLibrary.GetRoleByName("RoleSpeaker"),
+        ActionLibrary.roleLibrary.GetRoleByName("RoleListener"),
+        ActionLibrary.roleLibrary.GetRoleByName("RoleSameLocation")
+    };
 
-    public override bool prerequisites(object agent, object patient, Location location, DateTime time)
+    public override int Priority => 5;
+
+    public override void Triggers(Action a)
     {
-        // TODO: check the prereqs of this specific action 
-        return true;
-    }
-    
-    public override void modifications(object agent, object patient, Location location, DateTime time)
-    {
-        // TODO: modify the world
-         
-    }
-    
-    public override void triggers(object agent, object patient, Location location, DateTime time)
-    {
-        // TODO: call all the actions that will be triggered by this action
-        //Debug.Log("Trigger ActionHeard");
-        ActionHeard actionHeard = (ActionHeard) ActionLibrary.GetActionByName("Heard");
-        actionHeard.exec(agent, patient, location, time);
-        actionHeard.exec(patient, agent, location, time);
+        Person Listener = (Person) a.roles[1].GetBindingUntyped();
+        List<Person> new_collection = new List<Person> { Listener };
+        List<RoleBase> role_map = new List<RoleBase>();
+        ActionType act_heard = ActionLibrary.GetActionByName("Heard");
+        RoleType<Person> role_heard = (RoleType<Person>) act_heard.Role_list[0];
+        Role<Person> filled = role_heard.GetRole(role_map, new_collection);
+        if (filled != null)
+        {
+            role_map.Add(filled);
+            Action done = new Action(ActionName, Simulator.CurrentTime, role_map);
+            // Add action to list of all completed actions
+            act_heard.Execute(done);
+        }
     }
 }

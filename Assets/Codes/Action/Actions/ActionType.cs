@@ -1,41 +1,48 @@
 using System;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public abstract class ActionType
 {
-    public abstract string actionName { get;}
-    public int priority = 0;
+    // Required fields:
+    public abstract string ActionName { get; }
+    public abstract List<RoleTypeBase> Role_list { get; }
 
-    // instead, pass in a list of roles that can be filled... this then means that prereq is not
-    // something you write, it is some list (data) you provide that gets run by a default
-    // prereq check function
-    public abstract bool prerequisites(object agent, object patient, Location location, DateTime time);
-    
-    // filled out per class to actuate creation, modification, and destruction of other objects
-    // in the game world...
-    public abstract void modifications(object agent, object patient, Location location, DateTime time);
-    
-    // Actions that should be triggered after... need to revisit this because of role based
-    // prereqs...
-    public abstract void triggers(object agent, object patient, Location location, DateTime time);
-    
-    public bool exec(object agent, object patient, Location location, DateTime time)
+    // Optional fields (else use defaults):
+    public virtual int Priority { get { return 10; } }
+    public virtual double Chance { get { return 1.0; } }
+
+    // Optional methods (else do nothing):
+    public virtual void Modifications(Action a) { return; }
+    public virtual void Triggers(Action a) { return; }
+
+    public Action AttemptAction()
     {
-        if (prerequisites(agent, patient, location, time))  // needs to come before exec
+        List<RoleBase> filled_roles = new List<RoleBase>();
+
+        // Check every role in list and try to fill it
+        foreach (var role in Role_list)
         {
-            // check roles...
-            Action currAction = new Action(this.actionName, agent, patient, location, time);
-            //Debug.Log("Prerequisite check succeed...");
-            Logger.Log("Action", actionName, agent.ToString(), patient.ToString(), location.ToString());
-            modifications(agent, patient, location, time);
-            triggers(agent, patient, location, time);
-            return true;
+            RoleBase temp = role.GetRoleUntyped(filled_roles);
+            // Fill if possible, otherwise return null
+            if (temp != null) { filled_roles.Add(temp); }
+            else { return null; }
         }
-        else
+        return new Action(this.ActionName, Simulator.CurrentTime, filled_roles);
+    }
+    
+    public void Execute(Action a)
+    {
+        Modifications(a);
+        Triggers(a);
+    }
+
+    public void AttemptExecute()
+    {
+        Action a = AttemptAction();
+        if (a == null)
         {
-            //Debug.Log("Prerequisite check failed...");
-            return false;
+            Execute(a);
         }
-         
     }
 }

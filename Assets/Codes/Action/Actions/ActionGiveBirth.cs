@@ -1,34 +1,13 @@
 // Actual Classes
 
-using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ActionGiveBirth : ActionType
 {
-    public override string actionName => "GiveBirth";
+    public override string ActionName => "GiveBirth";
 
-    public override bool prerequisites(object agent, object patient, Location location, DateTime time)
-    {
-        // TODO: check the prereqs of this specific action 
-        return Random.Integer(100) < ActionStatics.BIRTH_PROBABILITY &&
-               ((Person) agent).age >= ActionStatics.MIN_AGE && ((Person) patient).age >= ActionStatics.MIN_AGE &&
-               (((Person) agent).isFemale() && ((Person) patient).isMale() ||
-                (((Person) agent).isMale() && ((Person) patient).isFemale()));
-    }
+    public override double Chance => 1.0;
 
-    public override void modifications(object agent, object patient, Location location, DateTime time)
-    {
-        // TODO: modify the world
-        Person[] otherPersons = {(Person) patient};
-        Person baby = Person.createChild((Person) agent, otherPersons);
-        if(baby != null)
-        {
-            PersonTown.Singleton.aliveResidents.Add(baby);
-        }
-    }
-
-    public override void triggers(object agent, object patient, Location location, DateTime time)
-    {
-        // TODO: call all the actions that will be triggered by this action
-    }
+    public override List<RoleTypeBase> Role_list => throw new System.NotImplementedException();
 }

@@ -1,24 +1,25 @@
 
-using System;
-
 public class ActionDeath : ActionType
 {
-    public override string actionName => "Death";
+    public int priority = 3;
 
-    public override bool prerequisites(object agent, object patient, Location location, DateTime time)
+    public override string ActionName => "Death";
+    public override double Chance => 1.0;
+
+    public override bool prerequisites(object agent, object patient, Location location, Time time)
     {
         // TODO: check the prereqs of this specific action 
-        return Random.Integer(100) < ActionStatics.DEATH_PROBABILITY;
+        return ActionStatics.randomNumberGenerator.Next(100) < ActionStatics.DEATH_PROBABILITY;
     }
     
-    public override void modifications(object agent, object patient, Location location, DateTime time)
+    public override void modifications(object agent, object patient, Location location, Time time)
     {
         // TODO: modify the world
-        PersonTown.Singleton.aliveResidents.Remove((Person) agent);
-        PersonTown.Singleton.deceased.Add((Person) agent);
+        ActionStatics.aliveResidents.Remove((Person) agent);
+        ActionStatics.deceased.Add((Person) agent);
     }
     
-    public override void triggers(object agent, object patient, Location location, DateTime time)
+    public override void triggers(object agent, object patient, Location location, Time time)
     {
         // TODO: call all the actions that will be triggered by this action
     }
