@@ -5,7 +5,7 @@ using System.Linq;
 // We are using a generic type here to allow for any type in the Collection
 //  -> the collection is be used in Linq queries to get individual objects.
 // The T that you use must have a default constructor for build to work.
-public abstract class RoleType<T> : RoleTypeBase where T : new()
+public abstract class RoleType<T> : RoleTypeBase
 {
     public abstract List<T> Collection { get; }
 
@@ -40,11 +40,15 @@ public abstract class RoleType<T> : RoleTypeBase where T : new()
     {
         if (this.BuildFlag)
         {
-            // new T() requires a type constraint... Otherwise build objects get
-            // casted as object...
-            T temp = new T();
-            Collection.Add(temp);
-            return new Role<T>(this.Name, temp);
+            Type typeParameterType = typeof(T);
+            object newObject = Builder.Build(typeParameterType, filled_roles);
+            if (newObject != null)
+            {
+                T newTypedObject = (T) newObject;
+                Collection.Add(newTypedObject);
+                return new Role<T>(this.Name, newTypedObject);
+            }
+            return null;
         }
         else
         {

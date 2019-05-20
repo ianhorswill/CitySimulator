@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class RoleHeard : RoleType<Person> // Person has new?
+public class RoleHeard : RoleType<Person>
 {
     public override string Name => "RoleHeard";
     // TODO: switch this over to framework collections
