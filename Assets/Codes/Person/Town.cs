@@ -21,8 +21,8 @@ public class PersonTown : SimulatorComponent
     public readonly List<Person> aliveResidents = new List<Person>();
     public readonly  List<Person> deceased = new List<Person>();
 
-    private static int deathProbability = 2;
-    private static int birthProbability = 15;
+    private static int deathProbability = 1;
+    private static int birthProbability = 8;
 
 
     /// <summary>
@@ -46,6 +46,14 @@ public class PersonTown : SimulatorComponent
         p1.sigOther = p2;
         initialSettlerTest.Add(p1);
         initialSettlerTest.Add(p2);
+
+        int randPeopleCount = 10;
+        for(int i = 0; i < randPeopleCount; i++)
+        {
+            Person newRandPerson = Person.generateRandomPerson();
+            initialSettlerTest.Add(newRandPerson);
+        }
+
         settlers = initialSettlerTest;
         aliveResidents = initialSettlerTest;
         Singleton = this;
@@ -69,6 +77,9 @@ public class PersonTown : SimulatorComponent
             Log("Successful birth", baby.name);
             //Logger.Log("person", ("Successful birth occurred! Details:"), baby.toString());
             aliveResidents.Add(baby);
+
+
+
         }
 
     }
@@ -85,6 +96,8 @@ public class PersonTown : SimulatorComponent
         */
         //OOP Method:
         StopWhen("No one is alive", ()=> aliveResidents.Count == 0);
+
+
         var noSigOtherFem = from women in aliveResidents
                             where (women != null && women.isFemale() && women.sigOther == null)
                             select women;
@@ -188,7 +201,62 @@ public class PersonTown : SimulatorComponent
 
             death(selectedToDie);
         }
+
+    /* If there exists a school and there are people under 18, sets their current occupation to the school */
+        var under18NotInSchool = from child in aliveResidents
+                            where (child != null && child.age <= 18 && child.workStatus.workplace == null)
+                            select child;
+        //Right now since construction companies are the most fleshed out, choose to send students to one; later when framework supports schools change this.
+        ConstructionCompany randomSchoolIfAny = InstitutionManager.GetRandomConstructionCompany();
+
+        if (under18NotInSchool != null && randomSchoolIfAny != null)
+        {
+            foreach (Person pc in under18NotInSchool)
+            {
+                pc.workStatus.getNewJob(randomSchoolIfAny, 0);        
+                pc.personalEducation.is_student = true; 
+            }
+        } 
+
+        //If someone turns 19 and they were in school, they "graduate" and lose the school occupation status and their education field is updated.
+        var is19InSchool = from newAdult in aliveResidents
+                            where (newAdult != null && newAdult.age == 19 && newAdult.workStatus.workplace.getType().Equals("ConstructionCompany"))
+                            select newAdult;
+        foreach (Person pa in is19InSchool)
+        {
+            pa.workStatus.loseJob();
+            pa.is_high_school_graduate = true;
+            pa.is_student = false;
+        }        
+
+    }
+
+
+
+    public override void Visualize()
+    {
+        int nameCount = 0;
+        int nameLimit = 500;
+
+        var tempAliveResidents = new List<Person>(aliveResidents);
+        foreach (var p in tempAliveResidents)
+        {
+            if (nameCount <= nameLimit)
+            {
+                var currCoords = p.currentLocation.world_midpoint_coords();
+                Draw.Text(p.name, currCoords);
+                nameCount++;
+            }
+            else
+            {
+                break;
+            }
+
+        }
+
     }
 }
+
+
 
 

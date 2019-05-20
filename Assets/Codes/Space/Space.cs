@@ -11,6 +11,17 @@ public class Space : SimulatorComponent
     public Street[,] streets_list;
     //float streetStretch = 1.505f;
     public int grid_len = 10;
+    public static Space Singleton;
+    List<Plot> empty_plots =
+            new List<Plot>();
+    List<Plot> occupied_plots =
+            new List<Plot>();
+    public float draw_scale = 2;
+
+    public Space()
+    {
+        Singleton = this; 
+    }
 
     // Start is called before the first frame update
     public override void Initialize()
@@ -23,7 +34,9 @@ public class Space : SimulatorComponent
         {
             for (int x = 0; x < grid_len; x++)
             {
-                plots_list[x,y] = make_plot(x, y);
+                Plot new_plot = make_plot(x, y);
+                plots_list[x, y] = new_plot;
+                empty_plots.Add(new_plot);
             }
         }
 
@@ -31,13 +44,15 @@ public class Space : SimulatorComponent
         {
             for (int level = 0; level < grid_len + 1; level++)
             {
-                streets_list[level,dir] = make_street(level, dir);
+                Street.street_direction street_dir = (dir == 0)
+                    ? Street.street_direction.NS 
+                    : Street.street_direction.EW;
+                streets_list[level,dir] = make_street(level, street_dir);
             }
         }
 
         setup_plot_neighbors();
         setup_street_connections();
-        plots_list[0, 0].set_color(Color.blue);
     }
 
     public Plot get_random_plot()
@@ -46,6 +61,19 @@ public class Space : SimulatorComponent
         int rand_y = Random.Integer(0, grid_len);
 
         return plots_list[rand_x, rand_y];
+    }
+
+    /// <summary>
+    /// Returns a random plot with no institutions on it. Returns null if no 
+    /// empty plots.
+    /// </summary>
+    public Plot get_random_empty_plot()
+    {
+        if (empty_plots.Count == 0)
+        {
+            return null;
+        }
+        return Random.RandomElement(empty_plots);
     }
 
     /// <summary>
@@ -69,14 +97,14 @@ public class Space : SimulatorComponent
 
     Plot make_plot(int x, int y)
     {
-        Plot newPlot = new Plot(x, y, this);
+        Plot newPlot = new Plot(x, y);
 
         return newPlot;
     }
 
-    Street make_street(int lvl, int dir)
+    Street make_street(int lvl, Street.street_direction dir)
     {
-        string dir_name = dir == 0 ? "N. " : "E. ";
+        string dir_name = dir == Street.street_direction.NS ? "N. " : "E. ";
         Street new_street = new Street(dir, dir_name + lvl + " Street");
 
         return new_street;
@@ -122,24 +150,32 @@ public class Space : SimulatorComponent
         
     }
 
+    public void mark_occupied(Plot p)
+    {
+        empty_plots.Remove(p);
+        occupied_plots.Add(p);
+    }
+
     public override void Visualize()
     {
-        float scale = 2f;
+        float plot_side_len = 1 * draw_scale;
 
         // draw all square plots
-        for (int x = 0; x < grid_len; x++)
+        foreach (Plot p in plots_list)
         {
-            for (int y = 0; y < grid_len; y++)
-            {
-                Draw.Rect(new Rect(scale * x, scale * y, scale, scale), plots_list[x, y].color, -1);
-            }
+            Vector2 midpoint = p.world_midpoint_coords();
+            Rect p_rect = new Rect(midpoint.x - (0.5f * plot_side_len),
+                                   midpoint.y - (0.5f * plot_side_len),
+                                   plot_side_len,
+                                   plot_side_len);
+            Draw.Rect(p_rect, p.color, -1);
         }
 
         // draw all streets
         for (int level = 0; level < grid_len + 1; level++)
         {
-            Rect hori_rect = new Rect(0, scale * level, scale * (grid_len + 0.1f), scale * 0.1f);
-            Rect vert_rect = new Rect(scale * level, 0, scale * 0.1f, scale * (grid_len + 0.1f));
+            Rect hori_rect = new Rect(0, draw_scale * level, draw_scale * (grid_len + 0.1f), draw_scale * 0.1f);
+            Rect vert_rect = new Rect(draw_scale * level, 0, draw_scale * 0.1f, draw_scale * (grid_len + 0.1f));
             Draw.Rect(vert_rect, Color.black);
             Draw.Rect(hori_rect, Color.black);
         }

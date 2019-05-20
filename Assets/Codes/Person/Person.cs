@@ -220,11 +220,11 @@ public class Person
         }
     }
 
-    private Education personalEducation;
+    public Education personalEducation;
     class Education{
-        public bool student {get; set;}
-        public bool high_school_graduate {get; set;}
-        public bool college_graduate {get; set;}
+        public bool is_student {get; set;}
+        public bool is_high_school_graduate {get; set;}
+        public bool is_college_graduate {get; set;}
         public Education(bool s, bool hsg, bool cg){
             student = s;
             high_school_graduate = hsg;
@@ -245,6 +245,7 @@ public class Person
         p.DateOfBirth = Simulator.CurrentTime;
         p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
         p.lastName = NameManager.getSurname(null);
+        p.currentInstitution = InstitutionManager.RandomInstitutionIfAny();
         return p;
     }
     
@@ -261,10 +262,12 @@ public class Person
         parents = parentsParam;
         individualPersonality = new Personality();
         id = Guid.NewGuid();
-        if (parents != null && parents[0] != null)
-            currentInstitution =
-                parents[0].currentInstitution; // Location right now set to being in the insitution of the first parent
-        else currentInstitution = InstitutionManager.RandomInstitutionIfAny();
+        //if (parents != null && parents[0] != null)
+        //   currentInstitution =
+        //        parents[0].currentInstitution; // Location right now set to being in the insitution of the first parent
+        //else
+
+        currentInstitution = InstitutionManager.RandomInstitutionIfAny();
         if(Random.Integer(0, 2) == 1)
         {
             biologicalSex = true;
@@ -337,7 +340,7 @@ public class Person
         this.biologicalSex = biologicalSex;
         this.individualPersonality = new Personality();
         this.id = Guid.NewGuid();
-        currentInstitution = InstitutionManager.RandomInstitution();  // random institution
+        this.currentInstitution = InstitutionManager.RandomInstitution();  // random institution
         string[] nameSplit = name.Split(' ');
         
         this.firstName = (name.Length != 0) ? nameSplit[0] : GenerateRandomFirstName();

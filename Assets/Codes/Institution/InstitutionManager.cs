@@ -1,30 +1,54 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Codes.Institution
 {
     // the InstitutionGenerator includes methods needed to generate an Institution
-    public static class InstitutionManager
+    public class InstitutionManager : SimulatorComponent
     {
         // store all the institutions been constructed
         private static List<Institution> institutionList;
         // store the hardcode institution types
         private static string[] institutionTypeList;
+        // the color map for each institution type
+        public static Dictionary<String, Color> colorMap;
         // store the construction companies
         private static List<ConstructionCompany> constructionCompanyList;
-        
+
+        private Space Space;
+
+        public static InstitutionManager Singleton;
+
         static InstitutionManager()
         {
             institutionList = new List<Institution>();
             constructionCompanyList =  new List<ConstructionCompany>();
             institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/institutionTypes.txt");
+
+            string[] colorStr =
+                File.ReadAllLines(Directory.GetCurrentDirectory() +
+                                  "/Assets/Codes/Institution/institutionColorMap.txt");
             
+            colorMap = new Dictionary<string, Color>();
+            foreach (var line in colorStr)
+            {
+                String[] str = line.Split('|');
+                Color color = new Color32(Convert.ToByte(str[1]), Convert.ToByte(str[2]), Convert.ToByte(str[3]), 255);
+                colorMap[str[0]] = color;
+            }
             // hard-codly assign one initial construction company
-            ConstructionCompany cons = new ConstructionCompany(new Person("government", new List<Person>()),
-                new Plot(0, 0, new Space()), "ConstructionCompany", false);
+            ConstructionCompany cons = new ConstructionCompany(Person.generateRandomPerson(), new Plot(0, 0), "ConstructionCompany", false);
             constructionCompanyList.Add(cons);
             institutionList.Add(cons);
+        }
+
+        public InstitutionManager(Space space)
+        {
+            Space = space;
+            Singleton = this;
         }
         
         // get a random type
@@ -93,6 +117,23 @@ namespace Codes.Institution
         public static Institution RandomInstitution()
         {
             return institutionList.RandomElement();
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+        }
+
+        public override void Step()
+        {
+            Institution Institution = GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
+            GetRandomConstructionCompany().Build(Institution, Institution.location);
+            Institution.Hiring(Person.generateRandomPerson());
+        }
+
+        public override void Visualize()
+        {
+            base.Visualize();
         }
     }
 }
