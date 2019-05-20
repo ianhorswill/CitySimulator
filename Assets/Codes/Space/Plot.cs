@@ -82,8 +82,23 @@ public class Plot : System.Object
 
     public void add_institution(Institution ittn)
     {
+        if (institutions.Count > 0)
+        {
+            return;
+        }
         space.mark_occupied(this);
         institutions.Add(ittn);
+    }
+
+    /// <summary>
+    /// remove institution from plot and mark the plot as unoccupied
+    /// </summary>
+    /// <param name="ittn">institution to be removed</param>
+    /// <returns>true if inst removed from plot false otherwise</returns>
+    public bool remove_institution(Institution ittn)
+    {
+        space.mark_unoccupied(this);
+        return institutions.Remove(ittn);  
     }
 
     public override string ToString()
