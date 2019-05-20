@@ -18,6 +18,8 @@ namespace Codes.Institution
         // store the construction companies
         private static List<ConstructionCompany> constructionCompanyList;
 
+        public static Dictionary<String, List<Institution>> InstitutionDictionary;
+
         private Space Space;
 
         public static InstitutionManager Singleton;
@@ -39,6 +41,8 @@ namespace Codes.Institution
                 Color color = new Color32(Convert.ToByte(str[1]), Convert.ToByte(str[2]), Convert.ToByte(str[3]), 255);
                 colorMap[str[0]] = color;
             }
+            
+            InstitutionDictionary = new Dictionary<string, List<Institution>>();
             // hard-codly assign one initial construction company
             ConstructionCompany cons = new ConstructionCompany(Person.generateRandomPerson(), new Plot(0, 0), "ConstructionCompany", false);
             constructionCompanyList.Add(cons);
@@ -91,6 +95,16 @@ namespace Codes.Institution
                 constructionCompanyList.Add(newInstitution as ConstructionCompany);
             }
             institutionList.Add(newInstitution);
+            
+            if (InstitutionDictionary.ContainsKey(type))
+            {
+                List<Institution> tempList = InstitutionDictionary[type];
+                tempList.Add(newInstitution);
+            }
+            else
+            {
+                InstitutionDictionary[type] = new List<Institution>{newInstitution};
+            }
             Logger.Log("Institution", type, owner.name, "("+location.x_pos+","+location.y_pos+")");
             
             return newInstitution;
@@ -117,6 +131,16 @@ namespace Codes.Institution
         public static Institution RandomInstitution()
         {
             return institutionList.RandomElement();
+        }
+
+        public static List<Institution> GetInstitutionOfType(String type)
+        {
+            if (InstitutionDictionary.ContainsKey(type) == false)
+            {
+                return new List<Institution>();
+            }
+
+            return InstitutionDictionary[type];
         }
 
         public override void Initialize()
