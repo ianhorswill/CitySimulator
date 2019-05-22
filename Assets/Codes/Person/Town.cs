@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Codes.Institution;
 
 public class PersonTown : SimulatorComponent
 {
@@ -207,7 +208,11 @@ public class PersonTown : SimulatorComponent
                             where (child != null && child.age <= 18 && child.workStatus.workplace == null)
                             select child;
         //Right now since construction companies are the most fleshed out, choose to send students to one; later when framework supports schools change this.
-        ConstructionCompany randomSchoolIfAny = InstitutionManager.GetRandomConstructionCompany();
+        List<Institution> schoolList = InstitutionManager.GetInstitutionOfType("School");
+        Institution randomSchoolIfAny = null;
+        if(schoolList.Count > 0){
+            randomSchoolIfAny = schoolList.RandomElement();
+        }
 
         if (under18NotInSchool != null && randomSchoolIfAny != null)
         {
@@ -220,13 +225,13 @@ public class PersonTown : SimulatorComponent
 
         //If someone turns 19 and they were in school, they "graduate" and lose the school occupation status and their education field is updated.
         var is19InSchool = from newAdult in aliveResidents
-                            where (newAdult != null && newAdult.age == 19 && newAdult.workStatus.workplace.getType().Equals("ConstructionCompany"))
+                            where (newAdult != null && newAdult.age == 19 && newAdult.workStatus.workplace.getType().Equals("School"))
                             select newAdult;
         foreach (Person pa in is19InSchool)
         {
             pa.workStatus.loseJob();
-            pa.is_high_school_graduate = true;
-            pa.is_student = false;
+            pa.personalEducation.is_high_school_graduate = true;
+            pa.personalEducation.is_student = false;
         }        
 
     }

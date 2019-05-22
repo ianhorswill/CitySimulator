@@ -156,6 +156,12 @@ public class Space : SimulatorComponent
         occupied_plots.Add(p);
     }
 
+    public void mark_unoccupied(Plot p)
+    {
+        occupied_plots.Remove(p);
+        empty_plots.Add(p);
+    }
+
     public override void Visualize()
     {
         float plot_side_len = 1 * draw_scale;

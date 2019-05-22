@@ -220,15 +220,20 @@ public class Person
         }
     }
 
-    public Education personalEducation;
-    class Education{
+    public Education personalEducation = new Education();
+    public class Education{
         public bool is_student {get; set;}
         public bool is_high_school_graduate {get; set;}
         public bool is_college_graduate {get; set;}
         public Education(bool s, bool hsg, bool cg){
-            student = s;
-            high_school_graduate = hsg;
-            college_graduate = cg;
+            is_student = s;
+            is_high_school_graduate = hsg;
+            is_college_graduate = cg;
+        }
+        public Education(){
+            is_student = false;
+            is_high_school_graduate = false;
+            is_college_graduate = false;
         }
     }
 
