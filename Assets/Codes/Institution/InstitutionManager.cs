@@ -28,11 +28,11 @@ namespace Codes.Institution
         {
             institutionList = new List<Institution>();
             constructionCompanyList =  new List<ConstructionCompany>();
-            institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/institutionTypes.txt");
+            institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/InstitutionData/institutionTypes.txt");
 
             string[] colorStr =
                 File.ReadAllLines(Directory.GetCurrentDirectory() +
-                                  "/Assets/Codes/Institution/institutionColorMap.txt");
+                                  "/Assets/Codes/Institution/InstitutionData/institutionColorMap.txt");
             
             colorMap = new Dictionary<string, Color>();
             foreach (var line in colorStr)
@@ -133,7 +133,7 @@ namespace Codes.Institution
             return institutionList.RandomElement();
         }
 
-        public static List<Institution> GetInstitutionOfType(String type)
+        public static List<Institution> GetInstitutionOfType(string type)
         {
             if (InstitutionDictionary.ContainsKey(type) == false)
             {
@@ -150,9 +150,9 @@ namespace Codes.Institution
 
         public override void Step()
         {
-            Institution Institution = GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
-            GetRandomConstructionCompany().Build(Institution, Institution.location);
-            Institution.Hiring(Person.generateRandomPerson());
+            Institution institution = GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
+            GetRandomConstructionCompany().Build(institution, institution.location);
+            institution.Hiring(Person.generateRandomPerson());
         }
 
         public override void Visualize()
