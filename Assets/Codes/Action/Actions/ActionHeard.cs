@@ -5,7 +5,7 @@ public class ActionHeard : ActionType
     public override string ActionName => "Heard";
     public override List<RoleTypeBase> Role_list => new List<RoleTypeBase>
     {
-        ActionLibrary.roleLibrary.GetRoleByName("RoleHeard")
+        RoleLibrary.GetRoleByName("RoleHeard")
     };
 
     public override int Priority => 6;

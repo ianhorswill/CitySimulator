@@ -5,19 +5,20 @@ using System.Linq;
 // We are using a generic type here to allow for any type in the Collection
 //  -> the collection is be used in Linq queries to get individual objects.
 // The T that you use must have a default constructor for build to work.
-public abstract class RoleType<T> : RoleTypeBase
+public class RoleType<T> : RoleTypeBase
 {
-    public abstract List<T> Collection { get; }
+    public new string Name;
+    public List<T> Collection;
 
-    public abstract Func<T, List<RoleBase>, bool> Filter { get; }
+    public Func<T, List<RoleBase>, bool> Filter;
 
     // This standardizes the task of finding and filling in a role. Uses:
     //  - Filter to check the entites (current and past)
     //  - Name to return a Role<T> with the right object
     //  - CAN use Collection as the source/target in a Linq query
-    public Role<T> GetRole(List<RoleBase> filled_roles, List<T> collection)
+    public Role<T> GetRole(List<RoleBase> filled_roles)
     {
-        IEnumerable<T> candidates = from entity in collection
+        IEnumerable<T> candidates = from entity in Collection
                                     where Filter(entity, filled_roles)
                                     select entity;
         List<T> candidate_List = candidates.ToList();
@@ -28,15 +29,10 @@ public abstract class RoleType<T> : RoleTypeBase
         return null;
     }
 
-    public Role<T> GetRole(List<RoleBase> filled_roles)
-    {
-        return GetRole(filled_roles, Collection);
-    }
-
     // Passes a new Role<T> back up to the RoleBase, and returns that role in the
     // form of a RoleBase... Uses the custom GetRole to fill in and (if set) uses:
     //  - BuildFlag to create a new object of the right type in the right collection.
-    public override RoleBase GetRoleUntyped(List<RoleBase> filled_roles)
+    public override RoleBase FillRoleUntyped(List<RoleBase> filled_roles)
     {
         if (this.BuildFlag)
         {
@@ -51,5 +47,16 @@ public abstract class RoleType<T> : RoleTypeBase
             return null;
         }
         return GetRole(filled_roles);
+    }
+
+    // Relies on the proper object type being passed to FillRoleWith...
+    // NOT TYPESAFE
+    public override RoleBase FillRoleWith(object toFill, List<RoleBase> filled_roles)
+    {
+        if (Filter((T) toFill, filled_roles))
+        {
+            return new Role<T>(this.Name, (T)toFill);
+        }
+        return null;
     }
 }

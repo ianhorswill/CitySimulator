@@ -4,6 +4,8 @@ using Codes.Institution;
 
 public class ActionSimulator : SimulatorComponent
 {
+    //public List<Action> action_history = new List<Action>();
+
     Person RandomlyChoosePeople()
     {
         return PersonTown.Singleton.aliveResidents.RandomElement();
@@ -14,7 +16,7 @@ public class ActionSimulator : SimulatorComponent
         for (int i = 0; i < 10; i++)
         {
             ActionType randAction = ActionLibrary.ChanceFilteredPriorityBasedSelection(i);
-            Action a = randAction.AttemptAction();
+            Action a = randAction.Instantiate();
             if (a != null)
             {
                 randAction.Execute(a);

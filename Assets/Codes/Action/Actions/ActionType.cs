@@ -14,35 +14,46 @@ public abstract class ActionType
 
     // Optional methods (else do nothing):
     public virtual void Modifications(Action a) { return; }
-    public virtual void Triggers(Action a) { return; }
+    public virtual void PostExecute(Action a) { return; }
 
-    public Action AttemptAction()
+    // roleBindings expects alternating strings (naming a role) and objects (to fill that role)
+    public Action Instantiate(params object[] roleBindings)
     {
         List<RoleBase> filled_roles = new List<RoleBase>();
 
-        // Check every role in list and try to fill it
         foreach (var role in Role_list)
         {
-            RoleBase temp = role.GetRoleUntyped(filled_roles);
-            // Fill if possible, otherwise return null
-            if (temp != null) { filled_roles.Add(temp); }
-            else { return null; }
+            var temp_binding_obj = BindingOf(role.Name, roleBindings);
+            if (temp_binding_obj != null)
+            {
+                // AGAIN, NOT TYPE SAFE, RELIES ON PROPER TYPE BEING PASSED IN
+                RoleBase temp = role.FillRoleWith(temp_binding_obj, filled_roles);
+                if (temp != null) { filled_roles.Add(temp); }
+                else { return null; }
+            }
+            else
+            {
+                RoleBase temp = role.FillRoleUntyped(filled_roles);
+                if (temp != null) { filled_roles.Add(temp); }
+                else { return null; }
+            }
         }
         return new Action(this.ActionName, Simulator.CurrentTime, filled_roles);
+    }
+
+    object BindingOf(string role, object[] bindings)
+    {
+        for (int i = 0; i < bindings.Length - 1; i += 2)
+            if ((string)bindings[i] == role)
+                return bindings[i + 1];
+        return null;
     }
     
     public void Execute(Action a)
     {
+        // TODO: log action in global action list
+        //ActionSimulator.action_history.Add(a);
         Modifications(a);
-        Triggers(a);
-    }
-
-    public void AttemptExecute()
-    {
-        Action a = AttemptAction();
-        if (a == null)
-        {
-            Execute(a);
-        }
+        PostExecute(a);
     }
 }

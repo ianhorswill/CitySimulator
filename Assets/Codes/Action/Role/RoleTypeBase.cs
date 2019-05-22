@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public abstract class RoleTypeBase
 {
-    public abstract string Name { get; }
+    public string Name;
     public virtual bool BuildFlag { get { return false; } }
 
     // Allows us to get filled roles from the base class. RoleBase is used to
@@ -11,5 +11,8 @@ public abstract class RoleTypeBase
     // each RoleType can access all previously filled roles in its Filtering...
     //  - RoleTypeBase allows for lists of roles to fill (in ActionTypes)
     //  - RoleBase allows for lists of filled roles (in RoleTypes and Actions)
-    public abstract RoleBase GetRoleUntyped(List<RoleBase> filled_roles = null);
+    public abstract RoleBase FillRoleUntyped(List<RoleBase> filled_roles = null);
+
+    // Allows us to fill roles directly in Instantiate... NOT TYPE SAFE
+    public abstract RoleBase FillRoleWith(object toFill, List<RoleBase> filled_roles = null);
 }
