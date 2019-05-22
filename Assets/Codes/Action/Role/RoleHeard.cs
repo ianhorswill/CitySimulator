@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
+// EXAMPLE CODE ONLY
+
+    // This is onlt needed if you have a very complex role that require more than
+    // a name, a group to choose from, and a filter to select by.
 
 public class RoleHeard : RoleType<Person>
 {
-    public override string Name => "RoleHeard";
-    public override List<Person> Collection => PersonTown.Singleton.aliveResidents;
+    public new string Name = "RoleHeard";
+    public new List<Person> Collection = PersonTown.Singleton.aliveResidents;
 
-    public override Func<Person, List<RoleBase>, bool> Filter => HeardFilter;
-    //public override Func<Person, List<RoleBase>, bool> Filter = (p, l) => p == null;
+    public new Func<Person, List<RoleBase>, bool> Filter => HeardFilter;
 
     public bool HeardFilter(Person p, List<RoleBase> role_list)
     {

@@ -1,14 +1,23 @@
 using System;
 using System.Collections.Generic;
 
-public class RoleLibrary
+public static class RoleLibrary
 {
     private static readonly Dictionary<string, RoleTypeBase> roleDict = new Dictionary<string, RoleTypeBase>
     {
-        {"RoleHeard", new RoleHeard() }
+        {
+            // Role heard does not really even need the collection or filter as it will always be filled
+            // by the talk action triggering it... These can just be commented out later
+            "RoleHeard", new RoleType<Person>()
+            {
+                Name = "RoleHeard",
+                Collection = PersonTown.Singleton.aliveResidents,
+                Filter = (p, l) => p == null
+            }
+        }
     };
 
-    internal RoleTypeBase GetRoleByName(string roleName)
+    public static RoleTypeBase GetRoleByName(string roleName)
     {
         return roleDict[roleName];
     }

@@ -1,12 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Codes.Action.Actions;
 
-// Could be static... would mess with including this in ActionSimulator
-// Also, RoleLibrary isn't static so we are just keeping that the same for Actions
-public class ActionLibrary
+public static class ActionLibrary
 {
-    public static readonly RoleLibrary roleLibrary = new RoleLibrary();
     private static readonly Dictionary<string, ActionType> actionDict = new Dictionary<string, ActionType>
     {
         { "Talk" , new ActionTalk() },
@@ -20,6 +18,16 @@ public class ActionLibrary
     public static ActionType GetActionByName(string actionName)
     {
         return actionDict[actionName];
+    }
+
+    public static Action InstantiateByName(string name, params object[] bindings)
+    {
+        return GetActionByName(name).Instantiate(bindings);
+    }
+
+    public static void ExecuteByName(string name, Action act)
+    {
+        GetActionByName(name).Execute(act);
     }
 
     public static ActionType RandomlyChoose()
@@ -43,6 +51,7 @@ public class ActionLibrary
         var result = from a in actionDict
                      where a.Value.Priority == priority
                      select a;
+        // TODO: special logic based on various priority levels
         return RandomlyChoose(result.ToDictionary(t => t.Key, t => t.Value));
     }
 

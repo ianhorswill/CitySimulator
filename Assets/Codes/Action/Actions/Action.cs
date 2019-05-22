@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Action
 {
@@ -23,5 +24,13 @@ public class Action
             res += role.Name + " = " + role.GetBindingUntyped() + ", ";
         }
         return res.Substring(0, res.Length - 2);
+    }
+
+    public object this[string roleName]
+    {
+        get
+        {
+            return roles.First(rolebase => rolebase.Name == roleName);
+        }
     }
 }
