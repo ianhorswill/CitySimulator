@@ -13,7 +13,7 @@ Cemetery
 CityHall
 ClothingStore
 CoalMine
-ConstructionFirm
+ConstructionCompany
 Dairy
 DayCare
 Deli
