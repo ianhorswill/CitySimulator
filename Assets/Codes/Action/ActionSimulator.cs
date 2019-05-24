@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Codes.Institution;
-using UnityEngine;
 
 public class ActionSimulator : SimulatorComponent
 {

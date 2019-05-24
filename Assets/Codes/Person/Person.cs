@@ -122,6 +122,48 @@ public class Person
         return relationshipDict[p].Charge;
     }
     
+
+
+    // See https://github.com/james-owen-ryan/talktown/blob/master/config/social_sim_config.py
+    int sparkThresholdForCaptivating = 10;
+    int chargeThresholdForRelationship = 15;
+    public List<Person> captivatedBy = new List<Person>();
+    public void getCaptivatedIndividuals()
+    {
+        captivatedBy = new List<Person>();
+
+        foreach(var item in relationshipDict)
+        {
+            if(item.Value.Spark >= sparkThresholdForCaptivating)
+            {
+                captivatedBy.Add(item.Key);
+            }
+        }
+
+        captivatedBy.RemoveAll(item => item == null);
+    }
+
+    public List<Person> romanticallyInterestedIn = new List<Person>();
+    public void getRomanticInterests()
+    {
+        romanticallyInterestedIn = new List<Person>();
+
+        foreach(var p in captivatedBy)
+        {
+            var relation = relationshipDict[p];
+            if(relation.Charge >= chargeThresholdForRelationship)
+            {
+                romanticallyInterestedIn.Add(p);
+            }
+        }
+
+        romanticallyInterestedIn.RemoveAll(item => item == null);
+
+    }
+
+
+
+
     public Person sigOther;
     public List<Person> siblings;
     public  List<Person> children;
@@ -146,6 +188,8 @@ public class Person
     public class Personality
     {
         public List<Tuple<string, int>> facets;
+
+        // See http://dwarffortresswiki.org/index.php/DF2014:Personality_trait#Facets
         private List<string> facet_names = new List<string>() { "LOVE_PROPENSITY", "HATE_PROPENSITY", "ENVY_PROPENSITY", "CHEER_PROPENSITY", "DEPRESSION_PROPENSITY", "ANGER_PROPENSITY",
                                                                 "ANXIETY_PROPENSITY", "LUST_PROPENSITY", "STRESS_VULNERABILITY", "GREED", "IMMODERATION", "VIOLENT", "PERSEVERANCE",
                                                                 "WASTEFULNESS", "DISCORD", "FRIENDLINESS", "POLITENESS", "DISDAIN_ADVICE", "BRAVERY", "CONFIDENCE", "VANITY", "AMBITION",

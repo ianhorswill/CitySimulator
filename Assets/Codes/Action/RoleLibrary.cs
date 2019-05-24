@@ -18,6 +18,9 @@ public static class RoleLibrary
                     return true;
                 }
             }
+        },
+        {
+            "RoleBioMother", new RoleBioMother()
         }
     };
 
