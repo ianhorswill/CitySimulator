@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class RoleLibrary
 {
@@ -12,7 +13,10 @@ public static class RoleLibrary
             {
                 Name = "RoleHeard",
                 Collection = PersonTown.Singleton.aliveResidents,
-                Filter = (p, l) => p == null
+                Filter = (p, l) =>
+                {
+                    return true;
+                }
             }
         }
     };
