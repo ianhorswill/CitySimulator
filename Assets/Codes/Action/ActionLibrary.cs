@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Codes.Action.Actions;
+using UnityEngine;
 
 public static class ActionLibrary
 {
@@ -58,6 +59,7 @@ public static class ActionLibrary
     public static ActionType ChanceFilteredPriorityBasedSelection(int priority)
     {
         ActionType a = PriorityBasedSelection(priority);
+        if (a == null) return null;
         return (Random.Float(0.0f, 1.0f) - a.Chance) < 0.0 ? null : a;
     }
 }

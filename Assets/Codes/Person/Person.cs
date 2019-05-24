@@ -77,17 +77,40 @@ public class Person
     private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
     public void updateRelationshipSpark(Person p, int amount)
     {
-        if (!relationshipDict.ContainsKey(p)) 
+        if (!relationshipDict.ContainsKey(p))
+        {
             relationshipDict.Add(p,new Relationship(0,0));
+        }
         else
+        {
+            // if person is quite love prone, boost positive spark updates
+            if (amount > 0 && p.individualPersonality.getFacetValue("LOVE_PROPENSITY") > 7)
+            {
+                amount = (int)Math.Ceiling(amount * 1.25f);
+            }
             relationshipDict[p].Spark += amount;
+        }
     }
     public void updateRelationshipCharge(Person p, int amount)
     {
-        if (!relationshipDict.ContainsKey(p)) 
-            relationshipDict.Add(p,new Relationship(0,0));
+        if (!relationshipDict.ContainsKey(p))
+        {
+            relationshipDict.Add(p, new Relationship(0, 0));
+        }
         else
+        {
+            // if person is quite friendly, boost positive charge updates
+            if (amount > 0 && p.individualPersonality.getFacetValue("FRIENDLINESS") > 7)
+            {
+                amount = (int)Math.Ceiling(amount * 1.25f);
+            }
+            // if person is quite hate prone, boost negative charge updates 
+            else if (amount < 0 && p.individualPersonality.getFacetValue("HATE_PROPENSITY") < 3)
+            {
+                amount = (int)Math.Floor(amount * 1.25f);
+            }
             relationshipDict[p].Charge += amount;
+        }
     }
 
     public int getRelationshipSpark(Person p)
@@ -150,6 +173,17 @@ public class Person
                 facets.Add(Tuple.Create<string, int>(facet_type, facet_value));
             }
 
+        }
+
+        public int getFacetValue(string facet_name)
+        {
+            foreach (var facet in facets)
+            {
+                string facet_type = facet.Item1;
+                if (facet_name == facet_type)
+                    return facet.Item2;
+            }
+            return -1;
         }
     }
 

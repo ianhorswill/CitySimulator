@@ -6,16 +6,12 @@ using System;
 public class Space : SimulatorComponent
 {
     public static int MAX_PLOTS = 100;
-    public static int MAX_STREETS = 1000;
-    public Plot[,] plots_list;
+    public Plot[,] plots_array;
     public Street[,] streets_list;
-    //float streetStretch = 1.505f;
     public int grid_len = 10;
     public static Space Singleton;
-    List<Plot> empty_plots =
-            new List<Plot>();
-    List<Plot> occupied_plots =
-            new List<Plot>();
+    List<Plot> empty_plots = new List<Plot>();
+    List<Plot> occupied_plots = new List<Plot>();
     public float draw_scale = 2;
 
     public Space()
@@ -23,19 +19,21 @@ public class Space : SimulatorComponent
         Singleton = this; 
     }
 
-    // Start is called before the first frame update
+    // Initialize is called before the first frame update
     public override void Initialize()
     {
-        plots_list = new Plot[grid_len, grid_len];
+        plots_array = new Plot[grid_len, grid_len];
         streets_list = new Street[grid_len+1,2];
-
-        // make starting plots and streets
-        for (int y = 0; y < grid_len; y++)
+        
+        for (int i = 0; i < MAX_PLOTS / 2; i++)
         {
-            for (int x = 0; x < grid_len; x++)
+            int x = Random.Integer(0, grid_len);
+            int y = Random.Integer(0, grid_len);
+
+            if (plots_array[x, y] == null)
             {
                 Plot new_plot = make_plot(x, y);
-                plots_list[x, y] = new_plot;
+                plots_array[x, y] = new_plot;
                 empty_plots.Add(new_plot);
             }
         }
@@ -57,10 +55,18 @@ public class Space : SimulatorComponent
 
     public Plot get_random_plot()
     {
-        int rand_x = Random.Integer(0, grid_len);
-        int rand_y = Random.Integer(0, grid_len);
+        int x = Random.Integer(0, grid_len);
+        int y = Random.Integer(0, grid_len);
+        
+        Plot potential = plots_array[x,y];
 
-        return plots_list[rand_x, rand_y];
+        if (potential == null)
+        {
+            return get_random_plot();
+        }
+
+        return potential;
+
     }
 
     /// <summary>
@@ -84,7 +90,7 @@ public class Space : SimulatorComponent
     {
         Plot best_plot = null;
         float best_plot_val = 0;
-        foreach(Plot p in plots_list)
+        foreach(Plot p in plots_array)
         {
             if (best_plot == null || plot_eval(p) > best_plot_val)
             {
@@ -114,20 +120,21 @@ public class Space : SimulatorComponent
     // will likely need to change if we want new plots to be created during simulation
     void setup_plot_neighbors()
     {
-        for(int x = 0; x < grid_len; x++)
+        foreach (Plot p in plots_array)
         {
-            for (int y = 0; y < grid_len; y++)
-            {
-                Plot curr_plot = plots_list[x, y];
-                Plot north = (y == grid_len - 1) ? null : plots_list[x, y + 1];
-                Plot east = (x == grid_len - 1) ? null : plots_list[x + 1, y];
-                Plot south = (y == 0) ? null : plots_list[x, y - 1];
-                Plot west = (x == 0) ? null : plots_list[x-1, y];
-                curr_plot.neighbor_plots[0] = north;
-                curr_plot.neighbor_plots[1] = east;
-                curr_plot.neighbor_plots[2] = south;
-                curr_plot.neighbor_plots[3] = west;
-            }
+            if (p == null) continue;
+            int x = p.x_pos;
+            int y = p.y_pos;
+            
+            Plot north = (y == grid_len - 1) ? null : plots_array[x, y + 1];
+            Plot east = (x == grid_len - 1) ? null : plots_array[x + 1, y];
+            Plot south = (y == 0) ? null : plots_array[x, y - 1];
+            Plot west = (x == 0) ? null : plots_array[x-1, y];
+            
+            p.neighbor_plots[0] = north;
+            p.neighbor_plots[1] = east;
+            p.neighbor_plots[2] = south;
+            p.neighbor_plots[3] = west;
         }
     }
 
@@ -167,14 +174,17 @@ public class Space : SimulatorComponent
         float plot_side_len = 1 * draw_scale;
 
         // draw all square plots
-        foreach (Plot p in plots_list)
+        foreach (Plot p in plots_array)
         {
-            Vector2 midpoint = p.world_midpoint_coords();
-            Rect p_rect = new Rect(midpoint.x - (0.5f * plot_side_len),
-                                   midpoint.y - (0.5f * plot_side_len),
-                                   plot_side_len,
-                                   plot_side_len);
-            Draw.Rect(p_rect, p.color, -1);
+            if (p != null)
+            {
+                Vector2 midpoint = p.world_midpoint_coords();
+                Rect p_rect = new Rect(midpoint.x - (0.5f * plot_side_len),
+                    midpoint.y - (0.5f * plot_side_len),
+                    plot_side_len,
+                    plot_side_len);
+                Draw.Rect(p_rect, p.color, -1);
+            }
         }
 
         // draw all streets
