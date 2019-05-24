@@ -14,6 +14,9 @@ public static class RoleLibrary
                 Collection = PersonTown.Singleton.aliveResidents,
                 Filter = (p, l) => p == null
             }
+        },
+        {
+            "RoleBioMother", new RoleBioMother()
         }
     };
 
