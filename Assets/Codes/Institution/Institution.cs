@@ -72,12 +72,12 @@ namespace Codes.Institution
         {
         }
 
-        public void Build(Institution institution, Plot loc)
+        public void Build(Institution institution)
         {
             // TODO: build institution on certain plot
             Color color = InstitutionManager.colorMap[institution.type];
-            loc.add_institution(institution);
-            loc.set_color(color);
+            institution.location.add_institution(institution);
+            institution.location.set_color(color);
             Logger.Log(SUB_SYSTEM,  type, "build", institution.owner +":"+ institution.type, "("+location.x_pos+","+location.y_pos+")");
         }
     }
