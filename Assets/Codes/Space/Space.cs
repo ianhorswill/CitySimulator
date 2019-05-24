@@ -6,16 +6,12 @@ using System;
 public class Space : SimulatorComponent
 {
     public static int MAX_PLOTS = 100;
-    public static int MAX_STREETS = 1000;
     public Plot[,] plots_list;
     public Street[,] streets_list;
-    //float streetStretch = 1.505f;
     public int grid_len = 10;
     public static Space Singleton;
-    List<Plot> empty_plots =
-            new List<Plot>();
-    List<Plot> occupied_plots =
-            new List<Plot>();
+    List<Plot> empty_plots = new List<Plot>();
+    List<Plot> occupied_plots = new List<Plot>();
     public float draw_scale = 2;
 
     public Space()
@@ -23,7 +19,7 @@ public class Space : SimulatorComponent
         Singleton = this; 
     }
 
-    // Start is called before the first frame update
+    // Initialize is called before the first frame update
     public override void Initialize()
     {
         plots_list = new Plot[grid_len, grid_len];
@@ -50,9 +46,19 @@ public class Space : SimulatorComponent
                 streets_list[level,dir] = make_street(level, street_dir);
             }
         }
+        
+//        for (int i = 0; i < (MAX_PLOTS / 2); i++)
+//        {
+//            int x = Random.Integer(0, grid_len);
+//            int y = Random.Integer(0, grid_len);
+//
+//            Plot new_plot = make_plot(x, y);
+//            plots_list[x, y] = new_plot;
+//            empty_plots.Add(new_plot);
+//        }
 
-        setup_plot_neighbors();
         setup_street_connections();
+        setup_plot_neighbors();
     }
 
     public Plot get_random_plot()
@@ -114,20 +120,20 @@ public class Space : SimulatorComponent
     // will likely need to change if we want new plots to be created during simulation
     void setup_plot_neighbors()
     {
-        for(int x = 0; x < grid_len; x++)
+        foreach (Plot p in plots_list)
         {
-            for (int y = 0; y < grid_len; y++)
-            {
-                Plot curr_plot = plots_list[x, y];
-                Plot north = (y == grid_len - 1) ? null : plots_list[x, y + 1];
-                Plot east = (x == grid_len - 1) ? null : plots_list[x + 1, y];
-                Plot south = (y == 0) ? null : plots_list[x, y - 1];
-                Plot west = (x == 0) ? null : plots_list[x-1, y];
-                curr_plot.neighbor_plots[0] = north;
-                curr_plot.neighbor_plots[1] = east;
-                curr_plot.neighbor_plots[2] = south;
-                curr_plot.neighbor_plots[3] = west;
-            }
+            int x = p.x_pos;
+            int y = p.y_pos;
+            
+            Plot north = (y == grid_len - 1) ? null : plots_list[x, y + 1];
+            Plot east = (x == grid_len - 1) ? null : plots_list[x + 1, y];
+            Plot south = (y == 0) ? null : plots_list[x, y - 1];
+            Plot west = (x == 0) ? null : plots_list[x-1, y];
+            
+            p.neighbor_plots[0] = north;
+            p.neighbor_plots[1] = east;
+            p.neighbor_plots[2] = south;
+            p.neighbor_plots[3] = west; 
         }
     }
 
