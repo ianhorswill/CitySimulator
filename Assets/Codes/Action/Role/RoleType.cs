@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 // We are using a generic type here to allow for any type in the Collection
 //  -> the collection is be used in Linq queries to get individual objects.
@@ -61,12 +60,12 @@ public class RoleType<T> : RoleTypeBase
     // Passes a new Role<T> back up to the RoleBase, and returns that role in the
     // form of a RoleBase... Uses the custom GetRole to fill in and (if set) uses:
     //  - BuildFlag to create a new object of the right type in the right collection.
-    public override RoleBase FillRoleUntyped(List<RoleBase> filled_roles)
+    public override RoleBase FillRoleUntyped(List<RoleBase> roleBindings)
     {
         if (this.BuildFlag)
         {
             Type typeParameterType = typeof(T);
-            object newObject = Builder.Build(typeParameterType, filled_roles);
+            object newObject = Builder.Build(typeParameterType, roleBindings);
             if (newObject != null)
             {
                 T newTypedObject = (T) newObject;
@@ -75,16 +74,16 @@ public class RoleType<T> : RoleTypeBase
             }
             return null;
         }
-        return GetRole(filled_roles);
+        return GetRole(roleBindings);
     }
 
     // Relies on the proper object type being passed to FillRoleWith...
     // NOT TYPESAFE
-    public override RoleBase FillRoleWith(object toFill, List<RoleBase> filled_roles)
+    public override RoleBase FillRoleWith(object desiredValue, List<RoleBase> roleBindings)
     {
-        if (Filter((T) toFill, filled_roles))
+        if (Filter((T) desiredValue, roleBindings))
         {
-            return new Role<T>(this.Name, (T)toFill);
+            return new Role<T>(this.Name, (T)desiredValue);
         }
         return null;
     }
