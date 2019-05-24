@@ -19,6 +19,7 @@ public abstract class ActionType
     // roleBindings expects alternating strings (naming a role) and objects (to fill that role)
     public Action Instantiate(params object[] roleBindings)
     {
+        
         List<RoleBase> filled_roles = new List<RoleBase>();
 
         foreach (var role in Role_list)
