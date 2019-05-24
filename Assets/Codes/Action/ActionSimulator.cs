@@ -11,19 +11,21 @@ public class ActionSimulator : SimulatorComponent
         return PersonTown.Singleton.aliveResidents.RandomElement();
     }
 
-//    public override void Step()
-//    {
-//        for (int i = 0; i < 10; i++)
-//        {
-//            ActionType randAction = ActionLibrary.ChanceFilteredPriorityBasedSelection(i);
-//            Action a = randAction.Instantiate();
-//            if (a != null)
-//            {
-//                randAction.Execute(a);
-//            }
-//        }
-//
-//        if (PersonTown.Singleton.aliveResidents.Count == 0) // Town is dead
-//            return;
-//    }
+    public override void Step()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            ActionType randAction = ActionLibrary.ChanceFilteredPriorityBasedSelection(i);
+            if (randAction == null) return;
+            
+            Action a = randAction.Instantiate();
+            if (a != null)
+            {
+                randAction.Execute(a);
+            }
+        }
+
+        if (PersonTown.Singleton.aliveResidents.Count == 0) // Town is dead
+            return;
+    }
 }
