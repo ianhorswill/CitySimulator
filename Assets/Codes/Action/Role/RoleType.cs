@@ -12,6 +12,34 @@ public class RoleType<T> : RoleTypeBase
 
     public Func<T, List<RoleBase>, bool> Filter;
 
+    public RoleType(string name, List<T> collection, Func<T, List<RoleBase>, bool> filter)
+    {
+        Name = name;
+        Collection = collection;
+        Filter = filter;
+    }
+
+    public RoleType(string name, Func<T, List<RoleBase>, bool> filter)
+        : this(name, DefaultCollection(), filter)
+    { }
+
+    public RoleType(string name)
+        : this(name, DefaultCollection(), (t, l) => true)
+    { }
+
+    private static List<T> DefaultCollection()
+    {
+        var t = typeof(T);
+        if (t == typeof(Person))
+            return ForceToT(PersonTown.Singleton.aliveResidents);
+        throw new InvalidOperationException($"No default collection defined for type {t.Name}");
+    }
+
+    private static List<T> ForceToT(object collection)
+    {
+        return (List<T>)collection;
+    }
+
     // This standardizes the task of finding and filling in a role. Uses:
     //  - Filter to check the entites (current and past)
     //  - Name to return a Role<T> with the right object
