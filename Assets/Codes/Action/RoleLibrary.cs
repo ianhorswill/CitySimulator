@@ -16,7 +16,19 @@ public static class RoleLibrary
             }
         },
         {
-            "RoleBioMother", new RoleBioMother()
+            "RoleBioMother", new RoleType<Person>()
+            {
+                Name = "RoleBioMother",
+                Collection = PersonTown.Singleton.aliveResidents,
+                Filter = (p, l) =>
+                {
+                    if (p.isFemale() && p.age >= 18 && p.sigOther != null && p.sigOther.age >= 18)
+                    {
+                        return true;
+                    }
+                    return false;
+                }
+            }
         }
     };
 
