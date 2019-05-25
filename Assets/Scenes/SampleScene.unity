@@ -156,7 +156,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3326eb3a26de2462083c5cbb94464db1, type: 3}
+  m_Script: {fileID: 11500000, guid: 9f9211a2499b3f742b3347112a57203c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Shader: {fileID: 0}
@@ -310,7 +310,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1543635301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd395c46c1bc94dda92304fee2dc37c3, type: 3}
+  m_Script: {fileID: 11500000, guid: 9926afc089dc0744781c0aa630a820b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TextStyle:

@@ -1,22 +1,35 @@
+using System;
 using System.Collections.Generic;
 
 /// <summary>
 /// Represents a kind of action, as opposed to an instance of an action
 /// </summary>
-public abstract class ActionType
+public class ActionType
 {
-    // Required fields:
+    /// <summary>
+    /// Create a new object describing a new type of action with the specified roles.
+    /// </summary>
+    /// <param name="name">Name of the type of action</param>
+    /// <param name="roles">Roles (arguments) of actions of this type.</param>
+    public ActionType(string name, params RoleTypeBase[] roles)
+    {
+        ActionName = name;
+        Role_list = new List<RoleTypeBase>(roles);
+    }
 
-    public abstract string ActionName { get; }
+    /// <summary>
+    /// Name of this type of action
+    /// </summary>
+    public string ActionName;
 
     /// <summary>
     /// List of rules that need to be bound in an instance of this action type
     /// </summary>
-    public abstract List<RoleTypeBase> Role_list { get; }
+    public List<RoleTypeBase> Role_list;
 
     // Optional fields (else use defaults):
-    public virtual int Priority { get { return 10; } }
-    public virtual double Chance { get { return 1.0; } }
+    public int Priority = 10;
+    public double Chance = 1;
 
     // Optional methods (else do nothing):
 
@@ -24,13 +37,14 @@ public abstract class ActionType
     /// Change the world to reflect the execution of the specified action
     /// </summary>
     /// <param name="a">The action to execute.  Will always be an instance of this action type</param>
-    public virtual void Modifications(Action a) { return; }
+    public Action<Action> Modifications;
+
     /// <summary>
     /// Perform any further operations associated with the execution of an action, after the world is
     /// modified.  For example, queuing subsequent actions to perform in the future.
     /// </summary>
     /// <param name="a">Original action being executed</param>
-    public virtual void PostExecute(Action a) { return; }
+    public Action<Action> PostExecute;
 
     // roleBindings expects alternating strings (naming a role) and objects (to fill that role)
 
@@ -80,7 +94,9 @@ public abstract class ActionType
     {
         // TODO: log action in global action list
         //ActionSimulator.action_history.Add(a);
-        Modifications(a);
-        PostExecute(a);
+        if (Modifications != null)
+            Modifications(a);
+        if (PostExecute != null)
+            PostExecute(a);
     }
 }

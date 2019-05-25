@@ -1,19 +1,54 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Action.Actions;
-using UnityEngine;
+using static RoleLibrary;
 
 public static class ActionLibrary
 {
     private static readonly Dictionary<string, ActionType> actionDict = new Dictionary<string, ActionType>
     {
-//        { "Talk" , new ActionTalk() },
-        { "Heard" , new ActionHeard() },
-//        { "GenerateInstitution" , new ActionGenerateInstitution() },
-//        { "GiveBirth" , new ActionGiveBirth() },
-//        { "InstitutionHiring" , new ActionInstitutionHiring() },
-//        { "Death" , new ActionDeath() }
+        //{
+        //    "Talk" , new ActionType("Talk",  GetRoleByName("RoleSpeaker"), GetRoleByName("RoleListener"), GetRoleByName("RoleSameLocation"))
+        //        { 
+        //            Priority = 5,
+        //            Modifications = a =>
+        //            {
+        //                var Listener = (Person)a["RoleListener"];
+        //                //var topic = (Person)a["RoleConverstaionTopic
+        //            },
+
+        //            PostExecute = a =>
+        //            {
+        //                var Listener = (Person) a["RoleListener"];
+        //                // TODO?: filter based on location, people nearby this conversation
+        //                Action heard = ActionLibrary.InstantiateByName("Heard", "RoleHeard", Listener);
+        //                if (heard != null)
+        //                {
+        //                    ExecuteByName("Heard", heard);
+        //                }
+
+        //            }
+        //        }
+        //},
+
+        { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard")) },
+        //{ "GenerateInstitution" , new ActionType("GenerateInstitution") { Chance = 1 } },
+
+        //{ "GiveBirth" , new ActionType("GiveBirth", GetRoleByName("RoleBioMother"))
+        //    {
+        //        Priority = 2,
+        //        Chance = 1.0,
+        //        Modifications = a =>
+        //        {
+        //            var BioMother = (Person) a["RoleBioMother"];
+        //            var BioFather = BioMother.sigOther;
+        //            Person baby = Person.createChild(BioMother, BioFather);
+        //            PersonTown.Singleton.aliveResidents.Add(baby);
+        //        }
+        //    }
+        //},
+
+        //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
+        //{ "Death" , new ActionType("Death") { Chance = 1 } }
     };
 
     public static ActionType GetActionByName(string actionName)
