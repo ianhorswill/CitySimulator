@@ -12,6 +12,12 @@ public class RoleType<T> : RoleTypeBase
 
     public Func<T, List<RoleBase>, bool> Filter;
 
+    /// <summary>
+    /// Make n object representing a new kind of role that selects bindings using the specified collection and filter predicate
+    /// </summary>
+    /// <param name="name">Name of the role</param>
+    /// <param name="collection">Set of objects to which the action might potentially be bound</param>
+    /// <param name="filter">Additional predicate to use to test whether a member of collection should be considered for this role.</param>
     public RoleType(string name, List<T> collection, Func<T, List<RoleBase>, bool> filter)
     {
         Name = name;
@@ -19,12 +25,34 @@ public class RoleType<T> : RoleTypeBase
         Filter = filter;
     }
 
+    /// <summary>
+    /// Make an object representing a new kind of role that selects bindings using the default collection and the specified filter predicate
+    /// Bindings are selected from the default collection, which depends on the type parameter of RoleType.  For type Person, it is the set
+    /// of living persons.
+    /// </summary>
+    /// <param name="name">Name of the role</param>
+    /// <param name="filter">Additional predicate to use to test whether a member of collection should be considered for this role.</param>
     public RoleType(string name, Func<T, List<RoleBase>, bool> filter)
         : this(name, DefaultCollection(), filter)
     { }
 
+    /// <summary>
+    /// Make an object representing a new kind of role that selects bindings using the default collection
+    /// Bindings are selected from the default collection, which depends on the type parameter of RoleType.  For type Person, it is the set
+    /// of living persons.
+    /// </summary>
+    /// <param name="name">Name of the role</param>
     public RoleType(string name)
         : this(name, DefaultCollection(), (t, l) => true)
+    { }
+
+    /// <summary>
+    /// Make n object representing a new kind of role that selects bindings using the specified collection
+    /// </summary>
+    /// <param name="name">Name of the role</param>
+    /// <param name="collection">Set of objects to which the action might potentially be bound</param>
+    public RoleType(string name, List<T> collection)
+        : this(name, collection, (t, l) => true)
     { }
 
     private static List<T> DefaultCollection()
