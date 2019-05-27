@@ -94,7 +94,10 @@ public class RoleType<T> : RoleTypeBase
     public Role<T> GetRole(Action a)
     {
         if (binder != null)
-            return new Role<T>(Name, binder(a));
+        {
+            var value = binder(a);
+            return value != null ? new Role<T>(Name, value) : null;
+        }
         IEnumerable<T> candidates = from entity in collection
                                     where filter(entity, a)
                                     select entity;
