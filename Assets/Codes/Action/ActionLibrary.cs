@@ -4,7 +4,7 @@ using static RoleLibrary;
 
 public static class ActionLibrary
 {
-    private static readonly Dictionary<string, ActionType> actionDict = new Dictionary<string, ActionType>
+    private static readonly Dictionary<string, ActionType> ActionDict = new Dictionary<string, ActionType>
     {
         //{
         //    "Talk" , new ActionType("Talk",  GetRoleByName("RoleSpeaker"), GetRoleByName("RoleListener"), GetRoleByName("RoleSameLocation"))
@@ -53,7 +53,7 @@ public static class ActionLibrary
 
     public static ActionType GetActionByName(string actionName)
     {
-        return actionDict[actionName];
+        return ActionDict[actionName];
     }
 
     public static Action InstantiateByName(string name, params object[] bindings)
@@ -68,7 +68,7 @@ public static class ActionLibrary
 
     public static ActionType RandomlyChoose()
     {
-        return RandomlyChoose(actionDict);
+        return RandomlyChoose(ActionDict);
     }
 
     private static ActionType RandomlyChoose(Dictionary<string, ActionType> actionSubset)
@@ -84,7 +84,7 @@ public static class ActionLibrary
 
     public static ActionType PriorityBasedSelection(int priority)
     {
-        var result = from a in actionDict
+        var result = from a in ActionDict
                      where a.Value.Priority == priority
                      select a;
         // TODO: special logic based on various priority levels

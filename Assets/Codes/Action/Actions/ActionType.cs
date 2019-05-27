@@ -14,7 +14,7 @@ public class ActionType
     public ActionType(string name, params RoleTypeBase[] roles)
     {
         ActionName = name;
-        Role_list = new List<RoleTypeBase>(roles);
+        RoleList = new List<RoleTypeBase>(roles);
     }
 
     /// <summary>
@@ -25,7 +25,7 @@ public class ActionType
     /// <summary>
     /// List of rules that need to be bound in an instance of this action type
     /// </summary>
-    public List<RoleTypeBase> Role_list;
+    public List<RoleTypeBase> RoleList;
 
     // Optional fields (else use defaults):
     public int Priority = 10;
@@ -36,14 +36,12 @@ public class ActionType
     /// <summary>
     /// Change the world to reflect the execution of the specified action
     /// </summary>
-    /// <param name="a">The action to execute.  Will always be an instance of this action type</param>
     public Action<Action> Modifications;
 
     /// <summary>
     /// Perform any further operations associated with the execution of an action, after the world is
     /// modified.  For example, queuing subsequent actions to perform in the future.
     /// </summary>
-    /// <param name="a">Original action being executed</param>
     public Action<Action> PostExecute;
 
     // roleBindings expects alternating strings (naming a role) and objects (to fill that role)
@@ -56,26 +54,27 @@ public class ActionType
     public Action Instantiate(params object[] roleBindings)
     {
         
-        List<RoleBase> filled_roles = new List<RoleBase>();
+        var filledRoles = new List<RoleBase>();
+        var a = new Action(ActionName, Simulator.CurrentTime, filledRoles);
 
-        foreach (var role in Role_list)
+        foreach (var role in RoleList)
         {
-            var temp_binding_obj = BindingOf(role.Name, roleBindings);
-            if (temp_binding_obj != null)
+            var tempBindingObj = BindingOf(role.Name, roleBindings);
+            if (tempBindingObj != null)
             {
                 // AGAIN, NOT TYPE SAFE, RELIES ON PROPER TYPE BEING PASSED IN
-                RoleBase temp = role.FillRoleWith(temp_binding_obj, filled_roles);
-                if (temp != null) { filled_roles.Add(temp); }
+                RoleBase temp = role.FillRoleWith(tempBindingObj, a);
+                if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }
             else
             {
-                RoleBase temp = role.FillRoleUntyped(filled_roles);
-                if (temp != null) { filled_roles.Add(temp); }
+                RoleBase temp = role.FillRoleUntyped(a);
+                if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }
         }
-        return new Action(this.ActionName, Simulator.CurrentTime, filled_roles);
+        return a;
     }
 
     object BindingOf(string role, object[] bindings)

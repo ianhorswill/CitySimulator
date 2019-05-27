@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 /// <summary>
 /// Base class for all RoleTypes
 /// Represents a role, independent of the value it's bound to in a particular action.
@@ -26,15 +24,15 @@ public abstract class RoleTypeBase
     /// <summary>
     /// Find a value to bind this role to for some particular action.
     /// </summary>
-    /// <param name="roleBindings">The existing role bindings for the action</param>
+    /// <param name="a">The action being bound</param>
     /// <returns></returns>
-    public abstract RoleBase FillRoleUntyped(List<RoleBase> roleBindings = null);
+    public abstract RoleBase FillRoleUntyped(Action a);
 
     /// <summary>
     /// Attempt to bind this role to a specific value for some action
     /// </summary>
     /// <param name="desiredValue">Value to bind it to</param>
-    /// <param name="roleBindings">Existing bindings for the action</param>
+    /// <param name="a">The action being bound</param>
     /// <returns>A binding (RoleBase) if successful, else null.</returns>
-    public abstract RoleBase FillRoleWith(object desiredValue, List<RoleBase> roleBindings = null);
+    public abstract RoleBase FillRoleWith(object desiredValue, Action a);
 }

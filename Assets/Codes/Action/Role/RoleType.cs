@@ -7,10 +7,18 @@ using System.Linq;
 // The T that you use must have a default constructor for build to work.
 public class RoleType<T> : RoleTypeBase
 {
-    public new string Name;
-    public List<T> Collection;
-
-    public Func<T, List<RoleBase>, bool> Filter;
+    /// <summary>
+    /// Procedure to bind role to values
+    /// </summary>
+    private readonly Func<Action, T> binder;
+    /// <summary>
+    /// Collection from which to draw values when binding, when binder not specified
+    /// </summary>
+    private readonly List<T> collection;
+    /// <summary>
+    /// Filter to apply to collection.
+    /// </summary>
+    private readonly Func<T, Action, bool> filter;
 
     /// <summary>
     /// Make n object representing a new kind of role that selects bindings using the specified collection and filter predicate
@@ -18,11 +26,11 @@ public class RoleType<T> : RoleTypeBase
     /// <param name="name">Name of the role</param>
     /// <param name="collection">Set of objects to which the action might potentially be bound</param>
     /// <param name="filter">Additional predicate to use to test whether a member of collection should be considered for this role.</param>
-    public RoleType(string name, List<T> collection, Func<T, List<RoleBase>, bool> filter)
+    public RoleType(string name, List<T> collection, Func<T, Action, bool> filter)
     {
         Name = name;
-        Collection = collection;
-        Filter = filter;
+        this.collection = collection;
+        this.filter = filter;
     }
 
     /// <summary>
@@ -32,7 +40,7 @@ public class RoleType<T> : RoleTypeBase
     /// </summary>
     /// <param name="name">Name of the role</param>
     /// <param name="filter">Additional predicate to use to test whether a member of collection should be considered for this role.</param>
-    public RoleType(string name, Func<T, List<RoleBase>, bool> filter)
+    public RoleType(string name, Func<T, Action, bool> filter)
         : this(name, DefaultCollection(), filter)
     { }
 
@@ -55,6 +63,17 @@ public class RoleType<T> : RoleTypeBase
         : this(name, collection, (t, l) => true)
     { }
 
+    /// <summary>
+    /// Make an object representing a new kind of role that selects bindings using the specified binding procedure.
+    /// </summary>
+    /// <param name="name">Name of the role</param>
+    /// <param name="binder">Procedure to find values for this role.</param>
+    public RoleType(string name, Func<Action, T> binder)
+    {
+        Name = name;
+        this.binder = binder;
+    }
+
     private static List<T> DefaultCollection()
     {
         var t = typeof(T);
@@ -69,18 +88,20 @@ public class RoleType<T> : RoleTypeBase
     }
 
     // This standardizes the task of finding and filling in a role. Uses:
-    //  - Filter to check the entites (current and past)
+    //  - Filter to check the entities (current and past)
     //  - Name to return a Role<T> with the right object
     //  - CAN use Collection as the source/target in a Linq query
-    public Role<T> GetRole(List<RoleBase> filled_roles)
+    public Role<T> GetRole(Action a)
     {
-        IEnumerable<T> candidates = from entity in Collection
-                                    where Filter(entity, filled_roles)
+        if (binder != null)
+            return new Role<T>(Name, binder(a));
+        IEnumerable<T> candidates = from entity in collection
+                                    where filter(entity, a)
                                     select entity;
-        List<T> candidate_List = candidates.ToList();
-        if (candidate_List.Any())
+        List<T> candidateList = candidates.ToList();
+        if (candidateList.Any())
         {
-            return new Role<T>(this.Name, candidate_List.RandomElement());
+            return new Role<T>(Name, candidateList.RandomElement());
         }
         return null;
     }
@@ -88,30 +109,30 @@ public class RoleType<T> : RoleTypeBase
     // Passes a new Role<T> back up to the RoleBase, and returns that role in the
     // form of a RoleBase... Uses the custom GetRole to fill in and (if set) uses:
     //  - BuildFlag to create a new object of the right type in the right collection.
-    public override RoleBase FillRoleUntyped(List<RoleBase> roleBindings)
+    public override RoleBase FillRoleUntyped(Action a)
     {
-        if (this.BuildFlag)
+        if (BuildFlag)
         {
             Type typeParameterType = typeof(T);
-            object newObject = Builder.Build(typeParameterType, roleBindings);
+            object newObject = Builder.Build(typeParameterType, a);
             if (newObject != null)
             {
                 T newTypedObject = (T) newObject;
-                Collection.Add(newTypedObject);
-                return new Role<T>(this.Name, newTypedObject);
+                collection.Add(newTypedObject);
+                return new Role<T>(Name, newTypedObject);
             }
             return null;
         }
-        return GetRole(roleBindings);
+        return GetRole(a);
     }
 
     // Relies on the proper object type being passed to FillRoleWith...
-    // NOT TYPESAFE
-    public override RoleBase FillRoleWith(object desiredValue, List<RoleBase> roleBindings)
+    // NOT TYPE SAFE
+    public override RoleBase FillRoleWith(object desiredValue, Action a)
     {
-        if (Filter((T) desiredValue, roleBindings))
+        if (filter((T) desiredValue, a))
         {
-            return new Role<T>(this.Name, (T)desiredValue);
+            return new Role<T>(Name, (T)desiredValue);
         }
         return null;
     }
