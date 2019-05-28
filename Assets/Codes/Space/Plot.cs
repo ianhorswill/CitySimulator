@@ -8,14 +8,14 @@ public class Plot : System.Object
 {
     public int x_pos, y_pos; // x, y coords
     public Plot[] neighbor_plots = new Plot[4]; // stored N,E,S,W
-    public bool occupied;
+    public bool Occupied;
     public List<Institution> institutions = new List<Institution>();
     private Space space;
     public Color color = Color.green;
 
     public Plot(int x, int y)
     {
-        occupied = false; 
+        Occupied = false; 
         x_pos = x;
         y_pos = y;
         space = Space.Singleton;
@@ -68,15 +68,15 @@ public class Plot : System.Object
 
     public Vector2 world_midpoint_coords()
     {
-        float x_coord = (x_pos + 0.5f) * Space.Singleton.draw_scale;
-        float y_coord = (y_pos + 0.5f) * Space.Singleton.draw_scale;
+        float x_coord = (x_pos + 0.5f) * Space.DrawScale;
+        float y_coord = (y_pos + 0.5f) * Space.DrawScale;
         return new Vector2(x_coord, y_coord);
     }
 
     public Vector2 world_random_coords()
     {
-        float x_coord = (x_pos + Random.Float(-0.25f, 0.25f)) * Space.Singleton.draw_scale;
-        float y_coord = (y_pos + Random.Float(-0.25f, 0.25f)) * Space.Singleton.draw_scale;
+        float x_coord = (x_pos + Random.Float(-0.25f, 0.25f)) * Space.DrawScale;
+        float y_coord = (y_pos + Random.Float(-0.25f, 0.25f)) * Space.DrawScale;
         return new Vector2(x_coord, y_coord);
     }
 
