@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Represents a kind of action, as opposed to an instance of an action
@@ -56,7 +57,7 @@ public class ActionType
         
         var filledRoles = new List<RoleBase>();
         var a = new Action(ActionName, Simulator.CurrentTime, filledRoles);
-
+        
         foreach (var role in RoleList)
         {
             var tempBindingObj = BindingOf(role.Name, roleBindings);
@@ -64,12 +65,14 @@ public class ActionType
             {
                 // AGAIN, NOT TYPE SAFE, RELIES ON PROPER TYPE BEING PASSED IN
                 RoleBase temp = role.FillRoleWith(tempBindingObj, a);
+                Debug.Log("fill");
                 if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }
             else
             {
                 RoleBase temp = role.FillRoleUntyped(a);
+                Debug.Log("fill untyped");
                 if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }

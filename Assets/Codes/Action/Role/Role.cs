@@ -4,7 +4,7 @@
 /// <typeparam name="T">Type of the role's value</typeparam>
 public class Role<T> : RoleBase
 {
-    private readonly T value;
+    public readonly T value;
 
     /// <summary>
     /// Make a binding of the role with the specified name to the specified value

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 using static RoleLibrary;
 
 public static class ActionLibrary
@@ -30,22 +32,36 @@ public static class ActionLibrary
         //        }
         //},
 
-        { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard")) },
+        { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
+        },
         //{ "GenerateInstitution" , new ActionType("GenerateInstitution") { Chance = 1 } },
 
-        //{ "GiveBirth" , new ActionType("GiveBirth", GetRoleByName("RoleBioMother"))
-        //    {
-        //        Priority = 2,
-        //        Chance = 1.0,
-        //        Modifications = a =>
-        //        {
-        //            var BioMother = (Person) a["RoleBioMother"];
-        //            var BioFather = BioMother.sigOther;
-        //            Person baby = Person.createChild(BioMother, BioFather);
-        //            PersonTown.Singleton.aliveResidents.Add(baby);
-        //        }
-        //    }
-        //},
+        { "GiveBirth" , new ActionType("GiveBirth", GetRoleByName("RoleBioMother"))
+           {
+                Priority = 2,
+                Chance = 1.0,
+                Modifications = a =>
+                {
+                    var BioMother = ((Role<Person>) a["BioMother"]).value;
+                    var BioFather = BioMother.sigOther;
+                    Person baby = Person.createChild(BioMother, BioFather);
+                    PersonTown.Singleton.aliveResidents.Add(baby);
+                }
+            }
+        },
+
+        { "Death", new ActionType("Death", GetRoleByName("RoleDeath"))
+            {
+                Priority = 2,
+                Chance = 0.1,
+                Modifications = a =>
+                {
+                    var selectedToDie= ((Role<Person>) a["Death"]).value;
+                    PersonTown.Singleton.aliveResidents.Remove(selectedToDie);
+                    PersonTown.Singleton.deceased.Add(selectedToDie);
+                }
+            }
+        },
 
         //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
         //{ "Death" , new ActionType("Death") { Chance = 1 } }
@@ -95,6 +111,6 @@ public static class ActionLibrary
     {
         ActionType a = PriorityBasedSelection(priority);
         if (a == null) return null;
-        return (Random.Float(0.0f, 1.0f) - a.Chance) < 0.0 ? null : a;
+        return (Random.Float(0.0f, 1.0f) - a.Chance) < 0.0 ? a : null;
     }
 }
