@@ -13,7 +13,7 @@ public static class Simulator
         AddComponent(new Space());
         AddComponent(new PersonTown());
         AddComponent(new ActionSimulator());
-        AddComponent(new InstitutionManager(Space.Singleton));
+//        AddComponent(new InstitutionManager(Space.Singleton));
     }
 
     private static void AddComponent(SimulatorComponent simulatorComponent)

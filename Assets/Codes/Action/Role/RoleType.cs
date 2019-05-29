@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Codes.Institution;
 
 // We are using a generic type here to allow for any type in the Collection
 //  -> the collection is be used in Linq queries to get individual objects.
@@ -79,6 +80,8 @@ public class RoleType<T> : RoleTypeBase
         var t = typeof(T);
         if (t == typeof(Person))
             return ForceToT(PersonTown.Singleton.aliveResidents);
+        if (t == typeof(Institution))
+            return ForceToT(InstitutionManager.institutionList);
         throw new InvalidOperationException($"No default collection defined for type {t.Name}");
     }
 
