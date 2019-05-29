@@ -60,6 +60,20 @@ public class PersonTown : SimulatorComponent
         Singleton = this;
     }
 
+    public List<Tuple<Person, Person, Person>> findLoveTriangles()
+    {
+        var loveTriangleCollection =
+            from p1 in aliveResidents
+            from p2 in aliveResidents
+            from p3 in aliveResidents
+            where (p1 != p2 && p2 != p3 && p1 != p3)
+            where (Person.inLoveTriangle(p1, p2, p3))
+            select new Tuple<Person, Person, Person>(p1, p2, p3);
+
+        var loveTriangleList = loveTriangleCollection.ToList();
+        return loveTriangleList;
+    }
+
     //Is this a life event?  Also may separate the system randomness / choosing from the exact method, instead using a parameter of a Person and just doing the effects on the Lists.
     public void death(Person selectedToDie){
 
@@ -227,7 +241,14 @@ public class PersonTown : SimulatorComponent
             pa.workStatus.loseJob();
             pa.personalEducation.is_high_school_graduate = true;
             pa.personalEducation.is_student = false;
-        }        
+        }
+
+
+        var loveTriangles = findLoveTriangles();
+        foreach (var tup in loveTriangles)
+        {
+            Logger.Log("person", "\t"+tup.Item1.name, "\t"+tup.Item2.name, "\t"+tup.Item3.name );
+        }
 
     }
 

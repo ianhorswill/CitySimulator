@@ -13,7 +13,7 @@ Cemetery|160|128|160
 CityHall|32|32|160
 ClothingStore|128|64|64
 CoalMine|64|32|96
-ConstructionFirm|224|64|128
+ConstructionCompany|224|64|128
 Dairy|224|96|64
 DayCare|192|32|64
 Deli|96|224|128
