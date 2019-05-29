@@ -19,7 +19,7 @@ public static class RoleLibrary
                                                                             return null;
                                                                         })
         },
-        {"RoleCEO", new RoleType<Person>("CEO")},
+        { "RoleCEO", new RoleType<Person>("CEO")},
         { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
         { "RoleEmployee", new RoleType<Person>("Employee")},
         { "RoleInstitution", new RoleType<Institution>("Institution")}
