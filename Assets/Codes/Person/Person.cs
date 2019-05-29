@@ -63,7 +63,7 @@ public class Person
     // We will have things here eventually.
     // private var currentLocation;
 
-    class Relationship
+    public class Relationship
     {
         public int Charge;
         public int Spark;
@@ -76,7 +76,7 @@ public class Person
             Compatibility = getCompatibility(p1, p2);
         }
 
-        private static int getCompatibility(Person p1, Person p2)
+        public static int getCompatibility(Person p1, Person p2)
         {
             int personalityDiff = 0;
             // these facets are chosen to mimic James' compatibility calculation using O/E/A difference 
