@@ -10,13 +10,13 @@ namespace Codes.Institution
     public class InstitutionManager : SimulatorComponent
     {
         // store all the institutions been constructed
-        private static List<Institution> institutionList;
+        public static List<Institution> institutionList;
         // store the hardcode institution types
         private static string[] institutionTypeList;
         // the color map for each institution type
         public static Dictionary<String, Color> colorMap;
         // store the construction companies
-        private static List<ConstructionCompany> constructionCompanyList;
+        public static List<ConstructionCompany> constructionCompanyList;
 
         public static Dictionary<String, List<Institution>> InstitutionDictionary;
 
@@ -28,7 +28,8 @@ namespace Codes.Institution
         {
             institutionList = new List<Institution>();
             constructionCompanyList =  new List<ConstructionCompany>();
-            institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +"/Assets/Codes/Institution/InstitutionData/institutionTypes.txt");
+            institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +
+                                                    "/Assets/Codes/Institution/InstitutionData/institutionTypes.txt");
 
             string[] colorStr =
                 File.ReadAllLines(Directory.GetCurrentDirectory() +
@@ -151,7 +152,7 @@ namespace Codes.Institution
         public override void Step()
         {
             Institution institution = GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
-            GetRandomConstructionCompany().Build(institution, institution.location);
+            GetRandomConstructionCompany().Build(institution);
             institution.Hiring(Person.generateRandomPerson());
         }
 
