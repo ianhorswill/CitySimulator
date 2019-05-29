@@ -16,14 +16,16 @@ public class ActionSimulator : SimulatorComponent
         for (int i = 0; i < 10; i++)
         {
             ActionType randAction = ActionLibrary.RandomlyChoose();
-            Action a = randAction.Instantiate();
-            
-            //Debug.Log(a);
-            if (a != null)
+            if (randAction != null)
             {
-                randAction.Execute(a);
-            }
-            //Logger.Log(a.ToString());
+                Action a = randAction.Instantiate();
+                //Debug.Log(a);
+                if (a != null)
+                {
+                    randAction.Execute(a);
+                }
+                Logger.Log(a.ToString());
+            } 
         }
 
         if (PersonTown.Singleton.aliveResidents.Count == 0) // Town is dead

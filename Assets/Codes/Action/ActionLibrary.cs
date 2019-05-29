@@ -8,7 +8,7 @@ public static class ActionLibrary
 {
     private static readonly Dictionary<string, ActionType> actionDict = new Dictionary<string, ActionType>
     {
-//        { "Talk" , new ActionTalk() },
+        { "Talk" , new ActionTalk() },
         { "Heard" , new ActionHeard() },
 //        { "GenerateInstitution" , new ActionGenerateInstitution() },
 //        { "GiveBirth" , new ActionGiveBirth() },
