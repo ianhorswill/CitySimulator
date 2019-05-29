@@ -42,7 +42,8 @@ public static class ActionLibrary
                 Chance = 1.0,
                 Modifications = a =>
                 {
-                    var BioMother = ((Role<Person>) a["BioMother"]).value;
+                
+                    var BioMother = ((Person) a["BioMother"]);
                     var BioFather = BioMother.sigOther;
                     Person baby = Person.createChild(BioMother, BioFather);
                     PersonTown.Singleton.aliveResidents.Add(baby);
@@ -56,15 +57,15 @@ public static class ActionLibrary
                 Chance = 0.1,
                 Modifications = a =>
                 {
-                    var selectedToDie= ((Role<Person>) a["Death"]).value;
+                    var selectedToDie= (Person) a["Death"];
                     PersonTown.Singleton.aliveResidents.Remove(selectedToDie);
                     PersonTown.Singleton.deceased.Add(selectedToDie);
                 }
             }
         },
 
-        //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
-        //{ "Death" , new ActionType("Death") { Chance = 1 } }
+//        { "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
+//        { "Death" , new ActionType("Death") { Chance = 1 } }
     };
 
     public static ActionType GetActionByName(string actionName)

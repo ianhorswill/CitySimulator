@@ -50,7 +50,7 @@ public class Action
         {
 //            Debug.Log(roleName);
 //            Debug.Log(roles.Count);
-            return roles.First(rolebase => rolebase.Name.Equals(roleName));
+            return roles.First(rolebase => rolebase.Name.Equals(roleName)).GetBindingUntyped();
         }
     }
     
