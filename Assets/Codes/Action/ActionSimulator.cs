@@ -16,11 +16,18 @@ public class ActionSimulator : SimulatorComponent
         for (int i = 0; i < 10; i++)
         {
             ActionType randAction = ActionLibrary.ChanceFilteredPriorityBasedSelection(i);
-            Action a = randAction.Instantiate();
+            Action a;
+            if (randAction != null)
+                a = randAction.Instantiate();
+            else
+                continue;
+            
+            //Debug.Log(a);
             if (a != null)
             {
                 randAction.Execute(a);
             }
+            //Logger.Log(a.ToString());
         }
 
         if (PersonTown.Singleton.aliveResidents.Count == 0) // Town is dead

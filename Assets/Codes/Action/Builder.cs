@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 public static class Builder
 {
-    static readonly Dictionary<Type, Func<List<RoleBase>, object>> BuilderTable =
-        new Dictionary<Type, Func<List<RoleBase>, object>>();
+    static readonly Dictionary<Type, Func<Action, object>> BuilderTable =
+        new Dictionary<Type, Func<Action, object>>();
 
-    public static object Build(Type t, List<RoleBase> roles)
+    public static object Build(Type t, Action a)
     {
-        return BuilderTable[t](roles);
+        return BuilderTable[t](a);
     }
 
-    public static void RegisterBuilder(Type t, Func<List<RoleBase>, object> build_function)
+    public static void RegisterBuilder(Type t, Func<Action, object> buildFunction)
     {
-        BuilderTable[t] = build_function;
+        BuilderTable[t] = buildFunction;
     }
 }

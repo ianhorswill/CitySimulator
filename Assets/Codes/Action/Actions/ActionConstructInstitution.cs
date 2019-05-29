@@ -4,10 +4,12 @@ using Codes.Institution;
 
 namespace Codes.Action.Actions
 {
-    public class ActionConstructInstitution : ActionType
-    {
-        public override string ActionName => "ConstructInstitution";
+    // DEPRECATED - see code in ActionLibrary.cs    -ian
 
-        public override List<RoleTypeBase> Role_list => throw new NotImplementedException();
-    }
+    //public class ActionConstructInstitution : ActionType
+    //{
+    //    public override string ActionName => "ConstructInstitution";
+
+    //    public override List<RoleTypeBase> Role_list => throw new NotImplementedException();
+    //}
 }

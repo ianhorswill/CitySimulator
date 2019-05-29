@@ -1,18 +1,38 @@
-using System;
-using System.Collections.Generic;
-
+/// <summary>
+/// Base class for all RoleTypes
+/// Represents a role, independent of the value it's bound to in a particular action.
+/// RoleTypes contain the information needed to choose objects to fill the role.
+/// </summary>
 public abstract class RoleTypeBase
 {
+    /// <summary>
+    /// Name of the role
+    /// </summary>
     public string Name;
-    public virtual bool BuildFlag { get { return false; } }
+
+    /// <summary>
+    /// True if the simulator should construct a new object to fill the role.
+    /// </summary>
+    public bool BuildFlag;
 
     // Allows us to get filled roles from the base class. RoleBase is used to
     // hold the various types of bindings in filled roles which is needed so that
     // each RoleType can access all previously filled roles in its Filtering...
     //  - RoleTypeBase allows for lists of roles to fill (in ActionTypes)
     //  - RoleBase allows for lists of filled roles (in RoleTypes and Actions)
-    public abstract RoleBase FillRoleUntyped(List<RoleBase> filled_roles = null);
+    
+    /// <summary>
+    /// Find a value to bind this role to for some particular action.
+    /// </summary>
+    /// <param name="a">The action being bound</param>
+    /// <returns></returns>
+    public abstract RoleBase FillRoleUntyped(Action a);
 
-    // Allows us to fill roles directly in Instantiate... NOT TYPE SAFE
-    public abstract RoleBase FillRoleWith(object toFill, List<RoleBase> filled_roles = null);
+    /// <summary>
+    /// Attempt to bind this role to a specific value for some action
+    /// </summary>
+    /// <param name="desiredValue">Value to bind it to</param>
+    /// <param name="a">The action being bound</param>
+    /// <returns>A binding (RoleBase) if successful, else null.</returns>
+    public abstract RoleBase FillRoleWith(object desiredValue, Action a);
 }
