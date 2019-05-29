@@ -90,11 +90,7 @@ public class PersonTown : SimulatorComponent
         if(baby != null)
         {
             Log("Successful birth", baby.name);
-            //Logger.Log("person", ("Successful birth occurred! Details:"), baby.toString());
             aliveResidents.Add(baby);
-
-
-
         }
 
     }
@@ -110,15 +106,14 @@ public class PersonTown : SimulatorComponent
                             select Agent;
         */
         //OOP Method:
-        StopWhen("No one is alive", ()=> aliveResidents.Count == 0);
 
 
         var noSigOtherFem = from women in aliveResidents
-                            where (women != null && women.isFemale() && women.sigOther == null)
+                            where (women != null && women.isFemale() && (women.sigOther == null || women.sigOther.dead))
                             select women;
 
         var noSigOtherMale = from men in aliveResidents
-                             where (men != null && men.isMale() && men.sigOther == null)
+                             where (men != null && men.isMale() && (men.sigOther == null || men.sigOther.dead))
                              select men;
 
         if (noSigOtherMale != null && noSigOtherFem != null)
@@ -159,7 +154,7 @@ public class PersonTown : SimulatorComponent
             // Going to see how changing this selection to only be of "ofAgeIndividuals" effects this.
             while(found != true && maxAttempts>0){
                 var ofAgeIndividuals = from people in aliveResidents
-                                       where (people.age >= 18)
+                                       where (people.age >= 18 && (people.readyForNextChild() || (people.sigOther != null && people.sigOther.readyForNextChild())))
                                        select people;
 
                 //Person selectedParent = aliveResidents.ElementAt(Random.Integer(aliveResidents.Count));

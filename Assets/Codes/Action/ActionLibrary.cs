@@ -53,11 +53,12 @@ public static class ActionLibrary
 
         { "Death", new ActionType("Death", GetRoleByName("RoleDeath"))
             {
-                Priority = 2,
-                Chance = 0.1,
+                Priority = 3,
+                Chance = 0.001,
                 Modifications = a =>
                 {
                     var selectedToDie= ((Role<Person>) a["Death"]).value;
+                    selectedToDie.dead = true;
                     PersonTown.Singleton.aliveResidents.Remove(selectedToDie);
                     PersonTown.Singleton.deceased.Add(selectedToDie);
                 }

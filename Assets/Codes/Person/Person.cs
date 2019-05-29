@@ -6,7 +6,7 @@ using Codes.Institution;
 public class Person
 {
     public DateTime DateOfBirth;
-
+    public bool dead;
     public int age
     {
         get
@@ -351,7 +351,8 @@ public class Person
     {
         Person p = new Person("",null,null);
         p.biologicalSex = (Random.Integer(0, 2) == 1);
-        p.DateOfBirth = Simulator.CurrentTime;
+        p.age = Random.Integer(0, 70);
+        p.DateOfBirth = Simulator.CurrentTime.AddYears(-p.age);
         p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
         p.lastName = NameManager.getSurname(null);
         p.currentInstitution = InstitutionManager.RandomInstitutionIfAny();
@@ -371,10 +372,6 @@ public class Person
         parents = parentsParam;
         individualPersonality = new Personality();
         id = Guid.NewGuid();
-        //if (parents != null && parents[0] != null)
-        //   currentInstitution =
-        //        parents[0].currentInstitution; // Location right now set to being in the insitution of the first parent
-        //else
 
         currentInstitution = InstitutionManager.RandomInstitutionIfAny();
         if(Random.Integer(0, 2) == 1)
@@ -440,7 +437,7 @@ public class Person
     /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
     /// </summary>
     public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
-        DateOfBirth = Simulator.CurrentTime.AddYears(-age);
+        this.DateOfBirth = Simulator.CurrentTime.AddYears(-age);
         this.age = age;
         this.sigOther = sigOther;
         this.siblings = currSiblings;
@@ -479,8 +476,6 @@ public class Person
         if(p2.age >= minAge && p1.age >= minAge)
         {
             // if both individuals are above the minimum age, then they may have a child
-            // Debug.LogFormat("Adam and Eve Results: {0}, {1}, {2}", p1.isFemale(), p2.isMale(), p1.isFemale() && p2.isMale());
-            // Debug.LogFormat("Other Result: {0}, {1}, {2}", p1.isMale(), p2.isFemale(), p1.isMale() && p2.isFemale());
             if((p1.isFemale() && p2.isMale()) || (p1.isMale() && p2.isFemale()))
             {
                 float birthChance = Random.Float(0,1);
@@ -527,6 +522,21 @@ public class Person
 
         }
         return null;
+    }
+
+    // helper function for the filter of biologicalMother in roleLibrary
+    public bool readyForNextChild()
+    {
+        if (children == null || children.Count == 0)
+            return true;
+        foreach (Person child in children)
+        {
+            if (child.age <= 1)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
