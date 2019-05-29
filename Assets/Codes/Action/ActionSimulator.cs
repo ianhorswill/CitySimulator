@@ -15,8 +15,12 @@ public class ActionSimulator : SimulatorComponent
     {
         for (int i = 0; i < 10; i++)
         {
-            ActionType randAction = ActionLibrary.RandomlyChoose();
-            Action a = randAction.Instantiate();
+            ActionType randAction = ActionLibrary.ChanceFilteredPriorityBasedSelection(i);
+            Action a;
+            if (randAction != null)
+                a = randAction.Instantiate();
+            else
+                continue;
             
             //Debug.Log(a);
             if (a != null)

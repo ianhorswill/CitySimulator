@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 /// <summary>
 /// Represents an instance of an action having taken place
@@ -47,7 +48,10 @@ public class Action
     {
         get
         {
-            return roles.First(rolebase => rolebase.Name == roleName);
+//            Debug.Log(roleName);
+//            Debug.Log(roles.Count);
+            return roles.First(rolebase => rolebase.Name.Equals(roleName));
         }
     }
+    
 }
