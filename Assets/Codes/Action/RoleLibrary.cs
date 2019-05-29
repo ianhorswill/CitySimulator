@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Codes.Institution;
 
 public static class RoleLibrary
 {
@@ -17,7 +18,11 @@ public static class RoleLibrary
                                                                                 return speaker.currentLocation;
                                                                             return null;
                                                                         })
-        }
+        },
+        {"RoleCEO", new RoleType<Person>("CEO")},
+        { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
+        { "RoleEmployee", new RoleType<Person>("Employee")},
+        { "RoleInstitution", new RoleType<Institution>("Institution")}
     };
 
     public static RoleTypeBase GetRoleByName(string roleName)
