@@ -32,6 +32,8 @@ public static class ActionLibrary
         //        }
         //},
 
+
+
         { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
         },
         //{ "GenerateInstitution" , new ActionType("GenerateInstitution") { Chance = 1 } },
@@ -62,6 +64,36 @@ public static class ActionLibrary
                 }
             }
         },
+
+        {
+            "Mingle", new ActionType(name: "Mingle", GetRoleByName("RoleSpeaker"), GetRoleByName("RoleListener"))
+            {
+                Priority = 2,
+                Chance = 1.0,
+                Modifications = a =>
+                {
+                    var p1 = ((Role<Person>) a["Listener"]).value;
+                    var p2 = ((Role<Person>) a["Speaker"]).value;
+
+
+                    var compat = Person.Relationship.getCompatibility(p2, p1)/100 - 0.5;
+
+
+                    int sparkBaseRate = 5;
+                    int sparkChange = (int) Math.Ceiling(sparkBaseRate*compat);
+
+                    int chargeBaseRate = 10;
+                    int chargeChange = (int) Math.Floor(chargeBaseRate*compat);
+
+                    p2.updateRelationshipSpark(p1, sparkChange);
+                    p2.updateRelationshipCharge(p1, chargeChange);
+                    p1.updateRelationshipSpark(p2, sparkChange);
+                    p1.updateRelationshipCharge(p2, chargeChange);
+
+                }
+            }
+
+        }
 
         //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
         //{ "Death" , new ActionType("Death") { Chance = 1 } }
