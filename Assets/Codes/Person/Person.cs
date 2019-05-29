@@ -93,6 +93,26 @@ public class Person
             return 100 - (personalityDiff / compatibility_facets.Count);
         }
     }
+
+    public static bool inLoveTriangle(Person p1, Person p2, Person p3)
+    {
+        p1.getCaptivatedIndividuals();
+        p2.getCaptivatedIndividuals();
+        p3.getCaptivatedIndividuals();
+        p1.getRomanticInterests();
+        p2.getRomanticInterests();
+        p3.getRomanticInterests();
+
+        // each variable is an indicator for whether a romantic connection exists 
+        // between any of the pairs in p1, p2, and p3
+        int p1p2Connected = p1.romanticallyInterestedIn.Contains(p2) || p2.romanticallyInterestedIn.Contains(p1) ? 1 : 0;
+        int p1p3Connected = p1.romanticallyInterestedIn.Contains(p3) || p3.romanticallyInterestedIn.Contains(p1) ? 1 : 0;
+        int p2p3Connected = p2.romanticallyInterestedIn.Contains(p3) || p3.romanticallyInterestedIn.Contains(p2) ? 1 : 0;
+
+        // if there are at least two connections in the triangle, we have a love triangle!
+        return p1p2Connected + p1p3Connected + p2p3Connected >= 2;
+    }
+
     private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
     public void updateRelationshipSpark(Person p, int amount)
     {
@@ -103,7 +123,7 @@ public class Person
         else
         {
             // if person is quite love prone, boost positive spark updates
-            if (amount > 0 && p.individualPersonality.facets["LOVE_PROPENSITY"] > 7)
+            if (amount > 0 && p.individualPersonality.facets["LOVE_PROPENSITY"] > 70)
             {
                 amount = (int)Math.Ceiling(amount * 1.25f);
             }
@@ -119,12 +139,12 @@ public class Person
         else
         {
             // if person is quite friendly, boost positive charge updates
-            if (amount > 0 && p.individualPersonality.facets["FRIENDLINESS"] > 7)
+            if (amount > 0 && p.individualPersonality.facets["FRIENDLINESS"] > 70)
             {
                 amount = (int)Math.Ceiling(amount * 1.25f);
             }
             // if person is quite hate prone, boost negative charge updates 
-            else if (amount < 0 && p.individualPersonality.facets["HATE_PROPENSITY"] < 3)
+            else if (amount < 0 && p.individualPersonality.facets["HATE_PROPENSITY"] < 30)
             {
                 amount = (int)Math.Floor(amount * 1.25f);
             }
