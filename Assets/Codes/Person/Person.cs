@@ -280,6 +280,7 @@ public class Person
             looking_for_job = lookingForJob;
             working = false;
             retired = false;
+            former_workplaces = new List<Institution>();
         }
 
         //Default constructor to be used for adults in the workforce

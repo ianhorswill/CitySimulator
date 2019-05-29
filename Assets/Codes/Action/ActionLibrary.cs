@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Codes.Institution;
 using UnityEngine;
 using static RoleLibrary;
 
@@ -62,6 +63,31 @@ public static class ActionLibrary
                 }
             }
         },
+        { "GenerateInstitution", new ActionType("GenerateInstitution", RoleLibrary.GetRoleByName("RoleCEO"), RoleLibrary.GetRoleByName("RoleConstructionCompany"))
+            {
+                Priority = 2,
+                Chance = 0.3,
+                Modifications = a =>
+                {
+                    Institution ins = InstitutionManager.GeneratorInstitution(
+                        ((Role<Person>) a["CEO"]).value,
+                        InstitutionManager.GetRandomType(),
+                        Space.Singleton.get_random_plot());
+        
+                    ((Role<ConstructionCompany>) a["ConstructionCompany"]).value.Build(ins);
+                }
+            }
+        },
+        { "InstitutionHiring", new ActionType("InstitutionHiring", RoleLibrary.GetRoleByName("RoleInstitution"), RoleLibrary.GetRoleByName("RoleEmployee"))
+            {
+                Priority = 2,
+                Chance = 0.3,
+                Modifications = a =>
+                {
+                    ((Role<Institution>) a["Institution"]).value.Hiring(((Role<Person>) a["Employee"]).value);
+                }
+            }
+        }
 
         //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
         //{ "Death" , new ActionType("Death") { Chance = 1 } }
