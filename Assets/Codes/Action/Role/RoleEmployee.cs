@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class RoleEmployee : RoleType<Person>
 {
     public new string Name = "RoleEmployee";
+    public new List<Person> Collection = PersonTown.Singleton.aliveResidents;
 
     public new Func<Person, List<RoleBase>, bool> Filter => EmployeeFilter;
 

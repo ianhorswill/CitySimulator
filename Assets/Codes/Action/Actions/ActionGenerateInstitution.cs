@@ -25,10 +25,11 @@ public class ActionGenerateInstitution : ActionType
     public override void Modifications(Action a)
     {
         Debug.Log("ActionGenerateInstitution");
-        Institution ins = InstitutionManager.GeneratorInstitution((
-                Person) a["RoleCEO"],
+        Institution ins = InstitutionManager.GeneratorInstitution(
+            (Person) a["RoleCEO"],
             InstitutionManager.GetRandomType(),
             Space.Singleton.get_random_plot());
+        
         ((ConstructionCompany) a["RoleConstructionCompany"]).Build(ins);
     }
 }

@@ -21,7 +21,7 @@ public static class RoleLibrary
             {
                 Name = "RoleCEO",
                 Collection = PersonTown.Singleton.aliveResidents,
-                Filter = (p, l) => p == null
+                Filter = (p, l) =>  { return true; }
             }
         },
         {
@@ -29,7 +29,7 @@ public static class RoleLibrary
             {
                 Name = "RoleConstructionCompany",
                 Collection = InstitutionManager.constructionCompanyList,
-                Filter = (p, l) => p == null
+                Filter = (p, l) => { return true; }
             }
         },
         {
@@ -37,7 +37,7 @@ public static class RoleLibrary
             {
                 Name = "RoleEmployee",
                 Collection = PersonTown.Singleton.aliveResidents,
-                Filter = (p, l) => p == null
+                Filter = (p, l) => { return true; }
             }
         },
         {
@@ -45,7 +45,7 @@ public static class RoleLibrary
             {
                 Name = "RoleInstitution",
                 Collection = InstitutionManager.institutionList,
-                Filter = (p, l) => p == null
+                Filter = (p, l) =>  { return true; }
             }
         },
     };
