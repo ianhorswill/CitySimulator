@@ -65,14 +65,14 @@ public class ActionType
             {
                 // AGAIN, NOT TYPE SAFE, RELIES ON PROPER TYPE BEING PASSED IN
                 RoleBase temp = role.FillRoleWith(tempBindingObj, a);
-                Debug.Log("fill");
+                //Debug.Log("fill");
                 if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }
             else
             {
                 RoleBase temp = role.FillRoleUntyped(a);
-                Debug.Log("fill untyped");
+                //Debug.Log("fill untyped");
                 if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }
