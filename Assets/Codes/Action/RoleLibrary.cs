@@ -8,6 +8,7 @@ public static class RoleLibrary
         { "RoleListener", new RoleType<Person>("Listener") },
         { "RoleHeard", new RoleType<Person>("Heard") },
         { "RoleBioMother", new RoleType<Person>("BioMother", (p, bindings) => p.isFemale() && p.age >= 18 && p.sigOther != null && p.sigOther.age >= 1) },
+        { "RoleDeath", new RoleType<Person>("Death") },
         { "RoleSameLocation", new RoleType<Plot>("Location", a =>
                                                                         {
                                                                             var speaker = (Person) a["Speaker"];
