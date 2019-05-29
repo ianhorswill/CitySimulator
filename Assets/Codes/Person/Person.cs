@@ -67,24 +67,63 @@ public class Person
     {
         public int Charge;
         public int Spark;
+        public int Compatibility;
 
-        public Relationship(int c, int s)
+        public Relationship(int c, int s, Person p1, Person p2)
         {
             Charge = c;
             Spark = s;
+            Compatibility = getCompatibility(p1, p2);
+        }
+
+        private static int getCompatibility(Person p1, Person p2)
+        {
+            int personalityDiff = 0;
+            // these facets are chosen to mimic James' compatibility calculation using O/E/A difference 
+            List<string> compatibility_facets = new List<string> { "CURIOUS", "EXCITEMENT_SEEKING", "POLITENESS",
+                                                                  "FRIENDLINESS", "ASSERTIVENESS", "CHEER_PROPENSITY" };
+            foreach(string compatibility_facet in compatibility_facets)
+            {
+                int p1_facet_value = p1.individualPersonality.facets[compatibility_facet];
+                int p2_facet_value = p2.individualPersonality.facets[compatibility_facet];
+                personalityDiff += Math.Abs(p1_facet_value - p2_facet_value);
+            }
+
+            // average difference across facets and flip for compatibility
+            return 100 - (personalityDiff / compatibility_facets.Count);
         }
     }
+
+    public static bool inLoveTriangle(Person p1, Person p2, Person p3)
+    {
+        p1.getCaptivatedIndividuals();
+        p2.getCaptivatedIndividuals();
+        p3.getCaptivatedIndividuals();
+        p1.getRomanticInterests();
+        p2.getRomanticInterests();
+        p3.getRomanticInterests();
+
+        // each variable is an indicator for whether a romantic connection exists 
+        // between any of the pairs in p1, p2, and p3
+        int p1p2Connected = p1.romanticallyInterestedIn.Contains(p2) || p2.romanticallyInterestedIn.Contains(p1) ? 1 : 0;
+        int p1p3Connected = p1.romanticallyInterestedIn.Contains(p3) || p3.romanticallyInterestedIn.Contains(p1) ? 1 : 0;
+        int p2p3Connected = p2.romanticallyInterestedIn.Contains(p3) || p3.romanticallyInterestedIn.Contains(p2) ? 1 : 0;
+
+        // if there are at least two connections in the triangle, we have a love triangle!
+        return p1p2Connected + p1p3Connected + p2p3Connected >= 2;
+    }
+
     private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
     public void updateRelationshipSpark(Person p, int amount)
     {
         if (!relationshipDict.ContainsKey(p))
         {
-            relationshipDict.Add(p,new Relationship(0,0));
+            relationshipDict.Add(p,new Relationship(0, 0, this, p));
         }
         else
         {
             // if person is quite love prone, boost positive spark updates
-            if (amount > 0 && p.individualPersonality.getFacetValue("LOVE_PROPENSITY") > 7)
+            if (amount > 0 && p.individualPersonality.facets["LOVE_PROPENSITY"] > 70)
             {
                 amount = (int)Math.Ceiling(amount * 1.25f);
             }
@@ -95,17 +134,17 @@ public class Person
     {
         if (!relationshipDict.ContainsKey(p))
         {
-            relationshipDict.Add(p, new Relationship(0, 0));
+            relationshipDict.Add(p, new Relationship(0, 0, this, p));
         }
         else
         {
             // if person is quite friendly, boost positive charge updates
-            if (amount > 0 && p.individualPersonality.getFacetValue("FRIENDLINESS") > 7)
+            if (amount > 0 && p.individualPersonality.facets["FRIENDLINESS"] > 70)
             {
                 amount = (int)Math.Ceiling(amount * 1.25f);
             }
             // if person is quite hate prone, boost negative charge updates 
-            else if (amount < 0 && p.individualPersonality.getFacetValue("HATE_PROPENSITY") < 3)
+            else if (amount < 0 && p.individualPersonality.facets["HATE_PROPENSITY"] < 30)
             {
                 amount = (int)Math.Floor(amount * 1.25f);
             }
@@ -161,9 +200,6 @@ public class Person
 
     }
 
-
-
-
     public Person sigOther;
     public List<Person> siblings;
     public  List<Person> children;
@@ -187,7 +223,7 @@ public class Person
     public Personality individualPersonality;
     public class Personality
     {
-        public List<Tuple<string, int>> facets;
+        public Dictionary<string, int> facets;
 
         // See http://dwarffortresswiki.org/index.php/DF2014:Personality_trait#Facets
         private List<string> facet_names = new List<string>() { "LOVE_PROPENSITY", "HATE_PROPENSITY", "ENVY_PROPENSITY", "CHEER_PROPENSITY", "DEPRESSION_PROPENSITY", "ANGER_PROPENSITY",
@@ -196,11 +232,11 @@ public class Person
                                                                 "GRATITUDE", "IMMODESTY", "HUMOR", "VENGEFUL", "PRIDE", "CRUELTY", "SINGLEMINDED", "HOPEFUL", "CURIOUS", "BASHFUL", "PRIVACY",
                                                                 "PERFECTIONIST", "CLOSEMINDED", "TOLERANT", "EMOTIONALLY_OBSESSIVE", "SWAYED_BY_EMOTIONS", "ALTRUISM", "DUTIFULNESS",
                                                                 "THOUGHTLESSNESS", "ORDERLINESS", "TRUST", "GREGARIOIUSNESS", "ASSERTIVENESS", "ACTIVITY_LEVEL", "EXCITEMENT_SEEKING",
-                                                                "IMAGINATION", "ABSTRACT_INCLINED", "ART_INCLINED"};
+                                                                "IMAGINATION", "ABSTRACT_INCLINED", "ART_INCLINED"}; 
 
         public Personality()
         {
-            facets = new List<Tuple<string, int>>();
+            facets = new Dictionary<string, int>();
 
             foreach(var facet_type in facet_names)
             {
@@ -214,20 +250,9 @@ public class Person
                 }
 
 
-                facets.Add(Tuple.Create<string, int>(facet_type, facet_value));
+                facets.Add(facet_type, facet_value);
             }
 
-        }
-
-        public int getFacetValue(string facet_name)
-        {
-            foreach (var facet in facets)
-            {
-                string facet_type = facet.Item1;
-                if (facet_name == facet_type)
-                    return facet.Item2;
-            }
-            return -1;
         }
     }
 
@@ -500,7 +525,7 @@ public class Person
             }
 
         }
-        return null;  
+        return null;
     }
 
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
