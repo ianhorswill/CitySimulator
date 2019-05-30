@@ -32,6 +32,8 @@ public static class ActionLibrary
         //        }
         //},
 
+
+
         { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
         },
         //{ "GenerateInstitution" , new ActionType("GenerateInstitution") { Chance = 1 } },
@@ -42,8 +44,7 @@ public static class ActionLibrary
                 Chance = 1.0,
                 Modifications = a =>
                 {
-                
-                    var BioMother = ((Person) a["BioMother"]);
+                    var BioMother = ((Role<Person>) a["BioMother"]).value;
                     var BioFather = BioMother.sigOther;
                     Person baby = Person.createChild(BioMother, BioFather);
                     PersonTown.Singleton.aliveResidents.Add(baby);
@@ -65,8 +66,8 @@ public static class ActionLibrary
             }
         },
 
-//        { "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
-//        { "Death" , new ActionType("Death") { Chance = 1 } }
+        //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
+        //{ "Death" , new ActionType("Death") { Chance = 1 } }
     };
 
     public static ActionType GetActionByName(string actionName)

@@ -60,7 +60,7 @@ public class PersonTown : SimulatorComponent
         Singleton = this;
     }
 
-    public List<Tuple<Person, Person, Person>> findLoveTriangles()
+    public List<Tuple<Person, Person, Person>> findAllLoveTriangles()
     {
         var loveTriangleCollection =
             from p1 in aliveResidents
@@ -72,6 +72,26 @@ public class PersonTown : SimulatorComponent
 
         var loveTriangleList = loveTriangleCollection.ToList();
         return loveTriangleList;
+    }
+
+    public List<Tuple<Person, Person, Person>> findLoveTriangles(Person p1)
+    {
+        var loveTriangleCollection =
+            from p2 in aliveResidents
+            from p3 in aliveResidents
+            where (p1 != p2 && p2 != p3 && p1 != p3)
+            where (Person.inLoveTriangle(p1, p2, p3))
+            select new Tuple<Person, Person, Person>(p1, p2, p3);
+
+        var loveTriangleList = loveTriangleCollection.ToList();
+        return loveTriangleList;
+    }
+
+    public Tuple<Person, Person, Person> findALoveTriangle()
+    {
+        // Stub for finding first available love triangle in aliveResidents
+
+        return null;
     }
 
     //Is this a life event?  Also may separate the system randomness / choosing from the exact method, instead using a parameter of a Person and just doing the effects on the Lists.
@@ -244,7 +264,7 @@ public class PersonTown : SimulatorComponent
         }
 
 
-        var loveTriangles = findLoveTriangles();
+        var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
         foreach (var tup in loveTriangles)
         {
             Logger.Log("person", "\t"+tup.Item1.name, "\t"+tup.Item2.name, "\t"+tup.Item3.name );
