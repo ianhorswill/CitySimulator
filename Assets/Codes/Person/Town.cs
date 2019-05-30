@@ -133,11 +133,11 @@ public class PersonTown : SimulatorComponent
         StopWhen("Population died off", () =>
             aliveResidents.Count == 0);
         var noSigOtherFem = from women in aliveResidents
-                            where (women != null && women.isFemale() && (women.sigOther == null || women.sigOther.dead))
+                            where (women != null && women.age >= 16 && women.isFemale() && (women.sigOther == null || women.sigOther.dead))
                             select women;
 
         var noSigOtherMale = from men in aliveResidents
-                             where (men != null && men.isMale() && (men.sigOther == null || men.sigOther.dead))
+                             where (men != null && men.age >= 16 && men.isMale() && (men.sigOther == null || men.sigOther.dead))
                              select men;
 
         if (noSigOtherMale != null && noSigOtherFem != null)
@@ -156,6 +156,7 @@ public class PersonTown : SimulatorComponent
                         {
                             pm.sigOther = pf;
                             pf.sigOther = pm;
+                            Log(pm.name+" and "+pf.name+" is married.");
                         }
                     }
                 }
