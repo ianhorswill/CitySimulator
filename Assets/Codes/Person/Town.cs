@@ -259,8 +259,9 @@ public class PersonTown : SimulatorComponent
 
         //If someone turns 19 and they were in school, they "graduate" and lose the school occupation status and their education field is updated.
         var is19InSchool = from newAdult in aliveResidents
-                            where (newAdult != null && newAdult.age == 19 && newAdult.workStatus.workplace.getType().Equals("School"))
+                            where (newAdult != null && newAdult.age == 19 && newAdult.workStatus.workplace != null && newAdult.workStatus.workplace.getType().Equals("School"))
                             select newAdult;
+
         foreach (Person pa in is19InSchool)
         {
             pa.workStatus.loseJob();
