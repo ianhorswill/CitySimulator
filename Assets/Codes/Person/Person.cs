@@ -530,7 +530,7 @@ public class Person
             return true;
         foreach (Person child in children)
         {
-            if (child.age <= 1)
+            if (child.age < 1)
             {
                 return false;
             }

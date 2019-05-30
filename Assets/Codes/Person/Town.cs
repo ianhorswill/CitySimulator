@@ -23,7 +23,7 @@ public class PersonTown : SimulatorComponent
     public readonly  List<Person> deceased = new List<Person>();
 
     private static int deathProbability = 1;
-    private static int birthProbability = 8;
+    private static int birthProbability = 40;
 
 
     /// <summary>
@@ -100,9 +100,12 @@ public class PersonTown : SimulatorComponent
 
         //Shotty version at removing a person from associated lists
         //Person search = settlers.Find(x => x.id == selectedToDie.id);
+        Log(selectedToDie.name + " is dead.");
+        selectedToDie.dead = true;
         aliveResidents.Remove(selectedToDie);
         deceased.Add(selectedToDie);
-
+        StopWhen("Population died off", () =>
+            aliveResidents.Count == 0);
         // Life event does further processing...?
     }
 
@@ -127,7 +130,8 @@ public class PersonTown : SimulatorComponent
         */
         //OOP Method:
 
-
+        StopWhen("Population died off", () =>
+            aliveResidents.Count == 0);
         var noSigOtherFem = from women in aliveResidents
                             where (women != null && women.isFemale() && (women.sigOther == null || women.sigOther.dead))
                             select women;
@@ -202,7 +206,7 @@ public class PersonTown : SimulatorComponent
                 maxAttempts--;                
             }
             if(!found){
-                Log("Birth Failed, parents not found or exceeded maximum attempts");
+                //Log("Birth Failed, parents not found or exceeded maximum attempts");
             }
             else{
                 birth(baby);
@@ -220,7 +224,7 @@ public class PersonTown : SimulatorComponent
         //OOP Method:
         //Now that have all living Agents, randomly select one to die, at a 10% chance
 
-        int deathDice = Random.Integer(100);
+        int deathDice = Random.Integer(10000);
         if(deathDice < deathProbability){
             //Someone is dying
             Person selectedToDie = aliveResidents.ElementAt(Random.Integer(0, aliveResidents.Count()));

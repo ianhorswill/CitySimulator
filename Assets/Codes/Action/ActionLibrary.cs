@@ -54,8 +54,8 @@ public static class ActionLibrary
 
         { "Death", new ActionType("Death", GetRoleByName("RoleDeath"))
             {
-                Priority = 3,
-                Chance = 0.001,
+                Priority = 2,
+                Chance = 0.0001,
                 Modifications = a =>
                 {
                     var selectedToDie= (Person) a["Death"];
