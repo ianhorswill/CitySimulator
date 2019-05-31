@@ -27,7 +27,6 @@ public static class RoleLibrary
             person.individualPersonality.facets["CONFIDENCE"] > 7
         )},
         { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
-        { "RoleEmployee", new RoleType<Person>("Employee")},
         { "RoleInstitution", new RoleType<Institution>("Institution")},
         {
             "RoleEmployee", new RoleType<Person>("Employee", (e, bindings) =>
