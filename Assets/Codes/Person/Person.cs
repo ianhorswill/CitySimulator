@@ -96,12 +96,7 @@ public class Person
 
     public static bool inLoveTriangle(Person p1, Person p2, Person p3)
     {
-        p1.getCaptivatedIndividuals();
-        p2.getCaptivatedIndividuals();
-        p3.getCaptivatedIndividuals();
-        p1.getRomanticInterests();
-        p2.getRomanticInterests();
-        p3.getRomanticInterests();
+
 
         // each variable is an indicator for whether a romantic connection exists 
         // between any of the pairs in p1, p2, and p3
@@ -178,8 +173,9 @@ public class Person
                 captivatedBy.Add(item.Key);
             }
         }
-
+        
         captivatedBy.RemoveAll(item => item == null);
+        captivatedBy = captivatedBy.Distinct().ToList();
     }
 
     public List<Person> romanticallyInterestedIn = new List<Person>();
@@ -197,6 +193,7 @@ public class Person
         }
 
         romanticallyInterestedIn.RemoveAll(item => item == null);
+        romanticallyInterestedIn = romanticallyInterestedIn.Distinct().ToList();
 
     }
 

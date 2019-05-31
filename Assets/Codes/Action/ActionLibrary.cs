@@ -11,28 +11,28 @@ public static class ActionLibrary
 
     private static readonly SortedDictionary<string, ActionType> ActionDict = new SortedDictionary<string, ActionType>
     {
-        { "Talk" , new ActionType("Talk",  GetRoleByName("RoleSpeaker"), GetRoleByName("RoleListener"), GetRoleByName("RoleSameLocation"))
-            {
-                Frequency = 100.0,
-                Modifications = a =>
-                {
-                    var Listener = (Person)a["RoleListener"];
-                    // TODO: influence speakers
-                },
-                PostExecute = a =>
-                {
-                    var Listener = (Person) a["RoleListener"];
-                    // TODO: filter based on location, people nearby this conversation
-                    Action heard = ActionLibrary.InstantiateByName("Heard", "RoleHeard", Listener);
-                    if (heard != null)
-                    {
-                        ExecuteByName("Heard", heard);
-                    }
-                }
-            }
-        },
-        { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
-        },
+        //{ "Talk" , new ActionType("Talk",  GetRoleByName("RoleSpeaker"), GetRoleByName("RoleListener"), GetRoleByName("RoleSameLocation"))
+        //    {
+        //        Frequency = 100.0,
+        //        Modifications = a =>
+        //        {
+        //            var Listener = (Person)a["RoleListener"];
+        //            // TODO: influence speakers
+        //        },
+        //        PostExecute = a =>
+        //        {
+        //            var Listener = (Person) a["RoleListener"];
+        //            // TODO: filter based on location, people nearby this conversation
+        //            Action heard = ActionLibrary.InstantiateByName("Heard", "RoleHeard", Listener);
+        //            if (heard != null)
+        //            {
+        //                ExecuteByName("Heard", heard);
+        //            }
+        //        }
+        //    }
+        //},
+        //{ "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
+        //},
         { "GiveBirth" , new ActionType("GiveBirth", GetRoleByName("RoleBioMother"))
            {
                 Frequency = 1.0,
@@ -79,7 +79,37 @@ public static class ActionLibrary
                     ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
                 }
             }
-        }
+        },
+
+        { "Mingle" , new ActionType("Mingle", GetRoleByName("RoleMingler"), GetRoleByName("RoleMinglingWith"))
+            {
+                Frequency = 1.0,
+                Modifications = a =>
+                {
+                    var MinglingWith = (Person)a["MinglingWith"];
+                    var Mingler = (Person)a["Mingler"];
+                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100;
+
+
+                    int sparkBaseRate = 30;
+                    int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
+
+                    int chargeBaseRate = 30;
+                    int chargeChange = (int) Math.Floor( (double) (chargeBaseRate*compat));
+
+                    MinglingWith.updateRelationshipSpark(Mingler, sparkChange);
+                    MinglingWith.updateRelationshipCharge(Mingler, chargeChange);
+                    Mingler.updateRelationshipSpark(MinglingWith, sparkChange);
+                    Mingler.updateRelationshipCharge(MinglingWith, chargeChange);
+
+                    Mingler.getCaptivatedIndividuals();
+                    Mingler.getRomanticInterests();
+                    MinglingWith.getCaptivatedIndividuals();
+                    MinglingWith.getRomanticInterests();
+
+                }
+            }
+        },
     };
 
     public static ActionType GetActionByName(string actionName)
