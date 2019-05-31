@@ -83,7 +83,7 @@ public static class ActionLibrary
         },
         { "InstitutionHiring", new ActionType("InstitutionHiring", RoleLibrary.GetRoleByName("RoleInstitution"), RoleLibrary.GetRoleByName("RoleEmployee"))
             {
-                Priority = 2,
+                Priority = 1,
                 Chance = 0.3,
                 Modifications = a =>
                 {
