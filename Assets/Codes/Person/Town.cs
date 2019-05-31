@@ -76,6 +76,18 @@ public class PersonTown : SimulatorComponent
 
     public List<Tuple<Person, Person, Person>> findLoveTriangles(Person p1)
     {
+        List<string> names = new List<string>();
+        p1.romanticallyInterestedIn.ForEach(a => names.Add(a.name));
+        string loveInterests = String.Join(" ", names);
+        if (names.Count != 0)
+        {
+            Logger.Log("Person", "Love Triangle Attempts: ", "Romantic Interests of: "+ p1.name, loveInterests);
+        }
+        else
+        {
+            return null;
+        }
+
         var loveTriangleCollection =
             from p2 in aliveResidents
             from p3 in aliveResidents
@@ -271,10 +283,20 @@ public class PersonTown : SimulatorComponent
 
 
         var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
-        foreach (var tup in loveTriangles)
+        if (loveTriangles == null)
         {
-            Logger.Log("person", "\t"+tup.Item1.name, "\t"+tup.Item2.name, "\t"+tup.Item3.name );
+            // could do something here, not sure what though
         }
+        else
+        {
+            foreach (var tup in loveTriangles)
+            {
+                if (tup.Item3.name != null)
+                    Logger.Log("Person", "LoveTriangle:\t",
+                        String.Format("{0}, {1}, {2}", tup.Item1.name, tup.Item2.name, tup.Item3.name));
+            }
+        }
+
 
     }
 

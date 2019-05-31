@@ -23,7 +23,9 @@ public static class RoleLibrary
         { "RoleCEO", new RoleType<Person>("CEO")},
         { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
         { "RoleEmployee", new RoleType<Person>("Employee")},
-        { "RoleInstitution", new RoleType<Institution>("Institution")}
+        { "RoleInstitution", new RoleType<Institution>("Institution")},
+        { "RoleMingler", new RoleType<Person>("Mingler")},
+        { "RoleMinglingWith", new RoleType<Person>("MinglingWith")}
     };
 
     public static RoleTypeBase GetRoleByName(string roleName)

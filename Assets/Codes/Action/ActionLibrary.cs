@@ -90,7 +90,38 @@ public static class ActionLibrary
                     ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
                 }
             }
-        }
+        },
+
+        { "Mingle" , new ActionType("Mingle", GetRoleByName("RoleMingler"), GetRoleByName("RoleMinglingWith"))
+            {
+                Priority = 2,
+                Chance = 1.0,
+                Modifications = a =>
+                {
+                    var MinglingWith = (Person)a["MinglingWith"];
+                    var Mingler = (Person)a["Mingler"];
+                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100;
+
+
+                    int sparkBaseRate = 30;
+                    int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
+
+                    int chargeBaseRate = 30;
+                    int chargeChange = (int) Math.Floor( (double) (chargeBaseRate*compat));
+
+                    MinglingWith.updateRelationshipSpark(Mingler, sparkChange);
+                    MinglingWith.updateRelationshipCharge(Mingler, chargeChange);
+                    Mingler.updateRelationshipSpark(MinglingWith, sparkChange);
+                    Mingler.updateRelationshipCharge(MinglingWith, chargeChange);
+
+                    Mingler.getCaptivatedIndividuals();
+                    Mingler.getRomanticInterests();
+                    MinglingWith.getCaptivatedIndividuals();
+                    MinglingWith.getRomanticInterests();
+
+                }
+            }
+        },
 
         //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
         //{ "Death" , new ActionType("Death") { Chance = 1 } }
