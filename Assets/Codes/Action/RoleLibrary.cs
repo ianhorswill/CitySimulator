@@ -36,7 +36,7 @@ public static class RoleLibrary
         )},
         { "RoleInstitution", new RoleType<Institution>("Institution")},
         { "RoleMingler", new RoleType<Person>("Mingler")},
-        { "RoleMinglingWith", new RoleType<Person>("MinglingWith")}
+        { "RoleMinglingWith", new RoleType<Person>("MinglingWith", (e,a) => (Person) a["Mingler"] != e )}
 
     };
 
