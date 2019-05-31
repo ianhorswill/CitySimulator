@@ -48,6 +48,10 @@ namespace Codes.Institution
             ConstructionCompany cons = new ConstructionCompany(Person.generateRandomPerson(), new Plot(0, 0), "ConstructionCompany", false);
             constructionCompanyList.Add(cons);
             institutionList.Add(cons);
+            
+            // add one school initially
+            School school = new School(Person.generateRandomPerson(), new Plot(0, 1), "School");
+            institutionList.Add(school);
         }
 
         public InstitutionManager(Space space)
