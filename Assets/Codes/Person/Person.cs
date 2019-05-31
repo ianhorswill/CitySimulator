@@ -276,6 +276,7 @@ public class Person
         //Constructor to be used for children / new people who are not yet looking to enter the workforce
         public Occupation(bool lookingForJob){
             workplace = null;
+            former_workplaces = new List<Institution>();
             money = 0;
             looking_for_job = lookingForJob;
             working = false;
@@ -531,7 +532,7 @@ public class Person
             return true;
         foreach (Person child in children)
         {
-            if (child.age <= 1)
+            if (child.age < 1)
             {
                 return false;
             }

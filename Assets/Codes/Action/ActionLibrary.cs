@@ -33,6 +33,8 @@ public static class ActionLibrary
         //        }
         //},
 
+
+
         { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
         },
         //{ "GenerateInstitution" , new ActionType("GenerateInstitution") { Chance = 1 } },
@@ -43,7 +45,7 @@ public static class ActionLibrary
                 Chance = 1.0,
                 Modifications = a =>
                 {
-                    var BioMother = ((Role<Person>) a["BioMother"]).value;
+                    var BioMother = (Person) a["BioMother"];
                     var BioFather = BioMother.sigOther;
                     Person baby = Person.createChild(BioMother, BioFather);
                     PersonTown.Singleton.aliveResidents.Add(baby);
@@ -53,11 +55,11 @@ public static class ActionLibrary
 
         { "Death", new ActionType("Death", GetRoleByName("RoleDeath"))
             {
-                Priority = 3,
-                Chance = 0.001,
+                Priority = 2,
+                Chance = 0.0001,
                 Modifications = a =>
                 {
-                    var selectedToDie= ((Role<Person>) a["Death"]).value;
+                    var selectedToDie= (Person) a["Death"];
                     selectedToDie.dead = true;
                     PersonTown.Singleton.aliveResidents.Remove(selectedToDie);
                     PersonTown.Singleton.deceased.Add(selectedToDie);

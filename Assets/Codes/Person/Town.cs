@@ -23,7 +23,7 @@ public class PersonTown : SimulatorComponent
     public readonly  List<Person> deceased = new List<Person>();
 
     private static int deathProbability = 1;
-    private static int birthProbability = 8;
+    private static int birthProbability = 40;
 
 
     /// <summary>
@@ -60,7 +60,7 @@ public class PersonTown : SimulatorComponent
         Singleton = this;
     }
 
-    public List<Tuple<Person, Person, Person>> findLoveTriangles()
+    public List<Tuple<Person, Person, Person>> findAllLoveTriangles()
     {
         var loveTriangleCollection =
             from p1 in aliveResidents
@@ -74,15 +74,38 @@ public class PersonTown : SimulatorComponent
         return loveTriangleList;
     }
 
+    public List<Tuple<Person, Person, Person>> findLoveTriangles(Person p1)
+    {
+        var loveTriangleCollection =
+            from p2 in aliveResidents
+            from p3 in aliveResidents
+            where (p1 != p2 && p2 != p3 && p1 != p3)
+            where (Person.inLoveTriangle(p1, p2, p3))
+            select new Tuple<Person, Person, Person>(p1, p2, p3);
+
+        var loveTriangleList = loveTriangleCollection.ToList();
+        return loveTriangleList;
+    }
+
+    public Tuple<Person, Person, Person> findALoveTriangle()
+    {
+        // Stub for finding first available love triangle in aliveResidents
+
+        return null;
+    }
+
     //Is this a life event?  Also may separate the system randomness / choosing from the exact method, instead using a parameter of a Person and just doing the effects on the Lists.
     public void death(Person selectedToDie){
 
 
         //Shotty version at removing a person from associated lists
         //Person search = settlers.Find(x => x.id == selectedToDie.id);
+        Log(selectedToDie.name + " is dead.");
+        selectedToDie.dead = true;
         aliveResidents.Remove(selectedToDie);
         deceased.Add(selectedToDie);
-
+        StopWhen("Population died off", () =>
+            aliveResidents.Count == 0);
         // Life event does further processing...?
     }
 
@@ -107,13 +130,14 @@ public class PersonTown : SimulatorComponent
         */
         //OOP Method:
 
-
+        StopWhen("Population died off", () =>
+            aliveResidents.Count == 0);
         var noSigOtherFem = from women in aliveResidents
-                            where (women != null && women.isFemale() && (women.sigOther == null || women.sigOther.dead))
+                            where (women != null && women.age >= 16 && women.isFemale() && (women.sigOther == null || women.sigOther.dead))
                             select women;
 
         var noSigOtherMale = from men in aliveResidents
-                             where (men != null && men.isMale() && (men.sigOther == null || men.sigOther.dead))
+                             where (men != null && men.age >= 16 && men.isMale() && (men.sigOther == null || men.sigOther.dead))
                              select men;
 
         if (noSigOtherMale != null && noSigOtherFem != null)
@@ -132,6 +156,7 @@ public class PersonTown : SimulatorComponent
                         {
                             pm.sigOther = pf;
                             pf.sigOther = pm;
+                            Log(pm.name+" and "+pf.name+" is married.");
                         }
                     }
                 }
@@ -182,7 +207,7 @@ public class PersonTown : SimulatorComponent
                 maxAttempts--;                
             }
             if(!found){
-                Log("Birth Failed, parents not found or exceeded maximum attempts");
+                //Log("Birth Failed, parents not found or exceeded maximum attempts");
             }
             else{
                 birth(baby);
@@ -200,7 +225,7 @@ public class PersonTown : SimulatorComponent
         //OOP Method:
         //Now that have all living Agents, randomly select one to die, at a 10% chance
 
-        int deathDice = Random.Integer(100);
+        int deathDice = Random.Integer(10000);
         if(deathDice < deathProbability){
             //Someone is dying
             Person selectedToDie = aliveResidents.ElementAt(Random.Integer(0, aliveResidents.Count()));
@@ -234,8 +259,9 @@ public class PersonTown : SimulatorComponent
 
         //If someone turns 19 and they were in school, they "graduate" and lose the school occupation status and their education field is updated.
         var is19InSchool = from newAdult in aliveResidents
-                            where (newAdult != null && newAdult.age == 19 && newAdult.workStatus.workplace.getType().Equals("School"))
+                            where (newAdult != null && newAdult.age == 19 && newAdult.workStatus.workplace != null && newAdult.workStatus.workplace.getType().Equals("School"))
                             select newAdult;
+
         foreach (Person pa in is19InSchool)
         {
             pa.workStatus.loseJob();
@@ -244,7 +270,7 @@ public class PersonTown : SimulatorComponent
         }
 
 
-        var loveTriangles = findLoveTriangles();
+        var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
         foreach (var tup in loveTriangles)
         {
             Logger.Log("person", "\t"+tup.Item1.name, "\t"+tup.Item2.name, "\t"+tup.Item3.name );
