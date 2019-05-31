@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Codes.Institution;
 using UnityEditor.PackageManager;
+using UnityEditor.UIElements;
+using UnityEngine;
 
 public static class RoleLibrary
 {
@@ -22,18 +24,21 @@ public static class RoleLibrary
                                                                         })
         },
         { "RoleCEO", new RoleType<Person>("CEO", (person, action) => 
-            person.age > 18 &&  
-            person.individualPersonality.facets["STRESS_VULNERABILITY"] < 3 &&
-            person.individualPersonality.facets["CONFIDENCE"] > 7
+//            person.age > 15 &&  
+            person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
+            person.individualPersonality.facets["CONFIDENCE"] > 60
         )},
         { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
         { "RoleInstitution", new RoleType<Institution>("Institution")},
         {
             "RoleEmployee", new RoleType<Person>("Employee", (e, bindings) =>
-                e.personalEducation.is_college_graduate && 
-                e.individualPersonality.facets["DUTIFULNESS"] > 5
+                {
+                    Institution ins = (Institution) bindings["Institution"];
+                    return e.individualPersonality.facets["DUTIFULNESS"] > 70 && 
+                           e.personalEducation.is_college_graduate &&
+                           !ins.employeeList.Contains(e);
+                }
         )},
-        { "RoleInstitution", new RoleType<Institution>("Institution")},
         { "RoleMingler", new RoleType<Person>("Mingler")},
         { "RoleMinglingWith", new RoleType<Person>("MinglingWith", (e,a) => (Person) a["Mingler"] != e )}
 

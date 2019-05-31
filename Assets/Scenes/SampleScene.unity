@@ -156,7 +156,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< HEAD
+  m_Script: {fileID: 11500000, guid: 3326eb3a26de2462083c5cbb94464db1, type: 3}
+=======
   m_Script: {fileID: 11500000, guid: 5da8bb95796655e4ca19dbf85f04e7df, type: 3}
+>>>>>>> master
   m_Name: 
   m_EditorClassIdentifier: 
   Shader: {fileID: 0}
@@ -278,7 +282,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.2, y: 4.7, z: -10}
+  m_LocalPosition: {x: 16.4, y: 14, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -310,7 +314,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1543635301}
   m_Enabled: 1
   m_EditorHideFlags: 0
+<<<<<<< HEAD
+  m_Script: {fileID: 11500000, guid: dd395c46c1bc94dda92304fee2dc37c3, type: 3}
+=======
   m_Script: {fileID: 11500000, guid: 15fdcd66af1452a4cbeb4f978e38c92e, type: 3}
+>>>>>>> master
   m_Name: 
   m_EditorClassIdentifier: 
   TextStyle:
