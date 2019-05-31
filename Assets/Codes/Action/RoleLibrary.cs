@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using Codes.Institution;
+using UnityEditor.PackageManager;
+using UnityEditor.UIElements;
+using UnityEngine;
 
 public static class RoleLibrary
 {
@@ -20,10 +23,25 @@ public static class RoleLibrary
                                                                             return null;
                                                                         })
         },
-        {"RoleCEO", new RoleType<Person>("CEO")},
+        { "RoleCEO", new RoleType<Person>("CEO", (person, action) => 
+//            person.age > 15 &&  
+            person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
+            person.individualPersonality.facets["CONFIDENCE"] > 60
+        )},
         { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
-        { "RoleEmployee", new RoleType<Person>("Employee")},
-        { "RoleInstitution", new RoleType<Institution>("Institution")}
+        { "RoleInstitution", new RoleType<Institution>("Institution")},
+        {
+            "RoleEmployee", new RoleType<Person>("Employee", (e, bindings) =>
+                {
+                    Institution ins = (Institution) bindings["Institution"];
+                    return e.individualPersonality.facets["DUTIFULNESS"] > 70 && 
+                           e.personalEducation.is_college_graduate &&
+                           !ins.employeeList.Contains(e);
+                }
+        )},
+        { "RoleMingler", new RoleType<Person>("Mingler")},
+        { "RoleMinglingWith", new RoleType<Person>("MinglingWith", (e,a) => (Person) a["Mingler"] != e )}
+
     };
 
     public static RoleTypeBase GetRoleByName(string roleName)

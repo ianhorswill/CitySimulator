@@ -1,47 +1,41 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Codes.Institution;
 using UnityEngine;
 using static RoleLibrary;
 
 public static class ActionLibrary
 {
-    private static readonly Dictionary<string, ActionType> ActionDict = new Dictionary<string, ActionType>
+    private static readonly double DictionaryWeightSum = ActionDict.Skip(1).Sum(x => x.Value.Frequency);
+
+    private static readonly SortedDictionary<string, ActionType> ActionDict = new SortedDictionary<string, ActionType>
     {
-        //{
-        //    "Talk" , new ActionType("Talk",  GetRoleByName("RoleSpeaker"), GetRoleByName("RoleListener"), GetRoleByName("RoleSameLocation"))
-        //        { 
-        //            Priority = 5,
-        //            Modifications = a =>
+        //{ "Talk" , new ActionType("Talk",  GetRoleByName("RoleSpeaker"), GetRoleByName("RoleListener"), GetRoleByName("RoleSameLocation"))
+        //    {
+        //        Frequency = 100.0,
+        //        Modifications = a =>
+        //        {
+        //            var Listener = (Person)a["RoleListener"];
+        //            // TODO: influence speakers
+        //        },
+        //        PostExecute = a =>
+        //        {
+        //            var Listener = (Person) a["RoleListener"];
+        //            // TODO: filter based on location, people nearby this conversation
+        //            Action heard = ActionLibrary.InstantiateByName("Heard", "RoleHeard", Listener);
+        //            if (heard != null)
         //            {
-        //                var Listener = (Person)a["RoleListener"];
-        //                //var topic = (Person)a["RoleConverstaionTopic
-        //            },
-
-        //            PostExecute = a =>
-        //            {
-        //                var Listener = (Person) a["RoleListener"];
-        //                // TODO?: filter based on location, people nearby this conversation
-        //                Action heard = ActionLibrary.InstantiateByName("Heard", "RoleHeard", Listener);
-        //                if (heard != null)
-        //                {
-        //                    ExecuteByName("Heard", heard);
-        //                }
-
+        //                ExecuteByName("Heard", heard);
         //            }
         //        }
+        //    }
         //},
-
-
-
-        { "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
-        },
-        //{ "GenerateInstitution" , new ActionType("GenerateInstitution") { Chance = 1 } },
-
+        //{ "Heard" , new ActionType("Heard", GetRoleByName("RoleHeard"))
+        //},
         { "GiveBirth" , new ActionType("GiveBirth", GetRoleByName("RoleBioMother"))
            {
-                Priority = 2,
-                Chance = 1.0,
+                Frequency = 1.0,
                 Modifications = a =>
                 {
                     var BioMother = (Person) a["BioMother"];
@@ -51,11 +45,9 @@ public static class ActionLibrary
                 }
             }
         },
-
         { "Death", new ActionType("Death", GetRoleByName("RoleDeath"))
             {
-                Priority = 2,
-                Chance = 0.0001,
+                Frequency = 0.0001,
                 Modifications = a =>
                 {
                     var selectedToDie= (Person) a["Death"];
@@ -65,9 +57,59 @@ public static class ActionLibrary
                 }
             }
         },
+        { "GenerateInstitution", new ActionType("GenerateInstitution", RoleLibrary.GetRoleByName("RoleCEO"), RoleLibrary.GetRoleByName("RoleConstructionCompany"))
+            {
+                Frequency = 0.3,
+                Modifications = a =>
+                {
+                    Institution ins = InstitutionManager.GeneratorInstitution(
+                        (Person) a["CEO"],
+                        InstitutionManager.GetRandomType(),
+                        Space.Singleton.get_random_plot());
+        
+                    ((ConstructionCompany) a["ConstructionCompany"]).Build(ins);
+                }
+            }
+        },
+        { "InstitutionHiring", new ActionType("InstitutionHiring", RoleLibrary.GetRoleByName("RoleInstitution"), RoleLibrary.GetRoleByName("RoleEmployee"))
+            {
+                Frequency = 0.3,
+                Modifications = a =>
+                {
+                    ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
+                }
+            }
+        },
 
-        //{ "InstitutionHiring" , new ActionType("InstitutionHiring") { Chance = 1.0 } },
-        //{ "Death" , new ActionType("Death") { Chance = 1 } }
+        { "Mingle" , new ActionType("Mingle", GetRoleByName("RoleMingler"), GetRoleByName("RoleMinglingWith"))
+            {
+                Frequency = 1.0,
+                Modifications = a =>
+                {
+                    var MinglingWith = (Person)a["MinglingWith"];
+                    var Mingler = (Person)a["Mingler"];
+                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100;
+
+
+                    int sparkBaseRate = 30;
+                    int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
+
+                    int chargeBaseRate = 30;
+                    int chargeChange = (int) Math.Floor( (double) (chargeBaseRate*compat));
+
+                    MinglingWith.updateRelationshipSpark(Mingler, sparkChange);
+                    MinglingWith.updateRelationshipCharge(Mingler, chargeChange);
+                    Mingler.updateRelationshipSpark(MinglingWith, sparkChange);
+                    Mingler.updateRelationshipCharge(MinglingWith, chargeChange);
+
+                    Mingler.getCaptivatedIndividuals();
+                    Mingler.getRomanticInterests();
+                    MinglingWith.getCaptivatedIndividuals();
+                    MinglingWith.getRomanticInterests();
+
+                }
+            }
+        },
     };
 
     public static ActionType GetActionByName(string actionName)
@@ -90,7 +132,7 @@ public static class ActionLibrary
         return RandomlyChoose(ActionDict);
     }
 
-    private static ActionType RandomlyChoose(Dictionary<string, ActionType> actionSubset)
+    private static ActionType RandomlyChoose(SortedDictionary<string, ActionType> actionSubset)
     {
         if (actionSubset.Count != 0)
         {
@@ -101,19 +143,19 @@ public static class ActionLibrary
         return null;
     }
 
-    public static ActionType PriorityBasedSelection(int priority)
+    public static ActionType ChanceFilteredRandomSelection()
     {
-        var result = from a in ActionDict
-                     where a.Value.Priority == priority
-                     select a;
-        // TODO: special logic based on various priority levels
-        return RandomlyChoose(result.ToDictionary(t => t.Key, t => t.Value));
-    }
+        float rand = Random.Float(0.0f, (float)DictionaryWeightSum);
+        float sum = 0.0f;
 
-    public static ActionType ChanceFilteredPriorityBasedSelection(int priority)
-    {
-        ActionType a = PriorityBasedSelection(priority);
-        if (a == null) return null;
-        return (Random.Float(0.0f, 1.0f) - a.Chance) < 0.0 ? a : null;
+        foreach (KeyValuePair<string, ActionType> entry in ActionDict)
+        {
+            sum += (float)entry.Value.Frequency;
+            if (sum > rand)
+            {
+                return entry.Value;
+            }
+        }
+        return null;
     }
 }

@@ -33,7 +33,6 @@ public class Action
         String res = actionName + " [at " + time.ToString(Simulator.DateTimeFormat) + "] : ";
         foreach (var role in roles)
         {
-            // TODO: better string then printing out the object
             res += role.Name + " = " + role.GetBindingUntyped() + ", ";
         }
         return res.Substring(0, res.Length - 2);
@@ -48,8 +47,6 @@ public class Action
     {
         get
         {
-//            Debug.Log(roleName);
-//            Debug.Log(roles.Count);
             return roles.First(rolebase => rolebase.Name.Equals(roleName)).GetBindingUntyped();
         }
     }

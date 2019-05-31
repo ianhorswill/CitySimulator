@@ -10,7 +10,7 @@ namespace Codes.Institution
         public Person owner;
 
         public Plot location;
-        private List<Person> employeeList;
+        public List<Person> employeeList;
         public string type;
         public const string SUB_SYSTEM = "Institution";
 

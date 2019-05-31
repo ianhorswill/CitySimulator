@@ -82,6 +82,8 @@ public class RoleType<T> : RoleTypeBase
             return ForceToT(PersonTown.Singleton.aliveResidents);
         if (t == typeof(Institution))
             return ForceToT(InstitutionManager.institutionList);
+        if (t == typeof(Action))
+            return ForceToT(ActionSimulator.action_history);
         throw new InvalidOperationException($"No default collection defined for type {t.Name}");
     }
 
