@@ -17,7 +17,10 @@ public class Space : SimulatorComponent
     public Street[,] StreetsList;
     readonly List<Plot> emptyPlots = new List<Plot>();
     readonly List<Plot> occupiedPlots = new List<Plot>();
-	
+
+    public Street[,] HorizontalStreets;
+    public Street[,] VerticalStreets;
+
     public static Space Singleton;
     
     public Space(){ Singleton = this; }
@@ -27,6 +30,9 @@ public class Space : SimulatorComponent
     {
         PlotsArray = new Plot[GridLen, GridLen];
         StreetsList = new Street[GridLen+1,2];
+
+        HorizontalStreets = new Street[GridLen,GridLen+1];
+        VerticalStreets = new Street[GridLen, GridLen+1];
 
         calc_max_plots();
 
@@ -65,6 +71,7 @@ public class Space : SimulatorComponent
         int x = Random.Integer(GridLen / 2 - GridLen / 6, GridLen / 2 + GridLen / 6);
         int y = Random.Integer(GridLen / 2 - GridLen / 6, GridLen / 2 + GridLen / 6);
 
+        make_bordering_streets(x,y);
         Sprawl(make_plot(x, y));
         
     }
@@ -90,6 +97,7 @@ public class Space : SimulatorComponent
                         childX = x;
                         childY = (y + 1) % GridLen;
                         current.neighbor_plots[i] = make_plot(childX, childY);
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     // East
@@ -97,6 +105,7 @@ public class Space : SimulatorComponent
                         childX = (x + 1) % GridLen;
                         childY = y;
                         current.neighbor_plots[i] = make_plot(childX, childY);
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     // South
@@ -104,6 +113,7 @@ public class Space : SimulatorComponent
                         childX = x;
                         childY = (y - 1) % GridLen;
                         current.neighbor_plots[i] = make_plot(childX, childY);
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     // West
@@ -111,6 +121,7 @@ public class Space : SimulatorComponent
                         childX = (x - 1) % GridLen;
                         childY = y;
                         current.neighbor_plots[i] = make_plot(childX, childY);
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     default:
@@ -240,5 +251,28 @@ public class Space : SimulatorComponent
     private void calc_max_plots()
     {
         MaxPlots = (int) ((GridLen * GridLen) * FullFactor);
+    }
+
+    private void make_bordering_streets(int x, int y)
+    {
+        if (HorizontalStreets[x, y + 1] == null)
+        {
+            HorizontalStreets[x, y + 1] = make_street(x, Street.street_direction.NS);     // N
+        }
+
+        if (HorizontalStreets[x, y] == null)
+        {
+            HorizontalStreets[x, y] = make_street(x, Street.street_direction.NS);         // S
+        }
+
+        if (VerticalStreets[x + 1, y] == null)
+        {
+            VerticalStreets[x + 1, y] = make_street(x, Street.street_direction.EW);       // E
+        }
+        
+        if (VerticalStreets[x, y] == null)
+        {
+            VerticalStreets[x, y] = make_street(x, Street.street_direction.EW);           // W
+        }
     }
 }
