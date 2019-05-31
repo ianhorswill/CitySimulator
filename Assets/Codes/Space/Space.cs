@@ -36,9 +36,26 @@ public class Space : SimulatorComponent
         connect_streets();
     }
 
+    public override void Step()
+    {
+        if(NumPlots < (GridLen * GridLen)) Sprawl(get_random_plot());
+    }
+
     public override void Visualize()
     {
-        // draw all square plots
+        drawPlots();
+
+        for (int level = 0; level < GridLen + 1; level++)
+        {
+            Rect hori_rect = new Rect(0, DrawScale * level, DrawScale * (GridLen + 0.1f), DrawScale * 0.1f);
+            Rect vert_rect = new Rect(DrawScale * level, 0, DrawScale * 0.1f, DrawScale * (GridLen + 0.1f));
+            Draw.Rect(vert_rect, Color.black);
+            Draw.Rect(hori_rect, Color.black);
+        }
+    }
+
+    private void drawPlots()
+    {
         foreach (Plot p in PlotsArray)
         {
             if (p == null) continue;
@@ -48,18 +65,8 @@ public class Space : SimulatorComponent
                 DrawScale,
                 DrawScale);
             Draw.Rect(p_rect, p.color, -1);
-        }
+        }    }
 
-        // draw all streets
-        for (int level = 0; level < GridLen + 1; level++)
-        {
-            Rect hori_rect = new Rect(0, DrawScale * level, DrawScale * (GridLen + 0.1f), DrawScale * 0.1f);
-            Rect vert_rect = new Rect(DrawScale * level, 0, DrawScale * 0.1f, DrawScale * (GridLen + 0.1f));
-            Draw.Rect(vert_rect, Color.black);
-            Draw.Rect(hori_rect, Color.black);
-        }
-    }
-    
     private void generate_plots()
     {
         int x = Random.Integer(GridLen / 2 - GridLen / 6, GridLen / 2 + GridLen / 6);
@@ -80,43 +87,42 @@ public class Space : SimulatorComponent
         {
             Plot p = current.neighbor_plots[i];
 
-            if (p == null && InitPlots)
+            if (p == null)
             {
-
                 switch (i)
                 {
                     // North
                     case 0:
                         childX = x;
-                        childY = (y + 1) % GridLen;
-                        current.neighbor_plots[i] = make_plot(childX, childY);
+                        childY = modulo((y + 1), GridLen);
                         break;
 					
                     // East
                     case 1:
-                        childX = (x + 1) % GridLen;
+                        childX = modulo((x + 1), GridLen);
                         childY = y;
-                        current.neighbor_plots[i] = make_plot(childX, childY);
                         break;
 					
                     // South
                     case 2:
                         childX = x;
-                        childY = (y - 1) % GridLen;
-                        current.neighbor_plots[i] = make_plot(childX, childY);
+                        childY = modulo(y - 1, GridLen);
                         break;
 					
                     // West
                     case 3:
-                        childX = (x - 1) % GridLen;
+                        childX = modulo((x - 1), GridLen);
                         childY = y;
-                        current.neighbor_plots[i] = make_plot(childX, childY);
                         break;
 					
                     default:
+                        childX = childY = 0;
                         Debug.Log("uh oh spaghettio you shouldn't be here");
                         break;
                 }
+                
+                current.neighbor_plots[i] = make_plot(childX, childY);
+
             }
         }
 		
@@ -149,6 +155,16 @@ public class Space : SimulatorComponent
         int y = Random.Integer(0, GridLen);
 
         return PlotsArray[x,y] ?? get_random_plot();
+    }
+
+    public Plot build_plot()
+    {
+        if (NumPlots < (GridLen * GridLen))
+        {
+            Plot parent = get_random_plot();
+        }
+
+        return null;
     }
 
     /// <summary>
@@ -185,7 +201,7 @@ public class Space : SimulatorComponent
 	
     Plot make_plot(int x, int y)
     {
-        if (x < 0 || y < 0) return null;
+        //if (x < 0 || y < 0) return null;
 		
         Plot newPlot = new Plot(x, y);
 		
@@ -193,7 +209,7 @@ public class Space : SimulatorComponent
         emptyPlots.Add(newPlot);
 		
         NumPlots++;
-
+        
         return newPlot;
 
     }
@@ -240,5 +256,10 @@ public class Space : SimulatorComponent
     private void calc_max_plots()
     {
         MaxPlots = (int) ((GridLen * GridLen) * FullFactor);
+    }
+    
+    int modulo(float a,float b)
+    {
+        return (int) (a - b * Math.Floor(a / b));
     }
 }
