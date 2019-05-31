@@ -29,8 +29,7 @@ public class ActionType
     public List<RoleTypeBase> RoleList;
 
     // Optional fields (else use defaults):
-    public int Priority = 10;
-    public double Chance = 1;
+    public double Frequency = 1.0;
 
     // Optional methods (else do nothing):
 
@@ -45,12 +44,11 @@ public class ActionType
     /// </summary>
     public Action<Action> PostExecute;
 
-    // roleBindings expects alternating strings (naming a role) and objects (to fill that role)
-
     /// <summary>
     /// Create an instance of this action type by finding values to fill each of its roles
     /// </summary>
-    /// <param name="roleBindings">List of bindings to force for the actions roles</param>
+    /// <param name="roleBindings">List of bindings to force for the actions roles,
+    ///   expects alternating strings (naming a role) and objects (to fill that role)</param>
     /// <returns></returns>
     public Action Instantiate(params object[] roleBindings)
     {
@@ -65,14 +63,12 @@ public class ActionType
             {
                 // AGAIN, NOT TYPE SAFE, RELIES ON PROPER TYPE BEING PASSED IN
                 RoleBase temp = role.FillRoleWith(tempBindingObj, a);
-                //Debug.Log("fill");
                 if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }
             else
             {
                 RoleBase temp = role.FillRoleUntyped(a);
-                //Debug.Log("fill untyped");
                 if (temp != null) { filledRoles.Add(temp); }
                 else { return null; }
             }
@@ -94,11 +90,8 @@ public class ActionType
     /// <param name="a">Action to perform</param>
     public void Execute(Action a)
     {
-        // TODO: log action in global action list
-        //ActionSimulator.action_history.Add(a);
-        if (Modifications != null)
-            Modifications(a);
-        if (PostExecute != null)
-            PostExecute(a);
+        ActionSimulator.action_history.Add(a);
+        Modifications?.Invoke(a);
+        PostExecute?.Invoke(a);
     }
 }
