@@ -73,11 +73,11 @@ public static class ActionLibrary
                 Modifications = a =>
                 {
                     Institution ins = InstitutionManager.GeneratorInstitution(
-                        ((Role<Person>) a["CEO"]).value,
+                        (Person) a["CEO"],
                         InstitutionManager.GetRandomType(),
                         Space.Singleton.get_random_plot());
         
-                    ((Role<ConstructionCompany>) a["ConstructionCompany"]).value.Build(ins);
+                    ((ConstructionCompany) a["ConstructionCompany"]).Build(ins);
                 }
             }
         },
@@ -87,7 +87,7 @@ public static class ActionLibrary
                 Chance = 0.3,
                 Modifications = a =>
                 {
-                    ((Role<Institution>) a["Institution"]).value.Hiring(((Role<Person>) a["Employee"]).value);
+                    ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
                 }
             }
         }
