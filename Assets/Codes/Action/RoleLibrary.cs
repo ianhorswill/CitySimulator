@@ -29,6 +29,7 @@ public static class RoleLibrary
             person.individualPersonality.facets["CONFIDENCE"] > 60
         )},
         { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
+        { "RoleInstitution", new RoleType<Institution>("Institution")},
         {
             "RoleEmployee", new RoleType<Person>("Employee", (e, bindings) =>
                 {
@@ -38,7 +39,9 @@ public static class RoleLibrary
                            !ins.employeeList.Contains(e);
                 }
         )},
-        { "RoleInstitution", new RoleType<Institution>("Institution")}
+        { "RoleMingler", new RoleType<Person>("Mingler")},
+        { "RoleMinglingWith", new RoleType<Person>("MinglingWith", (e,a) => (Person) a["Mingler"] != e )}
+
     };
 
     public static RoleTypeBase GetRoleByName(string roleName)
