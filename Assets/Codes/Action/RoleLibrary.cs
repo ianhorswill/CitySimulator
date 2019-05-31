@@ -33,7 +33,6 @@ public static class RoleLibrary
                 e.personalEducation.is_college_graduate && 
                 e.individualPersonality.facets["DUTIFULNESS"] > 5
         )},
-        { "RoleInstitution", new RoleType<Institution>("Institution")},
         { "RoleMingler", new RoleType<Person>("Mingler")},
         { "RoleMinglingWith", new RoleType<Person>("MinglingWith", (e,a) => (Person) a["Mingler"] != e )}
 
