@@ -4,7 +4,12 @@ using Codes.Institution;
 
 public class ActionSimulator : SimulatorComponent
 {
-    //public List<Action> action_history = new List<Action>();
+    public static List<Action> action_history = new List<Action>();
+
+    static ActionSimulator()
+    {
+        action_history = new List<Action>();
+    }
 
     Person RandomlyChoosePeople()
     {
@@ -13,21 +18,17 @@ public class ActionSimulator : SimulatorComponent
 
     public override void Step()
     {
-        for (int i = 0; i < 10; i++)
+        // Number of actions per step
+        for (int i = 0; i < 3; i++)
         {
-            ActionType randAction = ActionLibrary.ChanceFilteredPriorityBasedSelection(i);
+            ActionType randAction = ActionLibrary.ChanceFilteredRandomSelection();
             Action a;
             if (randAction != null)
                 a = randAction.Instantiate();
             else
                 continue;
-            
-            //Debug.Log(a);
-            if (a != null)
-            {
-                randAction.Execute(a);
-            }
-            //Logger.Log(a.ToString());
+
+            if (a != null) { randAction.Execute(a); }
         }
 
         if (PersonTown.Singleton.aliveResidents.Count == 0) // Town is dead
