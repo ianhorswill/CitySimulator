@@ -7,7 +7,10 @@ using static RoleLibrary;
 
 public static class ActionLibrary
 {
-    private static readonly double DictionaryWeightSum = ActionDict.Skip(1).Sum(x => x.Value.Frequency);
+    private static readonly float DictionaryWeightSum = (float)ActionDict.Skip(1).Sum(x => x.Value.Frequency);
+    private static readonly ActionType referenceAction = ActionDict["Mingle"];
+    private static readonly float numReferenceIterations = 1.0f;
+    public static readonly float numIterations = numReferenceIterations * (DictionaryWeightSum / (float)referenceAction.Frequency);
 
     private static readonly SortedDictionary<string, ActionType> ActionDict = new SortedDictionary<string, ActionType>
     {
@@ -89,7 +92,6 @@ public static class ActionLibrary
                     var MinglingWith = (Person)a["MinglingWith"];
                     var Mingler = (Person)a["Mingler"];
                     var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100;
-
 
                     int sparkBaseRate = 30;
                     int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));

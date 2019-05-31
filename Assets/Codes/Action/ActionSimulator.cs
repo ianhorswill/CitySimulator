@@ -18,8 +18,7 @@ public class ActionSimulator : SimulatorComponent
 
     public override void Step()
     {
-        // Number of actions per step
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < (ActionLibrary.numIterations * PersonTown.Singleton.aliveResidents.Count); i++)
         {
             ActionType randAction = ActionLibrary.ChanceFilteredRandomSelection();
             Action a;

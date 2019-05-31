@@ -46,6 +46,15 @@ public class RoleType<T> : RoleTypeBase
     { }
 
     /// <summary>
+    /// Make n object representing a new kind of role that selects bindings using the specified collection
+    /// </summary>
+    /// <param name="name">Name of the role</param>
+    /// <param name="collection">Set of objects to which the action might potentially be bound</param>
+    public RoleType(string name, List<T> collection)
+        : this(name, collection, (t, l) => true)
+    { }
+
+    /// <summary>
     /// Make an object representing a new kind of role that selects bindings using the default collection
     /// Bindings are selected from the default collection, which depends on the type parameter of RoleType.  For type Person, it is the set
     /// of living persons.
@@ -53,15 +62,6 @@ public class RoleType<T> : RoleTypeBase
     /// <param name="name">Name of the role</param>
     public RoleType(string name)
         : this(name, DefaultCollection(), (t, l) => true)
-    { }
-
-    /// <summary>
-    /// Make n object representing a new kind of role that selects bindings using the specified collection
-    /// </summary>
-    /// <param name="name">Name of the role</param>
-    /// <param name="collection">Set of objects to which the action might potentially be bound</param>
-    public RoleType(string name, List<T> collection)
-        : this(name, collection, (t, l) => true)
     { }
 
     /// <summary>
