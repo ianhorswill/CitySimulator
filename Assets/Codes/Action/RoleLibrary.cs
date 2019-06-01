@@ -1,51 +1,57 @@
 using System.Collections.Generic;
 using Codes.Institution;
-using UnityEditor.PackageManager;
-using UnityEditor.UIElements;
-using UnityEngine;
 
+/// <summary>
+/// Role library, dictionary of roles for easy lookup
+/// </summary>
 public static class RoleLibrary
 {
-    private static readonly Dictionary<string, RoleTypeBase> RoleDict = new Dictionary<string, RoleTypeBase>
+    /// <summary>
+    /// The roles which actions will use for role filling and filtering
+    /// </summary>
+    public static readonly Dictionary<string, RoleTypeBase> Roles = new Dictionary<string, RoleTypeBase>
     {
-        { "RoleSpeaker", new RoleType<Person>("Speaker") },
-        { "RoleListener", new RoleType<Person>("Listener") },
-        { "RoleHeard", new RoleType<Person>("Heard") },
-        { "RoleBioMother", new RoleType<Person>("BioMother", (p, bindings) => 
-            p.isFemale() && p.age >= 18 && p.age <= 50 && p.sigOther != null && p.sigOther.age >= 18 && p.readyForNextChild()) },
-        { "RoleDeath", new RoleType<Person>("Death") },
-        { "RoleSameLocation", new RoleType<Plot>("Location", a =>
-                                                                        {
-                                                                            var speaker = (Person) a["Speaker"];
-                                                                            var listener = (Person) a["Listener"];
-                                                                            if (speaker.currentLocation == listener.currentLocation)
-                                                                                return speaker.currentLocation;
-                                                                            return null;
-                                                                        })
+        // Uses constructor with default filter of true and ther default collection for the type
+        { "Institution", new RoleType<Institution>("Institution") },
+        { "Mingler", new RoleType<Person>("Mingler") },
+        { "Speaker", new RoleType<Person>("Speaker") },
+        { "Listener", new RoleType<Person>("Listener") },
+        { "Hearer", new RoleType<Person>("Hearer") },
+        { "Dead", new RoleType<Person>("Dead") },
+
+        // Uses constructor with default filter of true, thus it searches over the collection
+        { "ConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany",
+            InstitutionManager.constructionCompanyList) },
+
+        // Uses constructor with default collection but custom filter
+        { "Mother", new RoleType<Person>("Mother", (person, action) =>
+            person.isFemale() && person.age >= 18 && person.age <= 50 &&
+            person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
         },
-        { "RoleCEO", new RoleType<Person>("CEO", (person, action) => 
-//            person.age > 15 &&  
+        { "CEO", new RoleType<Person>("CEO", (person, action) =>
             person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
             person.individualPersonality.facets["CONFIDENCE"] > 60
         )},
-        { "RoleConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany", InstitutionManager.constructionCompanyList) },
-        { "RoleInstitution", new RoleType<Institution>("Institution")},
-        {
-            "RoleEmployee", new RoleType<Person>("Employee", (e, bindings) =>
-                {
-                    Institution ins = (Institution) bindings["Institution"];
-                    return e.individualPersonality.facets["DUTIFULNESS"] > 70 && 
-                           e.personalEducation.is_college_graduate &&
-                           !ins.employeeList.Contains(e);
-                }
+        {"Employee", new RoleType<Person>("Employee", (person, action) =>
+            {
+                Institution ins = (Institution) action["Institution"];
+                return person.individualPersonality.facets["DUTIFULNESS"] > 70 &&
+                       person.personalEducation.is_college_graduate &&
+                       !ins.employeeList.Contains(person);
+            }
         )},
-        { "RoleMingler", new RoleType<Person>("Mingler")},
-        { "RoleMinglingWith", new RoleType<Person>("MinglingWith", (e,a) => (Person) a["Mingler"] != e )}
+        { "MinglingWith", new RoleType<Person>("MinglingWith", (person, action) =>
+            (Person) action["Mingler"] != person ) },
 
+        // Uses constructor with binder, thus the action input to the lambda
+        { "SameLocation", new RoleType<Plot>("SameLocation", action =>
+            {
+                var speaker = (Person) action["Speaker"];
+                var listener = (Person) action["Listener"];
+                if (speaker.currentLocation == listener.currentLocation)
+                    return speaker.currentLocation;
+                return null;
+            })
+        }
     };
-
-    public static RoleTypeBase GetRoleByName(string roleName)
-    {
-        return RoleDict[roleName];
-    }
 }

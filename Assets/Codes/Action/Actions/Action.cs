@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 /// <summary>
 /// Represents an instance of an action having taken place
@@ -21,13 +20,25 @@ public class Action
     /// </summary>
     public readonly List<RoleBase> roles;
 
+    /// <summary>
+    /// Initializes a new instance of the Action class.
+    /// </summary>
+    /// <param name="actionName">Action name</param>
+    /// <param name="time">Time action is being done</param>
+    /// <param name="roles">Role bindings</param>
     public Action(string actionName, DateTime time, List<RoleBase> roles)
     {
         this.actionName = actionName;
         this.time = time;
         this.roles = roles;
     }
-    
+
+    /// <summary>
+    /// Returns a string that represents the current Action.
+    /// </summary>
+    /// <returns>A string of the form:
+    /// "actionName [at time] : roleName = object, roleName = object"
+    /// </returns>
     public override string ToString()
     {
         String res = actionName + " [at " + time.ToString(Simulator.DateTimeFormat) + "] : ";

@@ -1,7 +1,7 @@
 /// <summary>
-/// Base class for all RoleTypes
+/// Base class for all RoleTypes. Allows for lists of roles to fill (see ActionTypes).
 /// Represents a role, independent of the value it's bound to in a particular action.
-/// RoleTypes contain the information needed to choose objects to fill the role.
+/// Utilizes the RoleBase type to return filled in Roles.
 /// </summary>
 public abstract class RoleTypeBase
 {
@@ -15,24 +15,19 @@ public abstract class RoleTypeBase
     /// </summary>
     public bool BuildFlag;
 
-    // Allows us to get filled roles from the base class. RoleBase is used to
-    // hold the various types of bindings in filled roles which is needed so that
-    // each RoleType can access all previously filled roles in its Filtering...
-    //  - RoleTypeBase allows for lists of roles to fill (in ActionTypes)
-    //  - RoleBase allows for lists of filled roles (in RoleTypes and Actions)
-    
     /// <summary>
     /// Find a value to bind this role to for some particular action.
     /// </summary>
-    /// <param name="a">The action being bound</param>
+    /// <param name="action">The action being passed along to filter by
+    /// the already filled items in the binding list</param>
     /// <returns></returns>
-    public abstract RoleBase FillRoleUntyped(Action a);
+    public abstract RoleBase FillRoleUntyped(Action action);
 
     /// <summary>
-    /// Attempt to bind this role to a specific value for some action
+    /// Attempt to bind (fill) this role to a specific value for some action
     /// </summary>
-    /// <param name="desiredValue">Value to bind it to</param>
-    /// <param name="a">The action being bound</param>
+    /// <param name="toFill">Value to bind it to</param>
+    /// <param name="action">The action being bound</param>
     /// <returns>A binding (RoleBase) if successful, else null.</returns>
-    public abstract RoleBase FillRoleWith(object desiredValue, Action a);
+    public abstract RoleBase FillRoleWith(object toFill, Action action);
 }
