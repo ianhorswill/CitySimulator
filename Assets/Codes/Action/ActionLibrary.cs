@@ -62,12 +62,12 @@ public static class ActionLibrary
                 Frequency = 0.1f,
                 Modifications = a =>
                 {
-                    var BioMother = (Person) a["Mother"];
+                    var Mother = (Person) a["Mother"];
                     // TODO: Add role for father that filters based on being the significant other
-                    var BioFather = BioMother.sigOther;
+                    var Father = Mother.sigOther;
                     // TODO: Use build role to create new child
                     // TODO: add Build<Action, object> function and RegisterBuilder(Person, Build)
-                    Person baby = Person.createChild(BioMother, BioFather);
+                    Person baby = Person.createChild(Mother, Father);
                     PersonTown.Singleton.aliveResidents.Add(baby);
                 }
             }
