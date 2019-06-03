@@ -13,14 +13,11 @@ namespace Codes.Institution
         public List<Person> employeeList;
         public string type;
         public const string SUB_SYSTEM = "Institution";
+        public int visitCount = 0;
+        public float CUT_JOB_THRESHOLD = 0.01f;
 
         public Institution(Person owner, Plot location,string type, bool needBuild = true)
         {
-//            if (needBuild)
-//            {
-//                ConstructCompanySite(location);
-//            }
-            
             this.owner = owner;
             this.location = location;
             this.type = type;
@@ -28,8 +25,6 @@ namespace Codes.Institution
         }
         public Institution(Person owner, Plot location,string type)
         {
-//            ConstructCompanySite(location);
-            
             this.owner = owner;
             this.location = location;
             this.type = type;
@@ -49,6 +44,23 @@ namespace Codes.Institution
             float pay = 100; //Need to alter this based on the job / wage / position.  100 right now is arbitary.
             person.workStatus.getNewJob(this, pay);  //Tells the person that they are now employed with wage "pay".
             Logger.Log(SUB_SYSTEM,  type, "hires", person.name);
+        }
+
+        public bool Fire(Person person)
+        {
+            if (employeeList.Contains(person))
+            {
+                return employeeList.Remove(person);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void Visit()
+        {
+            visitCount++;
         }
 
         public string getType()

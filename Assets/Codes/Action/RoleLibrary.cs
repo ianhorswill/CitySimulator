@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Codes.Institution;
+using TMPro;
+using UnityEditor.UIElements;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup
@@ -52,6 +54,19 @@ public static class RoleLibrary
                     return speaker.currentLocation;
                 return null;
             })
-        }
+        },
+        {"FiredEmployee", new RoleType<Person>("FiredEmployee", (person, action) =>
+        {
+            {
+                Institution ins = (Institution) action["Institution"];
+                // TODO: choose the employee to be fire
+                var population = PersonTown.Singleton.aliveResidents.Count;
+                // below the cut job threshold
+                var cut = ins.visitCount < ins.CUT_JOB_THRESHOLD * population;
+                return cut && ins.employeeList.Contains(person);
+            }
+        })},
+        {"VisitingPerson", new RoleType<Person>("VisitingPerson", (person, action) =>
+            person.age > 7)}
     };
 }

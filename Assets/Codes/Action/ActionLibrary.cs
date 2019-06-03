@@ -109,6 +109,26 @@ public static class ActionLibrary
                     ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
                 }
             }
+        },
+        {
+            "InstitutionFiring", new ActionType("InstitutionFiring", Roles["Institution"], Roles["FiredEmployee"])
+            {
+                Frequency = 0.01f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Fire((Person) action["FiredEmployee"]);
+                }
+            }
+        },
+        {
+            "PersonVisitingInstitution", new ActionType("PersonVisitingInstitution", Roles["Institution"], Roles["VisitingPerson"])
+            {
+                Frequency = 0.6f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Visit();
+                }
+            }
         }
     };
 
