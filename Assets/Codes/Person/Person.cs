@@ -347,7 +347,7 @@ public class Person
     /// </summary>
     public static Person generateRandomPerson()
     {
-        Person p = new Person("",null,null);
+        Person p = new Person("",null,new Person[2]);
         p.biologicalSex = (Random.Integer(0, 2) == 1);
         p.age = Random.Integer(0, 70);
         p.DateOfBirth = Simulator.CurrentTime.AddYears(-p.age);
@@ -536,7 +536,21 @@ public class Person
         }
         return true;
     }
-
+    // now the only constraint is that siblings cannot marry each other
+    public bool CanMarry(Person p)
+    {
+        if (parents == null || p.parents == null) 
+            return true;
+        foreach (Person parent in parents)
+        {
+            if (parent != null && p.parents.Contains(parent))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
     {
         if (listOfPersons == null || listOfPersons.Count == 0) return "None";

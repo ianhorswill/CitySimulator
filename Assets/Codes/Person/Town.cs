@@ -158,18 +158,11 @@ public class PersonTown : SimulatorComponent
             {
                 foreach (Person pf in noSigOtherFem)
                 {
-                    if (pm.sigOther != null)
+                    if (pm.sigOther == null && pf.sigOther == null && pm.CanMarry(pf))
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        if (pf.sigOther == null)
-                        {
-                            pm.sigOther = pf;
-                            pf.sigOther = pm;
-                            Log(pm.name+" and "+pf.name+" is married.");
-                        }
+                        pm.sigOther = pf;
+                        pf.sigOther = pm;
+                        Log(pm.name+" and "+pf.name+" is married.");
                     }
                 }
             }
