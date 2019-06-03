@@ -69,7 +69,7 @@ namespace Codes.Institution
         
         
         // generate a new institution
-        public static Institution GeneratorInstitution(Person owner,String type, Plot location)
+        public static Institution GeneratorInstitution(Person owner, String type, Plot location)
         {
 //            string type = GetRandomType();
             Institution newInstitution;

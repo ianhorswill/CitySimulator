@@ -14,14 +14,8 @@ public static class RoleLibrary
         // Uses constructor with default filter of true and ther default collection for the type
         { "Institution", new RoleType<Institution>("Institution") },
         { "Mingler", new RoleType<Person>("Mingler") },
-        { "Speaker", new RoleType<Person>("Speaker") },
-        { "Listener", new RoleType<Person>("Listener") },
-        { "Hearer", new RoleType<Person>("Hearer") },
         { "Dead", new RoleType<Person>("Dead") },
-
-        // Uses constructor with default filter of true, thus it searches over the collection
-        { "ConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany",
-            InstitutionManager.constructionCompanyList) },
+        { "ConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany") },
 
         // Uses constructor with default collection but custom filter
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
@@ -51,6 +45,11 @@ public static class RoleLibrary
                 if (speaker.currentLocation == listener.currentLocation)
                     return speaker.currentLocation;
                 return null;
+            })
+        },
+        { "Father", new RoleType<Person>("Father", action => {
+                var mother = (Person) action["Mother"];
+                return mother.sigOther;
             })
         }
     };
