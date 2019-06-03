@@ -78,7 +78,7 @@ public class Person
 
         public static int getCompatibility(Person p1, Person p2)
         {
-            int personalityDiff = 0;
+            double personalityDiff = 0;
             // these facets are chosen to mimic James' compatibility calculation using O/E/A difference 
             List<string> compatibility_facets = new List<string> { "CURIOUS", "EXCITEMENT_SEEKING", "POLITENESS",
                                                                   "FRIENDLINESS", "ASSERTIVENESS", "CHEER_PROPENSITY" };
@@ -86,11 +86,12 @@ public class Person
             {
                 int p1_facet_value = p1.individualPersonality.facets[compatibility_facet];
                 int p2_facet_value = p2.individualPersonality.facets[compatibility_facet];
-                personalityDiff += Math.Abs(p1_facet_value - p2_facet_value);
+                personalityDiff += Math.Pow(Math.Abs(p1_facet_value - p2_facet_value), 1.2);
             }
 
             // average difference across facets and flip for compatibility
-            return 100 - (personalityDiff / compatibility_facets.Count);
+            int personalityDiffNorm = (int) (2.5 * personalityDiff / compatibility_facets.Count);
+            return Math.Max(100 - personalityDiffNorm, 0);
         }
     }
 
