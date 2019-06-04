@@ -208,15 +208,11 @@ public class Person
     /// The gender of the person: if biologicalSex is true, the person is Male; if false, female.
     /// </summary>
     private bool biologicalSex;
-    public bool isMale()
-    {
-        return biologicalSex;
-    }
-    public bool isFemale()
-    {
-        return !biologicalSex;
-    }
-    
+
+    public bool IsMale => biologicalSex;
+
+    public bool IsFemale => !biologicalSex;
+
 
     public Personality individualPersonality;
     public class Personality
@@ -475,7 +471,7 @@ public class Person
         if(p2.age >= minAge && p1.age >= minAge)
         {
             // if both individuals are above the minimum age, then they may have a child
-            if((p1.isFemale() && p2.isMale()) || (p1.isMale() && p2.isFemale()))
+            if((p1.IsFemale && p2.IsMale) || (p1.IsMale && p2.IsFemale))
             {
                 float birthChance = Random.Float(0,1);
                 // Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
