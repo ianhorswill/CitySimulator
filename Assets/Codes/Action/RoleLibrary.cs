@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Codes.Institution;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup

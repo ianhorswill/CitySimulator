@@ -1,11 +1,19 @@
+:- public person/1, parent/2, sibling/2, male/1, female/1.
+:- public mother/2, father/2, brother/2, sister/2.
+:- public romantically_interested_in/2, significant_other/2, couple/2.
+:- public love_triangle/3.
+
 :- define_indexical(residents, $town.aliveResidents).
 
+% person(X) :-
+%    nonvar(X),
+%    !,
+%    is_class(X,$person).
+% person(X) :-
+%    member(X, $residents).
+
 person(X) :-
-   nonvar(X),
-   !,
-   is_class(X,$person).
-person(X) :-
-   member(X, $residents).
+   is_class(X, $person, $residents).
 
 parent(Child, Parent) :-
    nonvar(Child),
