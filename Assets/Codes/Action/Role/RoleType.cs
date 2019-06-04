@@ -134,27 +134,13 @@ public class RoleType<T> : RoleTypeBase
 
     /// <summary>
     /// Passes a new Role<T> back up to the RoleBase, and returns that role in
-    /// the form of a RoleBase... Uses the custom GetRole to fill in and (if set)
-    /// uses BuildFlag and Build to create a new object of the right type in the
-    /// right collection.
+    /// the form of a RoleBase...
     /// </summary>
     /// <returns>The role untyped.</returns>
     /// <param name="action">The action to be passed along to Build or GetRole (which then uses
     /// it in filtering)</param>
     public override RoleBase FillRoleUntyped(Action action)
     {
-        if (BuildFlag)
-        {
-            Type typeParameterType = typeof(T);
-            object newObject = Builder.Build(typeParameterType, action);
-            if (newObject != null)
-            {
-                T newTypedObject = (T) newObject;
-                collection.Add(newTypedObject);
-                return new Role<T>(Name, newTypedObject);
-            }
-            return null;
-        }
         return GetRole(action);
     }
 

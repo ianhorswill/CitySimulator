@@ -57,20 +57,8 @@ public static class ActionLibrary
                 }
             }
         },
-        { "Birth" , new ActionType("Birth", Roles["Mother"])
-           {
-                Frequency = 0.1f,
-                Modifications = a =>
-                {
-                    var Mother = (Person) a["Mother"];
-                    // TODO: Add role for father that filters based on being the significant other
-                    var Father = Mother.sigOther;
-                    // TODO: Use build role to create new child
-                    // TODO: add Build<Action, object> function and RegisterBuilder(Person, Build)
-                    Person baby = Person.createChild(Mother, Father);
-                    PersonTown.Singleton.aliveResidents.Add(baby);
-                }
-            }
+        { "Birth" , new ActionType("Birth", Roles["Mother"], Roles["Father"], Roles["Baby"])
+           { Frequency = 0.1f }
         },
         { "Death", new ActionType("Death", Roles["Dead"])
             {
@@ -84,30 +72,17 @@ public static class ActionLibrary
                 }
             }
         },
-        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"])
+        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["NewInstitution"], Roles["ConstructionCompany"])
             {
                 Frequency = 0.3f,
-                Modifications = a =>
-                {
-                    // TODO: Use build role to create an institution
-                    // TODO: add Build<Action, object> function and RegisterBuilder(Institution, Build)
-                    Institution ins = InstitutionManager.GeneratorInstitution(
-                        (Person) a["CEO"],
-                        InstitutionManager.GetRandomType(),
-                        Space.Singleton.get_random_plot());
-
-                    // Generating an institution also has the construction company build it.
-                    ((ConstructionCompany) a["ConstructionCompany"]).Build(ins);
-                }
+                // Generating an institution also has the construction company build it.
+                Modifications = a => ((ConstructionCompany) a["ConstructionCompany"]).Construct((Institution) a["NewInstitution"])
             }
         },
         { "InstitutionHiring", new ActionType("InstitutionHiring", Roles["Institution"], Roles["Employee"])
             {
                 Frequency = 0.3f,
-                Modifications = a =>
-                {
-                    ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
-                }
+                Modifications = a => ((Institution) a["Institution"]).Hiring((Person) a["Employee"])
             }
         }
     };

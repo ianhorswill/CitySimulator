@@ -51,6 +51,17 @@ public static class RoleLibrary
                 var mother = (Person) action["Mother"];
                 return mother.sigOther;
             })
-        }
+        },
+        { "NewInstitute", new RoleType<Institution>("NewInstitute", action =>
+            InstitutionManager.InstitutionGenerator(
+                (Person)action["CEO"],
+                InstitutionManager.GetRandomType(),
+                Space.Singleton.get_random_plot()))},
+        { "Baby", new RoleType<Person>("Baby", action => {
+            Person baby = Person.createChild((Person)action["Mother"], (Person)action["Father"]);
+            PersonTown.Singleton.aliveResidents.Add(baby);
+            return baby;
+            })
+        },
     };
 }

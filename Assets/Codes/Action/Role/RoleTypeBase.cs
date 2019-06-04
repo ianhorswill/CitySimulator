@@ -11,11 +11,6 @@ public abstract class RoleTypeBase
     public string Name;
 
     /// <summary>
-    /// True if the simulator should construct a new object to fill the role.
-    /// </summary>
-    public bool BuildFlag;
-
-    /// <summary>
     /// Find a value to bind this role to for some particular action.
     /// </summary>
     /// <param name="action">The action being passed along to filter by
