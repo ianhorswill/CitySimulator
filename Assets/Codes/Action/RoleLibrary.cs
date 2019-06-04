@@ -52,16 +52,16 @@ public static class RoleLibrary
                 return mother.sigOther;
             })
         },
+        { "Baby", new RoleType<Person>("Baby", action => {
+                Person baby = Person.createChild((Person)action["Mother"], (Person)action["Father"]);
+                PersonTown.Singleton.aliveResidents.Add(baby);
+                return baby;
+            })
+        },
         { "NewInstitute", new RoleType<Institution>("NewInstitute", action =>
             InstitutionManager.InstitutionGenerator(
                 (Person)action["CEO"],
                 InstitutionManager.GetRandomType(),
-                Space.Singleton.get_random_plot()))},
-        { "Baby", new RoleType<Person>("Baby", action => {
-            Person baby = Person.createChild((Person)action["Mother"], (Person)action["Father"]);
-            PersonTown.Singleton.aliveResidents.Add(baby);
-            return baby;
-            })
-        },
+                Space.Singleton.get_random_plot()))}
     };
 }
