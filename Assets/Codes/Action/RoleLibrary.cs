@@ -19,7 +19,7 @@ public static class RoleLibrary
 
         // Uses constructor with default collection but custom filter
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
-            person.isFemale() && person.age >= 18 && person.age <= 50 &&
+            person.IsFemale && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
         },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>

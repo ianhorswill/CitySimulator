@@ -21,10 +21,16 @@ public static class Simulator
         Components.Add(simulatorComponent);
     }
 
+    private static bool isInitialized;
     public static void Initialize()
     {
+        if (isInitialized)
+            return;
+
         foreach (var c in Components)
             c.Initialize();
+
+        isInitialized = true;
     }
 
     /// <summary>
