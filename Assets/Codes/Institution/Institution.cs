@@ -14,22 +14,8 @@ namespace Codes.Institution
         public string type;
         public const string SUB_SYSTEM = "Institution";
 
-        public Institution(Person owner, Plot location,string type, bool needBuild = true)
-        {
-//            if (needBuild)
-//            {
-//                ConstructCompanySite(location);
-//            }
-            
-            this.owner = owner;
-            this.location = location;
-            this.type = type;
-            employeeList = new List<Person>();
-        }
         public Institution(Person owner, Plot location,string type)
         {
-//            ConstructCompanySite(location);
-            
             this.owner = owner;
             this.location = location;
             this.type = type;
@@ -64,15 +50,9 @@ namespace Codes.Institution
 
     public class ConstructionCompany : Institution
     {
-        public ConstructionCompany(Person owner, Plot location, string type, bool needBuild = true) : base(owner, location, type, needBuild)
-        {
-        }
+        public ConstructionCompany(Person owner, Plot location, string type) : base(owner, location, type) { }
 
-        public ConstructionCompany(Person owner, Plot location, string type) : base(owner, location, type)
-        {
-        }
-
-        public void Build(Institution institution)
+        public void Construct(Institution institution)
         {
             // TODO: build institution on certain plot
             Color color = InstitutionManager.colorMap[institution.type];
@@ -84,34 +64,37 @@ namespace Codes.Institution
 
     public class School : Institution
     {
-        private List<Person> studentList;
+        private List<Person> students;
 
         public School(Person owner, Plot location, string type) : base(owner, location, type)
         {
-            studentList = new List<Person>();
+            students = new List<Person>();
         }
 
         public void EnrollStudent(Person student)
         {
-            studentList.Add(student);
+            students.Add(student);
             Logger.Log(SUB_SYSTEM, type, "enroll student", student.name);
         }
     }
 
     public class Hospital : Institution
     {
+        private List<Person> patients;
+
         public Hospital(Person owner, Plot location, string type) : base(owner, location, type)
         {
+            patients = new List<Person>();
         }
 
         public void TakePatient(Person patient)
         {
-            
+            patients.Add(patient);
         }
 
+        // TODO: baby delivery - actions
         public Person BabyDelivery()
         {
-            // TODO: baby delivery
             Person newBaby = new Person("baby", new List<Person>());
             Logger.Log(SUB_SYSTEM, type, "give birth to", newBaby.name);
             return newBaby;
@@ -143,13 +126,11 @@ namespace Codes.Institution
 
     public class LawFirm : Institution
     {
-        public LawFirm(Person owner, Plot location, string type) : base(owner, location, type)
-        {
-        }
+        public LawFirm(Person owner, Plot location, string type) : base(owner, location, type) { }
 
-        public bool FireDivorce(string spouse1, string spouse2)
+        public bool FileDivorce(string spouse1, string spouse2)
         {
-            // TODO: fire divorce for a couple
+            // TODO: file divorce for a couple
             return true;
         }
     }

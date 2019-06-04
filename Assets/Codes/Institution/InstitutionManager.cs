@@ -11,28 +11,35 @@ namespace Codes.Institution
     {
         // store all the institutions been constructed
         public static List<Institution> institutionList;
+        // store the construction companies
+        public static List<ConstructionCompany> constructionCompanyList;
+        // store the institutions grouped by type
+        public static Dictionary<String, List<Institution>> InstitutionDictionary;
         // store the hardcode institution types
         private static string[] institutionTypeList;
         // the color map for each institution type
         public static Dictionary<String, Color> colorMap;
-        // store the construction companies
-        public static List<ConstructionCompany> constructionCompanyList;
-
-        public static Dictionary<String, List<Institution>> InstitutionDictionary;
-
-        private Space Space;
-
-        public static InstitutionManager Singleton;
 
         static InstitutionManager()
         {
             institutionList = new List<Institution>();
-            constructionCompanyList =  new List<ConstructionCompany>();
+            constructionCompanyList = new List<ConstructionCompany>();
+
+            InstitutionDictionary = new Dictionary<string, List<Institution>>();
+            // hard-codly assign one initial construction company
+            ConstructionCompany cons = new ConstructionCompany(Person.generateRandomPerson(), new Plot(0, 0), "ConstructionCompany");
+            constructionCompanyList.Add(cons);
+            institutionList.Add(cons);
+
+            // add one school initially, generates initial teacher
+            School school = new School(Person.generateRandomPerson(), new Plot(0, 1), "School");
+            institutionList.Add(school);
+
+
             institutionTypeList = File.ReadAllLines(Directory.GetCurrentDirectory() +
                                                     "/Assets/Codes/Institution/InstitutionData/institutionTypes.txt");
 
-            string[] colorStr =
-                File.ReadAllLines(Directory.GetCurrentDirectory() +
+            string[] colorStr = File.ReadAllLines(Directory.GetCurrentDirectory() +
                                   "/Assets/Codes/Institution/InstitutionData/institutionColorMap.txt");
             
             colorMap = new Dictionary<string, Color>();
@@ -42,36 +49,16 @@ namespace Codes.Institution
                 Color color = new Color32(Convert.ToByte(str[1]), Convert.ToByte(str[2]), Convert.ToByte(str[3]), 255);
                 colorMap[str[0]] = color;
             }
-            
-            InstitutionDictionary = new Dictionary<string, List<Institution>>();
-            // hard-codly assign one initial construction company
-            ConstructionCompany cons = new ConstructionCompany(Person.generateRandomPerson(), new Plot(0, 0), "ConstructionCompany", false);
-            constructionCompanyList.Add(cons);
-            institutionList.Add(cons);
-            
-            // add one school initially
-            School school = new School(Person.generateRandomPerson(), new Plot(0, 1), "School");
-            institutionList.Add(school);
         }
 
-        public InstitutionManager(Space space)
-        {
-            Space = space;
-            Singleton = this;
-        }
-        
-        // get a random type
-        // TODO: based on current institution numbers and types and city scale
+        // TODO: based on current institution numbers, types, and city scale
         public static string GetRandomType()
         {
             return institutionTypeList.RandomElement();
         }
-        
-        
-        // generate a new institution
-        public static Institution GeneratorInstitution(Person owner, String type, Plot location)
+
+        public static Institution InstitutionGenerator(Person owner, String type, Plot location)
         {
-//            string type = GetRandomType();
             Institution newInstitution;
             switch (type)
             {
@@ -96,9 +83,8 @@ namespace Codes.Institution
             }
 
             if (newInstitution.getType().Equals("ConstructionCompany"))
-            {
                 constructionCompanyList.Add(newInstitution as ConstructionCompany);
-            }
+
             institutionList.Add(newInstitution);
             
             if (InstitutionDictionary.ContainsKey(type))
@@ -107,10 +93,9 @@ namespace Codes.Institution
                 tempList.Add(newInstitution);
             }
             else
-            {
                 InstitutionDictionary[type] = new List<Institution>{newInstitution};
-            }
-            Logger.Log("Institution", type, owner.name, "("+location.x_pos+","+location.y_pos+")");
+
+            Logger.Log("Institution", type, owner.name, "(" + location.x_pos + "," + location.y_pos + ")");
             
             return newInstitution;
         }
@@ -155,8 +140,8 @@ namespace Codes.Institution
 
         public override void Step()
         {
-            Institution institution = GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
-            GetRandomConstructionCompany().Build(institution);
+            Institution institution = InstitutionGenerator(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
+            GetRandomConstructionCompany().Construct(institution);
             institution.Hiring(Person.generateRandomPerson());
         }
 
