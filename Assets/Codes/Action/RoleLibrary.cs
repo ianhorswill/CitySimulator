@@ -22,6 +22,9 @@ public static class RoleLibrary
             person.isFemale() && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
         },
+        { "Bride", new RoleType<Person>("Bride", (person, action) =>
+            person.age >= 16 && (person.sigOther == null || person.sigOther.dead))
+        },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
             person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
             person.individualPersonality.facets["CONFIDENCE"] > 60
@@ -50,6 +53,12 @@ public static class RoleLibrary
         { "Father", new RoleType<Person>("Father", action => {
                 var mother = (Person) action["Mother"];
                 return mother.sigOther;
+            })
+        },
+        { "Groom", new RoleType<Person>("Groom", action =>
+            {
+                var Bride = (Person) action["Bride"];
+                return Bride.sigOther;
             })
         }
     };

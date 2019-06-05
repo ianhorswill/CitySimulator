@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using Codes.Institution;
 using static RoleLibrary;
 
@@ -83,6 +84,29 @@ public static class ActionLibrary
                     PersonTown.Singleton.deceased.Add(selectedToDie);
                 }
             }
+        },
+        { "Marriage", new ActionType("Marriage", Roles["Bride"], Roles["Groom"])
+            {
+                Frequency = 0.1f,
+                Modifications = a =>
+                {
+                    var Bride = (Person) a["Bride"];
+                    var Groom = (Person) a["Groom"];
+                    
+                }
+            }
+        },
+        { "Divorce", new ActionType("Divorce", Roles["Partner"], Roles["DivorcePartner"])
+            {
+                Frequency = 0.1f,
+                Modifications = a =>
+                {
+                    var Partner = (Person) a["Partner"];
+                    var DivorcePartner = (Person) a["DivorcePartner"];
+                    Partner.sigOther = null;
+                    DivorcePartner.sigOther = null;
+                }
+            } 
         },
         { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"])
             {
