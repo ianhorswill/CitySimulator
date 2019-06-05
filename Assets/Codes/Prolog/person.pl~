@@ -1,0 +1,1 @@
+:- define_indexical(residents, $town.aliveResidents).

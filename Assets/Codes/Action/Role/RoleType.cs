@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
 
 /// <summary>
 /// Represents a role, independent of the value it's bound to in a particular action.
@@ -95,6 +94,8 @@ public class RoleType<T> : RoleTypeBase
             return PersonTown.Singleton.aliveResidents as List<T>;
         if (t == typeof(Institution))
             return InstitutionManager.institutionList as List<T>;
+        if (t == typeof(ConstructionCompany))
+            return InstitutionManager.constructionCompanyList as List<T>;
         if (t == typeof(Action))
             return ActionSimulator.action_history as List<T>;
         throw new InvalidOperationException($"No default collection defined for type {t.Name}");

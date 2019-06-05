@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-using Codes.Institution;
 
 public class PersonTown : SimulatorComponent
 {
@@ -145,11 +143,11 @@ public class PersonTown : SimulatorComponent
         StopWhen("Population died off", () =>
             aliveResidents.Count == 0);
         var noSigOtherFem = from women in aliveResidents
-                            where (women != null && women.age >= 16 && women.isFemale() && (women.sigOther == null || women.sigOther.dead))
+                            where (women != null && women.age >= 16 && women.IsFemale && (women.sigOther == null || women.sigOther.dead))
                             select women;
 
         var noSigOtherMale = from men in aliveResidents
-                             where (men != null && men.age >= 16 && men.isMale() && (men.sigOther == null || men.sigOther.dead))
+                             where (men != null && men.age >= 16 && men.IsMale && (men.sigOther == null || men.sigOther.dead))
                              select men;
 
         if (noSigOtherMale != null && noSigOtherFem != null)
@@ -158,18 +156,11 @@ public class PersonTown : SimulatorComponent
             {
                 foreach (Person pf in noSigOtherFem)
                 {
-                    if (pm.sigOther != null)
+                    if (pm.sigOther == null && pf.sigOther == null && pm.CanMarry(pf))
                     {
-                        continue;
-                    }
-                    else
-                    {
-                        if (pf.sigOther == null)
-                        {
-                            pm.sigOther = pf;
-                            pf.sigOther = pm;
-                            Log(pm.name+" and "+pf.name+" is married.");
-                        }
+                        pm.sigOther = pf;
+                        pf.sigOther = pm;
+                        Log(pm.name+" and "+pf.name+" is married.");
                     }
                 }
             }
@@ -282,20 +273,20 @@ public class PersonTown : SimulatorComponent
         }
 
 
-        var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
-        if (loveTriangles == null)
-        {
-            // could do something here, not sure what though
-        }
-        else
-        {
-            foreach (var tup in loveTriangles)
-            {
-                if (tup.Item3.name != null)
-                    Logger.Log("Person", "LoveTriangle:\t",
-                        String.Format("{0}, {1}, {2}", tup.Item1.name, tup.Item2.name, tup.Item3.name));
-            }
-        }
+        //var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
+        //if (loveTriangles == null)
+        //{
+        //    // could do something here, not sure what though
+        //}
+        //else
+        //{
+        //    foreach (var tup in loveTriangles)
+        //    {
+        //        if (tup.Item3.name != null)
+        //            Logger.Log("Person", "LoveTriangle:\t",
+        //                String.Format("{0}, {1}, {2}", tup.Item1.name, tup.Item2.name, tup.Item3.name));
+        //    }
+        //}
 
 
     }

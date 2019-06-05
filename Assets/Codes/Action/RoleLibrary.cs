@@ -1,7 +1,4 @@
 using System.Collections.Generic;
-using Codes.Institution;
-using TMPro;
-using UnityEditor.UIElements;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup
@@ -16,18 +13,12 @@ public static class RoleLibrary
         // Uses constructor with default filter of true and ther default collection for the type
         { "Institution", new RoleType<Institution>("Institution") },
         { "Mingler", new RoleType<Person>("Mingler") },
-        { "Speaker", new RoleType<Person>("Speaker") },
-        { "Listener", new RoleType<Person>("Listener") },
-        { "Hearer", new RoleType<Person>("Hearer") },
         { "Dead", new RoleType<Person>("Dead") },
-
-        // Uses constructor with default filter of true, thus it searches over the collection
-        { "ConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany",
-            InstitutionManager.constructionCompanyList) },
+        { "ConstructionCompany", new RoleType<ConstructionCompany>("ConstructionCompany") },
 
         // Uses constructor with default collection but custom filter
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
-            person.isFemale() && person.age >= 18 && person.age <= 50 &&
+            person.IsFemale && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
         },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
@@ -67,6 +58,12 @@ public static class RoleLibrary
             }
         })},
         {"VisitingPerson", new RoleType<Person>("VisitingPerson", (person, action) =>
-            person.age > 7)}
+            person.age > 7)
+        },
+        { "Father", new RoleType<Person>("Father", action => {
+                var mother = (Person) action["Mother"];
+                return mother.sigOther;
+            })
+        }
     };
 }

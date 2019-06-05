@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace Codes.Institution
+public class Institution
 {
-    public class Institution
-    {
-        public Person owner;
+    public Person owner;
 
         public Plot location;
         public List<Person> employeeList;
@@ -37,14 +35,14 @@ namespace Codes.Institution
             Hiring(new Person("Someone", new List<Person>()));
         }
 
-        public void Hiring(Person person)
-        {
-            // TODO : hiring process
-            employeeList.Add(person);
-            float pay = 100; //Need to alter this based on the job / wage / position.  100 right now is arbitary.
-            person.workStatus.getNewJob(this, pay);  //Tells the person that they are now employed with wage "pay".
-            Logger.Log(SUB_SYSTEM,  type, "hires", person.name);
-        }
+    public void Hiring(Person person)
+    {
+        // TODO : hiring process
+        employeeList.Add(person);
+        float pay = 100; //Need to alter this based on the job / wage / position.  100 right now is arbitary.
+        person.workStatus.getNewJob(this, pay); //Tells the person that they are now employed with wage "pay".
+        Logger.Log(SUB_SYSTEM, type, "hires", person.name);
+    }
 
         public bool Fire(Person person)
         {
@@ -153,16 +151,15 @@ namespace Codes.Institution
         }
     }
 
-    public class LawFirm : Institution
+public class LawFirm : Institution
+{
+    public LawFirm(Person owner, Plot location, string type) : base(owner, location, type)
     {
-        public LawFirm(Person owner, Plot location, string type) : base(owner, location, type)
-        {
-        }
+    }
 
-        public bool FireDivorce(string spouse1, string spouse2)
-        {
-            // TODO: fire divorce for a couple
-            return true;
-        }
+    public bool FireDivorce(string spouse1, string spouse2)
+    {
+        // TODO: fire divorce for a couple
+        return true;
     }
 }

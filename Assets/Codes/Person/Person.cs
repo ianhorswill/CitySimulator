@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
 
 public class Person
 {
@@ -78,7 +77,7 @@ public class Person
 
         public static int getCompatibility(Person p1, Person p2)
         {
-            int personalityDiff = 0;
+            double personalityDiff = 0;
             // these facets are chosen to mimic James' compatibility calculation using O/E/A difference 
             List<string> compatibility_facets = new List<string> { "CURIOUS", "EXCITEMENT_SEEKING", "POLITENESS",
                                                                   "FRIENDLINESS", "ASSERTIVENESS", "CHEER_PROPENSITY" };
@@ -86,11 +85,12 @@ public class Person
             {
                 int p1_facet_value = p1.individualPersonality.facets[compatibility_facet];
                 int p2_facet_value = p2.individualPersonality.facets[compatibility_facet];
-                personalityDiff += Math.Abs(p1_facet_value - p2_facet_value);
+                personalityDiff += Math.Pow(Math.Abs(p1_facet_value - p2_facet_value), 1.2);
             }
 
             // average difference across facets and flip for compatibility
-            return 100 - (personalityDiff / compatibility_facets.Count);
+            int personalityDiffNorm = (int) (2.5 * personalityDiff / compatibility_facets.Count);
+            return Math.Max(100 - personalityDiffNorm, 0);
         }
     }
 
@@ -207,15 +207,11 @@ public class Person
     /// The gender of the person: if biologicalSex is true, the person is Male; if false, female.
     /// </summary>
     private bool biologicalSex;
-    public bool isMale()
-    {
-        return biologicalSex;
-    }
-    public bool isFemale()
-    {
-        return !biologicalSex;
-    }
-    
+
+    public bool IsMale => biologicalSex;
+
+    public bool IsFemale => !biologicalSex;
+
 
     public Personality individualPersonality;
     public class Personality
@@ -347,7 +343,7 @@ public class Person
     /// </summary>
     public static Person generateRandomPerson()
     {
-        Person p = new Person("",null,null);
+        Person p = new Person("",null,new Person[2]);
         p.biologicalSex = (Random.Integer(0, 2) == 1);
         p.age = Random.Integer(0, 70);
         p.DateOfBirth = Simulator.CurrentTime.AddYears(-p.age);
@@ -474,7 +470,7 @@ public class Person
         if(p2.age >= minAge && p1.age >= minAge)
         {
             // if both individuals are above the minimum age, then they may have a child
-            if((p1.isFemale() && p2.isMale()) || (p1.isMale() && p2.isFemale()))
+            if((p1.IsFemale && p2.IsMale) || (p1.IsMale && p2.IsFemale))
             {
                 float birthChance = Random.Float(0,1);
                 // Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
@@ -536,7 +532,21 @@ public class Person
         }
         return true;
     }
-
+    // now the only constraint is that siblings cannot marry each other
+    public bool CanMarry(Person p)
+    {
+        if (parents == null || p.parents == null) 
+            return true;
+        foreach (Person parent in parents)
+        {
+            if (parent != null && p.parents.Contains(parent))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
     {
         if (listOfPersons == null || listOfPersons.Count == 0) return "None";

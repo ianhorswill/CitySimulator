@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
 using static RoleLibrary;
 
 /// <summary>
@@ -36,7 +35,7 @@ public static class ActionLibrary
                 {
                     var MinglingWith = (Person)a["MinglingWith"];
                     var Mingler = (Person)a["Mingler"];
-                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100;
+                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100.0;
 
                     int sparkBaseRate = 30;
                     int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
