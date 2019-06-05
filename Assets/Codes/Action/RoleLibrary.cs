@@ -21,10 +21,10 @@ public static class RoleLibrary
             person.IsFemale && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
         },
-        { "Bride", new RoleType<Person>("Bride", (person, action) =>
+        { "Marry", new RoleType<Person>("Marry", (person, action) =>
             person.age >= 16 && (person.sigOther == null || person.sigOther.dead))
         },
-        { "Partner", new RoleType<Person>("Partner", (person, action) =>
+        { "Divorce", new RoleType<Person>("Divorce", (person, action) =>
             person.sigOther != null)
         },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
@@ -82,14 +82,14 @@ public static class RoleLibrary
                 return mother.sigOther;
             })
         },
-        { "DivorcePartner", new RoleType<Person>("DivorcePartner", action => {
-                var partner = (Person) action["Partner"];
+        { "DivorceWith", new RoleType<Person>("DivorceWith", action => {
+                var partner = (Person) action["Divorce"];
                 return partner.sigOther;
             })
         },
-        { "Groom", new RoleType<Person>("Groom", action =>
+        { "MarryWith", new RoleType<Person>("MarryWith", action =>
             {
-                var Bride = (Person) action["Bride"];
+                var Bride = (Person) action["Marry"];
                 foreach (Person candidate in Bride.romanticallyInterestedIn)
                 {
                     if (Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
