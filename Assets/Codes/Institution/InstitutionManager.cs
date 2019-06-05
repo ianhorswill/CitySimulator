@@ -51,8 +51,9 @@ public class InstitutionManager : SimulatorComponent
         institutionList.Add(cons);
 
         // add one school initially
-        School school = new School(Person.generateRandomPerson(), new Plot(0, 1), "School");
-        institutionList.Add(school);
+        ////School school = new School(Person.generateRandomPerson(), new Plot(0, 1), "School");
+        ////institutionList.Add(school);
+        GeneratorInstitution(Person.generateRandomPerson(), "School", new Plot(0, 1));
     }
 
     public InstitutionManager(Space space)
@@ -162,6 +163,16 @@ public class InstitutionManager : SimulatorComponent
             GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
         GetRandomConstructionCompany().Build(institution);
         institution.Hiring(Person.generateRandomPerson());
+
+        //Code for School enrollment
+        foreach(School s in GetInstitutionOfType("School")){
+            if (s.startDay == Simulator.CurrentTime.Day && s.startMonth == Simulator.CurrentTime.Month){
+                s.EnrollEnteringClass();
+            }
+            if (s.endDay == Simulator.CurrentTime.Day && s.endMonth == Simulator.CurrentTime.Month){
+                s.Graduate18YearOlds();
+            }
+        }        
     }
 
     public override void Visualize()
