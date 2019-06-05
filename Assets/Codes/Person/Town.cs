@@ -282,9 +282,9 @@ public class PersonTown : SimulatorComponent
         {
             foreach (var tup in loveTriangles)
             {
-                if (tup.Item3.name != null)
-                    Logger.Log("Person", "LoveTriangle:\t",
-                        String.Format("{0}, {1}, {2}", tup.Item1.name, tup.Item2.name, tup.Item3.name));
+//                if (tup.Item3.name != null)
+//                    Logger.Log("Person", "LoveTriangle:\t",
+//                        String.Format("{0}, {1}, {2}", tup.Item1.name, tup.Item2.name, tup.Item3.name));
             }
         }
 
