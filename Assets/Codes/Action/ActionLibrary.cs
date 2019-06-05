@@ -85,7 +85,7 @@ public static class ActionLibrary
                 }
             }
         },
-        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
+/*        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
             {
                 Frequency = 0.1f,
                 Modifications = a =>
@@ -115,7 +115,7 @@ public static class ActionLibrary
                     //Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
                 }
             } 
-        },
+        },*/
         { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"])
             {
                 Frequency = 0.0003f,
