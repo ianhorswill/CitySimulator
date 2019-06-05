@@ -112,6 +112,11 @@ public class Person
     private Dictionary<Person, Relationship> relationshipDict = new Dictionary<Person, Relationship>();
     public void updateRelationshipSpark(Person p, int amount)
     {
+        // don't increase spark, if not attracted to p's sex
+        if ((p.biologicalSex && !attractedToMen) || (!p.biologicalSex && !attractedToWomen))
+        {
+            return;
+        }
         if (!relationshipDict.ContainsKey(p))
         {
             relationshipDict.Add(p,new Relationship(0, 0, this, p));
@@ -217,6 +222,33 @@ public class Person
         return !biologicalSex;
     }
     
+    public bool attractedToMen;
+    public bool attractedToWomen;
+    private static double homosexualityIncidence = 0.1;
+    private static double bisexualityIncidence = 0.1;
+    public void setSexuality(bool biologicalSex, double sexualityNum)
+    {
+        if (sexualityNum < homosexualityIncidence)
+        {
+            attractedToMen = biologicalSex; // men like men, women don't like men
+            attractedToWomen = !biologicalSex;
+        }
+        else
+        {
+            sexualityNum -= homosexualityIncidence;
+            if (sexualityNum < bisexualityIncidence)
+            {
+
+                attractedToMen = true; // men like men, women don't like men
+                attractedToWomen = true;
+            }
+            else
+            {
+                attractedToMen = !biologicalSex; // men like men, women don't like men
+                attractedToWomen = biologicalSex;
+            }
+        }
+    }
 
     public Personality individualPersonality;
     public class Personality
@@ -350,6 +382,7 @@ public class Person
     {
         Person p = new Person("",null,null);
         p.biologicalSex = (Random.Integer(0, 2) == 1);
+        p.setSexuality(p.biologicalSex, Random.Float(0, 1));
         p.age = Random.Integer(0, 70);
         p.DateOfBirth = Simulator.CurrentTime.AddYears(-p.age);
         p.firstName = NameManager.getFirstname(p.biologicalSex ? NameManager.sex.male : NameManager.sex.female);
@@ -381,7 +414,8 @@ public class Person
         {
             biologicalSex = false;
         }
-        
+        setSexuality(biologicalSex, Random.Float(0, 1));
+
         if(currSiblings != null)
         {
             foreach (Person p in currSiblings)
@@ -419,8 +453,10 @@ public class Person
         {
             biologicalSex = false;
         }
-        
-        if(currSiblings != null)
+        setSexuality(biologicalSex, Random.Float(0, 1));
+
+
+        if (currSiblings != null)
         {
             foreach (Person p in currSiblings)
             {
@@ -435,7 +471,9 @@ public class Person
     /// Constructor for adults, those who may enter the town or are settlers
     /// string nameAtBirth can be an empty string. the constructor will assign a randomly generated name.
     /// </summary>
-    public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex){
+    public Person (string name, List<Person> currSiblings, int age, Person sigOther, List<Person> children, Person[] parents, bool biologicalSex, 
+                   bool attractedToMen, bool attractedToWomen)
+    {
         this.DateOfBirth = Simulator.CurrentTime.AddYears(-age);
         this.age = age;
         this.sigOther = sigOther;
@@ -443,6 +481,8 @@ public class Person
         this.children = children;
         this.parents = parents;
         this.biologicalSex = biologicalSex;
+        this.attractedToMen = attractedToMen;
+        this.attractedToWomen = attractedToWomen;
         this.individualPersonality = new Personality();
         this.id = Guid.NewGuid();
         this.currentInstitution = InstitutionManager.RandomInstitution();  // random institution

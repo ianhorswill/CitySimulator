@@ -42,8 +42,8 @@ public class PersonTown : SimulatorComponent
     //Default constructor with no settler input / Uses Adam/Eve
     public PersonTown(){
         var initialSettlerTest = new List<Person>();
-        Person p1 = new Person("Adam", null, 20, null, null, null, true);
-        Person p2 = new Person("Eve", null, 20, p1, null, null, false);
+        Person p1 = new Person("Adam", null, 20, null, null, null, true, false, true);
+        Person p2 = new Person("Eve", null, 20, p1, null, null, false, true, false);
         p1.sigOther = p2;
         initialSettlerTest.Add(p1);
         initialSettlerTest.Add(p2);
@@ -282,20 +282,20 @@ public class PersonTown : SimulatorComponent
         }
 
 
-        var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
-        if (loveTriangles == null)
-        {
-            // could do something here, not sure what though
-        }
-        else
-        {
-            foreach (var tup in loveTriangles)
-            {
-                if (tup.Item3.name != null)
-                    Logger.Log("Person", "LoveTriangle:\t",
-                        String.Format("{0}, {1}, {2}", tup.Item1.name, tup.Item2.name, tup.Item3.name));
-            }
-        }
+        //var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
+        //if (loveTriangles == null)
+        //{
+        //    // could do something here, not sure what though
+        //}
+        //else
+        //{
+        //    foreach (var tup in loveTriangles)
+        //    {
+        //        if (tup.Item3.name != null)
+        //            Logger.Log("Person", "LoveTriangle:\t",
+        //                String.Format("{0}, {1}, {2}", tup.Item1.name, tup.Item2.name, tup.Item3.name));
+        //    }
+        //}
 
 
     }

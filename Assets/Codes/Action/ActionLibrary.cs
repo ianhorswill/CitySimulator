@@ -38,10 +38,10 @@ public static class ActionLibrary
                     var Mingler = (Person)a["Mingler"];
                     var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100.0;
 
-                    int sparkBaseRate = 30;
+                    int sparkBaseRate = 2;
                     int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
 
-                    int chargeBaseRate = 30;
+                    int chargeBaseRate = 2;
                     int chargeChange = (int) Math.Floor( (double) (chargeBaseRate*compat));
 
                     MinglingWith.updateRelationshipSpark(Mingler, sparkChange);
