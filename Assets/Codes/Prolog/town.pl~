@@ -1,0 +1,2 @@
+:- Town is $persontown.singleton, indexical town=Town.
+:- Residents is $town.aliveresidents, indexical residents=Residents.

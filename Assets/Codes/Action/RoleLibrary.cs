@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Codes.Institution;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup
@@ -19,7 +18,7 @@ public static class RoleLibrary
 
         // Uses constructor with default collection but custom filter
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
-            person.isFemale() && person.age >= 18 && person.age <= 50 &&
+            person.IsFemale && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
         },
         { "Bride", new RoleType<Person>("Bride", (person, action) =>
