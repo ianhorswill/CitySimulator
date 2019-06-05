@@ -171,17 +171,23 @@ public class Person
     {
         captivatedBy = new List<Person>();
 
-        foreach(var item in relationshipDict)
+        foreach (var item in relationshipDict)
         {
-            if(item.Value.Spark >= sparkThresholdForCaptivating)
+            if (item.Value.Spark >= sparkThresholdForCaptivating)
             {
                 captivatedBy.Add(item.Key);
             }
         }
-        
+
         captivatedBy.RemoveAll(item => item == null);
-        captivatedBy.RemoveAll(item => this.siblings.Contains(item));
-        captivatedBy.RemoveAll(item => this.children.Contains(item));
+        if (this.siblings!= null)
+        {
+            captivatedBy.RemoveAll(item => this.siblings.Contains(item));
+        }
+        if (this.children != null)
+        { 
+            captivatedBy.RemoveAll(item => this.children.Contains(item));
+        }
 
         captivatedBy = captivatedBy.Distinct().ToList();
     }
