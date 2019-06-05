@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup
@@ -20,6 +21,12 @@ public static class RoleLibrary
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
             person.IsFemale && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
+        },
+        { "Bride", new RoleType<Person>("Bride", (person, action) =>
+            person.age >= 16 && (person.sigOther == null || person.sigOther.dead))
+        },
+        { "Partner", new RoleType<Person>("Partner", (person, action) =>
+            person.sigOther != null)
         },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
             person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
@@ -74,6 +81,25 @@ public static class RoleLibrary
         { "Father", new RoleType<Person>("Father", action => {
                 var mother = (Person) action["Mother"];
                 return mother.sigOther;
+            })
+        },
+        { "DivorcePartner", new RoleType<Person>("DivorcePartner", action => {
+                var partner = (Person) action["Partner"];
+                return partner.sigOther;
+            })
+        },
+        { "Groom", new RoleType<Person>("Groom", action =>
+            {
+                var Bride = (Person) action["Bride"];
+                foreach (Person candidate in Bride.romanticallyInterestedIn)
+                {
+                    if ((candidate.sigOther == null||candidate.sigOther.dead)&& Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
+                    {
+                        //Debug.Log("Find Candidate: " + candidate.name + " " + candidate.sigOther);
+                        return candidate;
+                    }
+                }
+                return null;
             })
         }
     };
