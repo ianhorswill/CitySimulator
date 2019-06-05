@@ -91,8 +91,8 @@ public static class ActionLibrary
                 {
                     var Bride = (Person) a["Bride"];
                     var Groom = (Person) a["Groom"];
-                    if (Bride == null)
-                    
+                    Bride.sigOther = Groom;
+                    Groom.sigOther = Bride;
                 }
             }
         },
