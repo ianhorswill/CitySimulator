@@ -13,6 +13,8 @@ public class Institution
         public const string SUB_SYSTEM = "Institution";
         public int visitCount = 0;
         public float CUT_JOB_THRESHOLD = 0.01f;
+        public int security_level = 0; // 0-100
+        public float ROB_THRESHOLD = 20;
 
         public Institution(Person owner, Plot location,string type, bool needBuild = true)
         {
@@ -61,10 +63,21 @@ public class Institution
             visitCount++;
         }
 
+        public void IncreaseSecurity()
+        {
+            security_level++;
+        }
+
+        public void BeRobbed()
+        {
+            Fire(employeeList.RandomElement());
+        }
+
         public string getType()
         {
             return type;
         }
+        
 
         public override string ToString()
         {

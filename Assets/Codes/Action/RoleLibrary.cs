@@ -57,6 +57,17 @@ public static class RoleLibrary
                 return cut && ins.employeeList.Contains(person);
             }
         })},
+        {
+            "Robber", new RoleType<Person>("Robber", (person, action) =>
+            {
+                var ins = ((Institution) action["Institution"]);
+                return ins.security_level < ins.ROB_THRESHOLD && person.individualPersonality.facets["VIOLENT"] > 80;
+            }
+        )},
+        {
+            "InstitutionToIncreaseSecurity", new RoleType<Institution>("InstitutionToIncreaseSecurity", 
+            (institution, action) => institution.employeeList.Count > 20 && institution.visitCount > 40)
+        },
         {"VisitingPerson", new RoleType<Person>("VisitingPerson", (person, action) =>
             person.age > 7)
         },

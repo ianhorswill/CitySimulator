@@ -128,7 +128,19 @@ public static class ActionLibrary
                     ((Institution) action["Institution"]).Visit();
                 }
             }
-        }
+        },
+        {
+            "RobInstitution", new ActionType("RobInstitution", Roles["Institution"], Roles["Robber"])
+            {
+                Frequency = 0.01f,
+                Modifications = action => { ((Institution) action["Institution"]).BeRobbed(); }
+            }
+        },
+        { "InstitutionIncreaseSecurity", new ActionType("InstitutionIncreaseSecurity", Roles["InstitutionToIncreaseSecurity"])
+        {
+            Frequency = 0.1f,
+            Modifications = action => { ((Institution) action["InstitutionToIncreaseSecurity"]).IncreaseSecurity(); }
+        }}
     };
 
     /// <summary>
