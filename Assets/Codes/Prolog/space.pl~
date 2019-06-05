@@ -1,0 +1,16 @@
+:- define_indexical(space_component, $space.singleton).
+:- define_indexical(plots, $space_component.plotsarray).
+:- define_indexical(streets, $space_component.streetsarray).
+:- define_indexical(empty_plots, $space_component.emptyplots).
+:- define_indexical(occupied_plots, $space_component.occupiedplots).
+
+:- plot/1, empty_plot/1, occupied_plot/1.
+empty_plot(X) :-
+   member(X, $empty_plots).
+occupied_plot(X) :-
+   member(X, $occupied_plots).
+
+plot(X) :-
+   occupied_plot(X).
+plot(X) :-
+   empty_plot(X).

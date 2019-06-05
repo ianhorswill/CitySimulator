@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
 using static RoleLibrary;
 
 /// <summary>
@@ -38,10 +37,10 @@ public static class ActionLibrary
                     var Mingler = (Person)a["Mingler"];
                     var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100.0;
 
-                    int sparkBaseRate = 30;
+                    int sparkBaseRate = 2;
                     int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
 
-                    int chargeBaseRate = 30;
+                    int chargeBaseRate = 2;
                     int chargeChange = (int) Math.Floor( (double) (chargeBaseRate*compat));
 
                     MinglingWith.updateRelationshipSpark(Mingler, sparkChange);
@@ -84,7 +83,39 @@ public static class ActionLibrary
                 Frequency = 0.3f,
                 Modifications = a => ((Institution) a["Institution"]).Hiring((Person) a["Employee"])
             }
-        }
+        },
+        {
+            "InstitutionFiring", new ActionType("InstitutionFiring", Roles["Institution"], Roles["FiredEmployee"])
+            {
+                Frequency = 0.01f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Fire((Person) action["FiredEmployee"]);
+                }
+            }
+        },
+        {
+            "PersonVisitingInstitution", new ActionType("PersonVisitingInstitution", Roles["Institution"], Roles["VisitingPerson"])
+            {
+                Frequency = 0.6f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Visit();
+                }
+            }
+        },
+        {
+            "RobInstitution", new ActionType("RobInstitution", Roles["Institution"], Roles["Robber"])
+            {
+                Frequency = 0.01f,
+                Modifications = action => { ((Institution) action["Institution"]).BeRobbed(); }
+            }
+        },
+        { "InstitutionIncreaseSecurity", new ActionType("InstitutionIncreaseSecurity", Roles["InstitutionToIncreaseSecurity"])
+        {
+            Frequency = 0.1f,
+            Modifications = action => { ((Institution) action["InstitutionToIncreaseSecurity"]).IncreaseSecurity(); }
+        }}
     };
 
     /// <summary>
