@@ -175,6 +175,9 @@ public class Person
         }
         
         captivatedBy.RemoveAll(item => item == null);
+        captivatedBy.RemoveAll(item => this.siblings.Contains(item))
+        captivatedBy.RemoveAll(item => this.children.Contains(item))
+
         captivatedBy = captivatedBy.Distinct().ToList();
     }
 
