@@ -95,7 +95,7 @@ public static class RoleLibrary
                 {
                     if ((candidate.sigOther == null||candidate.sigOther.dead)&& Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
                     {
-                        Debug.Log("Find Candidate: " + candidate.name + " " + candidate.sigOther);
+                        //Debug.Log("Find Candidate: " + candidate.name + " " + candidate.sigOther);
                         return candidate;
                     }
                 }
