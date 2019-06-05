@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using System.Linq;
 
 public class Institution
 {
@@ -108,17 +109,75 @@ public class Institution
     public class School : Institution
     {
         private List<Person> studentList;
+        public int startMonth;
+        public int startDay;
+        public int endMonth;
+        public int endDay;
+        private int capacity;
 
         public School(Person owner, Plot location, string type) : base(owner, location, type)
         {
             studentList = new List<Person>();
+            startMonth = 1;
+            startDay = 2;
+            endMonth = 12;
+            endDay = 30;
+            capacity = 1000;
         }
 
         public void EnrollStudent(Person student)
         {
             studentList.Add(student);
+            student.workStatus.getNewJob(this, 0);
+            student.personalEducation.is_student = true;
             Logger.Log(SUB_SYSTEM, type, "enroll student", student.name);
         }
+
+        public void GraduateStudent(Person student)
+        {
+            studentList.Remove(student);
+            student.workStatus.loseJob();
+            student.personalEducation.is_student = false;
+            student.personalEducation.is_high_school_graduate = true;
+            Logger.Log(SUB_SYSTEM, type, "graduate student", student.name);
+        }
+
+        public void EnrollEnteringClass()
+        {
+            var under18NotInSchool = from child in PersonTown.Singleton.aliveResidents
+                                     where (child != null && child.age <= 18 && child.workStatus.workplace == null)
+                                     select child;
+            
+            if (under18NotInSchool != null)
+            {
+                foreach (Person pc in under18NotInSchool)
+                {
+                    if(studentList.Count >= capacity) {return;}
+                    else{
+                        EnrollStudent(pc);
+                    }
+                }
+            }
+        }
+
+        public void Graduate18YearOlds()
+        {
+            var students18 = from student in studentList
+                             where (student != null && student.age == 18)
+                             select student;
+
+            if(students18 != null)
+            {
+                foreach (Person pc in students18)
+                {
+                    GraduateStudent(pc);
+                }
+            }
+        }
+
+
+
+
     }
 
     public class Hospital : Institution

@@ -241,6 +241,7 @@ public class PersonTown : SimulatorComponent
         }
 
     /* If there exists a school and there are people under 18, sets their current occupation to the school */
+    /*
         var under18NotInSchool = from child in aliveResidents
                             where (child != null && child.age <= 18 && child.workStatus.workplace == null)
                             select child;
@@ -271,6 +272,7 @@ public class PersonTown : SimulatorComponent
             pa.personalEducation.is_high_school_graduate = true;
             pa.personalEducation.is_student = false;
         }
+    */
 
 
         //var loveTriangles = findLoveTriangles(aliveResidents.RandomElement());
