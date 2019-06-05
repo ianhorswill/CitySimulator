@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup
@@ -92,8 +93,9 @@ public static class RoleLibrary
                 var Bride = (Person) action["Bride"];
                 foreach (Person candidate in Bride.romanticallyInterestedIn)
                 {
-                    if (Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
+                    if ((candidate.sigOther == null||candidate.sigOther.dead)&& Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
                     {
+                        Debug.Log("Find Candidate: " + candidate.name + " " + candidate.sigOther);
                         return candidate;
                     }
                 }
