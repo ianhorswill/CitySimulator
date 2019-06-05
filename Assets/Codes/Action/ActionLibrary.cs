@@ -85,33 +85,37 @@ public static class ActionLibrary
                 }
             }
         },
-        { "Marriage", new ActionType("Marriage", Roles["Bride"], Roles["Groom"])
+/*        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
             {
                 Frequency = 0.1f,
                 Modifications = a =>
                 {
-                    var Bride = (Person) a["Bride"];
-                    var Groom = (Person) a["Groom"];
-                    if (Groom == null && Bride == null)
+                    var Bride = (Person) a["Marry"];
+                    var Groom = (Person) a["MarryWith"];
+                    if (Groom != null)
                     {
                         Bride.sigOther = Groom;
                         Groom.sigOther = Bride;
                     }
+                    //Debug.Log(Bride.name + " is married with " + Groom.name);
                 }
             }
         },
-        { "Divorce", new ActionType("Divorce", Roles["Partner"], Roles["DivorcePartner"])
+        { "Divorce", new ActionType("Divorce", Roles["Divorce"], Roles["DivorceWith"])
             {
-                Frequency = 0.01f,
+                Frequency = 0f,
                 Modifications = a =>
                 {
-                    var Partner = (Person) a["Partner"];
-                    var DivorcePartner = (Person) a["DivorcePartner"];
+                    var Partner = (Person) a["Divorce"];
+                    var DivorcePartner = (Person) a["DivorceWith"];
                     Partner.sigOther = null;
                     DivorcePartner.sigOther = null;
+                    Partner.romanticallyInterestedIn.Remove(DivorcePartner);
+                    DivorcePartner.romanticallyInterestedIn.Remove(Partner);
+                    //Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
                 }
             } 
-        },
+        },*/
         { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"])
             {
                 Frequency = 0.0003f,
