@@ -3,24 +3,21 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-namespace Codes.Institution
+public class Institution
 {
-    public class Institution
-    {
-        public Person owner;
+    public Person owner;
 
         public Plot location;
         public List<Person> employeeList;
         public string type;
         public const string SUB_SYSTEM = "Institution";
+        public int visitCount = 0;
+        public float CUT_JOB_THRESHOLD = 0.01f;
+        public int security_level = 0; // 0-100
+        public float ROB_THRESHOLD = 20;
 
         public Institution(Person owner, Plot location,string type, bool needBuild = true)
         {
-//            if (needBuild)
-//            {
-//                ConstructCompanySite(location);
-//            }
-            
             this.owner = owner;
             this.location = location;
             this.type = type;
@@ -28,8 +25,6 @@ namespace Codes.Institution
         }
         public Institution(Person owner, Plot location,string type)
         {
-//            ConstructCompanySite(location);
-            
             this.owner = owner;
             this.location = location;
             this.type = type;
@@ -42,19 +37,47 @@ namespace Codes.Institution
             Hiring(new Person("Someone", new List<Person>()));
         }
 
-        public void Hiring(Person person)
+    public void Hiring(Person person)
+    {
+        // TODO : hiring process
+        employeeList.Add(person);
+        float pay = 100; //Need to alter this based on the job / wage / position.  100 right now is arbitary.
+        person.workStatus.getNewJob(this, pay); //Tells the person that they are now employed with wage "pay".
+        Logger.Log(SUB_SYSTEM, type, "hires", person.name);
+    }
+
+        public bool Fire(Person person)
         {
-            // TODO : hiring process
-            employeeList.Add(person);
-            float pay = 100; //Need to alter this based on the job / wage / position.  100 right now is arbitary.
-            person.workStatus.getNewJob(this, pay);  //Tells the person that they are now employed with wage "pay".
-            Logger.Log(SUB_SYSTEM,  type, "hires", person.name);
+            if (employeeList.Contains(person))
+            {
+                return employeeList.Remove(person);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void Visit()
+        {
+            visitCount++;
+        }
+
+        public void IncreaseSecurity()
+        {
+            security_level++;
+        }
+
+        public void BeRobbed()
+        {
+            Fire(employeeList.RandomElement());
         }
 
         public string getType()
         {
             return type;
         }
+        
 
         public override string ToString()
         {
@@ -141,16 +164,15 @@ namespace Codes.Institution
         }
     }
 
-    public class LawFirm : Institution
+public class LawFirm : Institution
+{
+    public LawFirm(Person owner, Plot location, string type) : base(owner, location, type)
     {
-        public LawFirm(Person owner, Plot location, string type) : base(owner, location, type)
-        {
-        }
+    }
 
-        public bool FireDivorce(string spouse1, string spouse2)
-        {
-            // TODO: fire divorce for a couple
-            return true;
-        }
+    public bool FireDivorce(string spouse1, string spouse2)
+    {
+        // TODO: fire divorce for a couple
+        return true;
     }
 }

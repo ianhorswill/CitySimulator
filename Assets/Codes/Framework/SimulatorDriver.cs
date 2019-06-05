@@ -37,7 +37,7 @@ public class SimulatorDriver : MonoBehaviour
 
     internal void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(200,100, 1000, 2000));
+        GUILayout.BeginArea(new Rect(20,10, 1000, 2000));
         GUILayout.BeginHorizontal();
         if (GUILayout.Button(Simulator.IsRunning ? "Pause" : "Start", GUILayout.Width(100)))
             Simulator.IsRunning = !Simulator.IsRunning;

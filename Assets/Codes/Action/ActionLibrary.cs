@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
 using static RoleLibrary;
 
 /// <summary>
@@ -109,7 +108,39 @@ public static class ActionLibrary
                     ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
                 }
             }
-        }
+        },
+        {
+            "InstitutionFiring", new ActionType("InstitutionFiring", Roles["Institution"], Roles["FiredEmployee"])
+            {
+                Frequency = 0.01f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Fire((Person) action["FiredEmployee"]);
+                }
+            }
+        },
+        {
+            "PersonVisitingInstitution", new ActionType("PersonVisitingInstitution", Roles["Institution"], Roles["VisitingPerson"])
+            {
+                Frequency = 0.6f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Visit();
+                }
+            }
+        },
+        {
+            "RobInstitution", new ActionType("RobInstitution", Roles["Institution"], Roles["Robber"])
+            {
+                Frequency = 0.01f,
+                Modifications = action => { ((Institution) action["Institution"]).BeRobbed(); }
+            }
+        },
+        { "InstitutionIncreaseSecurity", new ActionType("InstitutionIncreaseSecurity", Roles["InstitutionToIncreaseSecurity"])
+        {
+            Frequency = 0.1f,
+            Modifications = action => { ((Institution) action["InstitutionToIncreaseSecurity"]).IncreaseSecurity(); }
+        }}
     };
 
     /// <summary>

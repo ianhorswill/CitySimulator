@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
 
 public class Person
 {
@@ -113,7 +112,7 @@ public class Person
     public void updateRelationshipSpark(Person p, int amount)
     {
         // don't increase spark, if not attracted to p's sex
-        if ((p.biologicalSex && !attractedToMen) || (!p.biologicalSex && !attractedToWomen))
+        if ((p.IsMale && !attractedToMen) || (!p.IsFemale && !attractedToWomen))
         {
             return;
         }
@@ -181,6 +180,9 @@ public class Person
         }
         
         captivatedBy.RemoveAll(item => item == null);
+        captivatedBy.RemoveAll(item => this.siblings.Contains(item));
+        captivatedBy.RemoveAll(item => this.children.Contains(item));
+
         captivatedBy = captivatedBy.Distinct().ToList();
     }
 
@@ -213,14 +215,6 @@ public class Person
     /// The gender of the person: if biologicalSex is true, the person is Male; if false, female.
     /// </summary>
     private bool biologicalSex;
-    public bool isMale()
-    {
-        return biologicalSex;
-    }
-    public bool isFemale()
-    {
-        return !biologicalSex;
-    }
     
     public bool attractedToMen;
     public bool attractedToWomen;
@@ -230,8 +224,8 @@ public class Person
     {
         if (sexualityNum < homosexualityIncidence)
         {
-            attractedToMen = biologicalSex; // men like men, women don't like men
-            attractedToWomen = !biologicalSex;
+            attractedToMen = IsMale; // men like men, women don't like men
+            attractedToWomen = IsFemale;
         }
         else
         {
@@ -244,11 +238,16 @@ public class Person
             }
             else
             {
-                attractedToMen = !biologicalSex; // men like men, women don't like men
-                attractedToWomen = biologicalSex;
+                attractedToMen = IsFemale; // men like men, women don't like men
+                attractedToWomen = IsMale;
             }
         }
     }
+
+    public bool IsMale => biologicalSex;
+
+    public bool IsFemale => !biologicalSex;
+    
 
     public Personality individualPersonality;
     public class Personality
@@ -380,7 +379,7 @@ public class Person
     /// </summary>
     public static Person generateRandomPerson()
     {
-        Person p = new Person("",null,null);
+        Person p = new Person("",null,new Person[2]);
         p.biologicalSex = (Random.Integer(0, 2) == 1);
         p.setSexuality(p.biologicalSex, Random.Float(0, 1));
         p.age = Random.Integer(0, 70);
@@ -515,7 +514,7 @@ public class Person
         if(p2.age >= minAge && p1.age >= minAge)
         {
             // if both individuals are above the minimum age, then they may have a child
-            if((p1.isFemale() && p2.isMale()) || (p1.isMale() && p2.isFemale()))
+            if((p1.IsFemale && p2.IsMale) || (p1.IsMale && p2.IsFemale))
             {
                 float birthChance = Random.Float(0,1);
                 // Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
@@ -577,7 +576,21 @@ public class Person
         }
         return true;
     }
-
+    // now the only constraint is that siblings cannot marry each other
+    public bool CanMarry(Person p)
+    {
+        if (parents == null || p.parents == null) 
+            return true;
+        foreach (Person parent in parents)
+        {
+            if (parent != null && p.parents.Contains(parent))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
     {
         if (listOfPersons == null || listOfPersons.Count == 0) return "None";

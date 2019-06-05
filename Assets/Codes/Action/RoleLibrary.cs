@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Codes.Institution;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup
@@ -19,7 +18,7 @@ public static class RoleLibrary
 
         // Uses constructor with default collection but custom filter
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
-            person.isFemale() && person.age >= 18 && person.age <= 50 &&
+            person.IsFemale && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
         },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
@@ -46,6 +45,31 @@ public static class RoleLibrary
                     return speaker.currentLocation;
                 return null;
             })
+        },
+        {"FiredEmployee", new RoleType<Person>("FiredEmployee", (person, action) =>
+        {
+            {
+                Institution ins = (Institution) action["Institution"];
+                // TODO: choose the employee to be fire
+                var population = PersonTown.Singleton.aliveResidents.Count;
+                // below the cut job threshold
+                var cut = ins.visitCount < ins.CUT_JOB_THRESHOLD * population;
+                return cut && ins.employeeList.Contains(person);
+            }
+        })},
+        {
+            "Robber", new RoleType<Person>("Robber", (person, action) =>
+            {
+                var ins = ((Institution) action["Institution"]);
+                return ins.security_level < ins.ROB_THRESHOLD && person.individualPersonality.facets["VIOLENT"] > 80;
+            }
+        )},
+        {
+            "InstitutionToIncreaseSecurity", new RoleType<Institution>("InstitutionToIncreaseSecurity", 
+            (institution, action) => institution.employeeList.Count > 20 && institution.visitCount > 40)
+        },
+        {"VisitingPerson", new RoleType<Person>("VisitingPerson", (person, action) =>
+            person.age > 7)
         },
         { "Father", new RoleType<Person>("Father", action => {
                 var mother = (Person) action["Mother"];
