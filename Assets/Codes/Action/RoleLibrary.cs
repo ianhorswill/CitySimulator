@@ -24,6 +24,9 @@ public static class RoleLibrary
         { "Bride", new RoleType<Person>("Bride", (person, action) =>
             person.age >= 16 && (person.sigOther == null || person.sigOther.dead))
         },
+        { "Partner", new RoleType<Person>("Partner", (person, action) =>
+            person.sigOther != null)
+        },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
             person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
             person.individualPersonality.facets["CONFIDENCE"] > 60
@@ -54,10 +57,22 @@ public static class RoleLibrary
                 return mother.sigOther;
             })
         },
+        { "DivorcePartner", new RoleType<Person>("DivorcePartner", action => {
+                var partner = (Person) action["Partner"];
+                return partner.sigOther;
+            })
+        },
         { "Groom", new RoleType<Person>("Groom", action =>
             {
                 var Bride = (Person) action["Bride"];
-                return Bride.sigOther;
+                foreach (Person candidate in Bride.romanticallyInterestedIn)
+                {
+                    if (Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
+                    {
+                        return candidate;
+                    }
+                }
+                return null;
             })
         }
     };

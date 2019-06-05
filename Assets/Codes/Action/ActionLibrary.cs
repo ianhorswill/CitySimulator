@@ -91,13 +91,14 @@ public static class ActionLibrary
                 {
                     var Bride = (Person) a["Bride"];
                     var Groom = (Person) a["Groom"];
+                    if (Bride == null)
                     
                 }
             }
         },
         { "Divorce", new ActionType("Divorce", Roles["Partner"], Roles["DivorcePartner"])
             {
-                Frequency = 0.1f,
+                Frequency = 0.01f,
                 Modifications = a =>
                 {
                     var Partner = (Person) a["Partner"];
