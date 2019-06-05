@@ -105,7 +105,8 @@ romantically_interested_in(X,Y) :-
 
 love_triangle(X,Y,Z) :-
    romantically_interested_in(X, Z),
-   romantically_interested_in(Y, Z).
+   romantically_interested_in(Y, Z),
+   X \= Y.
 
 significant_other(Person, SO) :-
    person(Person),

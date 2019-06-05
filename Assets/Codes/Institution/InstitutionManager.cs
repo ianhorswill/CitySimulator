@@ -159,10 +159,10 @@ public class InstitutionManager : SimulatorComponent
 
     public override void Step()
     {
-        Institution institution =
-            GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
-        GetRandomConstructionCompany().Build(institution);
-        institution.Hiring(Person.generateRandomPerson());
+        //Institution institution =
+        //    GeneratorInstitution(Person.generateRandomPerson(), GetRandomType(), Space.get_random_plot());
+        //GetRandomConstructionCompany().Build(institution);
+        //institution.Hiring(Person.generateRandomPerson());
 
         //Code for School enrollment
         foreach(School s in GetInstitutionOfType("School")){

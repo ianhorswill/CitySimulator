@@ -118,7 +118,7 @@ public static class ActionLibrary
         },
         { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"])
             {
-                Frequency = 0.3f,
+                Frequency = 0.0003f,
                 Modifications = a =>
                 {
                     // TODO: Use build role to create an institution
