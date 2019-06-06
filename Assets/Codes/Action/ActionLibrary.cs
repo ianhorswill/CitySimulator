@@ -116,7 +116,7 @@ public static class ActionLibrary
                 }
             } 
         },*/
-        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"])
+        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"], Roles["FreePlot"])
             {
                 Frequency = 0.0003f,
                 Modifications = a =>
@@ -126,7 +126,7 @@ public static class ActionLibrary
                     Institution ins = InstitutionManager.GeneratorInstitution(
                         (Person) a["CEO"],
                         InstitutionManager.GetRandomType(),
-                        Space.Singleton.get_random_plot());
+                        (Plot) a["Location"]);
 
                     // Generating an institution also has the construction company build it.
                     ((ConstructionCompany) a["ConstructionCompany"]).Build(ins);

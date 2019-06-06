@@ -101,6 +101,7 @@ public static class RoleLibrary
                 }
                 return null;
             })
-        }
+        },
+        { "FreePlot", new RoleType<Plot>("Location", action => Space.Singleton.get_random_empty_plot()) }
     };
 }
