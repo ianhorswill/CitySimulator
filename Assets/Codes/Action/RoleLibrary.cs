@@ -83,7 +83,7 @@ public static class RoleLibrary
             })
         },
         { "NewInstitute", new RoleType<Institution>("NewInstitute", action =>
-            InstitutionManager.InstitutionGenerator(
+            InstitutionManager.GeneratorInstitution(
                 (Person)action["CEO"],
                 InstitutionManager.GetRandomType(),
                 Space.Singleton.get_random_plot()))}

@@ -75,7 +75,7 @@ public static class ActionLibrary
             {
                 Frequency = 0.3f,
                 // Generating an institution also has the construction company build it.
-                Modifications = a => ((ConstructionCompany) a["ConstructionCompany"]).Construct((Institution) a["NewInstitution"])
+                Modifications = a => ((ConstructionCompany) a["ConstructionCompany"]).Build((Institution) a["NewInstitution"])
             }
         },
         { "InstitutionHiring", new ActionType("InstitutionHiring", Roles["Institution"], Roles["Employee"])
