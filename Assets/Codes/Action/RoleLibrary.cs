@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// Role library, dictionary of roles for easy lookup
@@ -20,6 +21,12 @@ public static class RoleLibrary
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
             person.IsFemale && person.age >= 18 && person.age <= 50 &&
             person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
+        },
+        { "Marry", new RoleType<Person>("Marry", (person, action) =>
+            person.age >= 16 && (person.sigOther == null || person.sigOther.dead))
+        },
+        { "Divorce", new RoleType<Person>("Divorce", (person, action) =>
+            person.sigOther != null)
         },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
             person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
@@ -86,6 +93,26 @@ public static class RoleLibrary
             InstitutionManager.GeneratorInstitution(
                 (Person)action["CEO"],
                 InstitutionManager.GetRandomType(),
-                Space.Singleton.get_random_plot()))}
+                (Plot)action["FreePlot"]))},
+        { "DivorceWith", new RoleType<Person>("DivorceWith", action => {
+                var partner = (Person) action["Divorce"];
+                return partner.sigOther;
+            })
+        },
+        { "MarryWith", new RoleType<Person>("MarryWith", action =>
+            {
+                var Bride = (Person) action["Marry"];
+                foreach (Person candidate in Bride.romanticallyInterestedIn)
+                {
+                    if ((candidate.sigOther == null||candidate.sigOther.dead)&& Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
+                    {
+                        //Debug.Log("Find Candidate: " + candidate.name + " " + candidate.sigOther);
+                        return candidate;
+                    }
+                }
+                return null;
+            })
+        },
+        { "FreePlot", new RoleType<Plot>("Location", action => Space.Singleton.get_random_empty_plot()) }
     };
 }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
+using UnityEngine;
 using static RoleLibrary;
 
 /// <summary>
@@ -71,13 +73,44 @@ public static class ActionLibrary
                 }
             }
         },
-        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["NewInstitution"], Roles["ConstructionCompany"])
+        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["FreePlot"], Roles["NewInstitution"], Roles["ConstructionCompany"])
             {
                 Frequency = 0.3f,
                 // Generating an institution also has the construction company build it.
                 Modifications = a => ((ConstructionCompany) a["ConstructionCompany"]).Build((Institution) a["NewInstitution"])
             }
         },
+/*        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
+            {
+                Frequency = 0.1f,
+                Modifications = a =>
+                {
+                    var Bride = (Person) a["Marry"];
+                    var Groom = (Person) a["MarryWith"];
+                    if (Groom != null)
+                    {
+                        Bride.sigOther = Groom;
+                        Groom.sigOther = Bride;
+                    }
+                    //Debug.Log(Bride.name + " is married with " + Groom.name);
+                }
+            }
+        },
+        { "Divorce", new ActionType("Divorce", Roles["Divorce"], Roles["DivorceWith"])
+            {
+                Frequency = 0f,
+                Modifications = a =>
+                {
+                    var Partner = (Person) a["Divorce"];
+                    var DivorcePartner = (Person) a["DivorceWith"];
+                    Partner.sigOther = null;
+                    DivorcePartner.sigOther = null;
+                    Partner.romanticallyInterestedIn.Remove(DivorcePartner);
+                    DivorcePartner.romanticallyInterestedIn.Remove(Partner);
+                    //Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
+                }
+            } 
+        },*/
         { "InstitutionHiring", new ActionType("InstitutionHiring", Roles["Institution"], Roles["Employee"])
             {
                 Frequency = 0.3f,
