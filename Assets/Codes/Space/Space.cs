@@ -15,8 +15,8 @@ public class Space : SimulatorComponent
 	
     public Plot[,] PlotsArray;
     public Street[,] StreetsList;
-    readonly List<Plot> emptyPlots = new List<Plot>();
-    readonly List<Plot> occupiedPlots = new List<Plot>();
+    public readonly List<Plot> emptyPlots = new List<Plot>();
+    public readonly List<Plot> occupiedPlots = new List<Plot>();
 
     public Street[,] HorizontalStreets;
     public Street[,] VerticalStreets;

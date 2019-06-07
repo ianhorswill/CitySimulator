@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
+using System.Resources;
+using UnityEngine;
 using static RoleLibrary;
 
 /// <summary>
@@ -36,12 +37,12 @@ public static class ActionLibrary
                 {
                     var MinglingWith = (Person)a["MinglingWith"];
                     var Mingler = (Person)a["Mingler"];
-                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100;
+                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100.0;
 
-                    int sparkBaseRate = 30;
+                    int sparkBaseRate = 2;
                     int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
 
-                    int chargeBaseRate = 30;
+                    int chargeBaseRate = 2;
                     int chargeChange = (int) Math.Floor( (double) (chargeBaseRate*compat));
 
                     MinglingWith.updateRelationshipSpark(Mingler, sparkChange);
@@ -62,12 +63,12 @@ public static class ActionLibrary
                 Frequency = 0.1f,
                 Modifications = a =>
                 {
-                    var BioMother = (Person) a["Mother"];
+                    var Mother = (Person) a["Mother"];
                     // TODO: Add role for father that filters based on being the significant other
-                    var BioFather = BioMother.sigOther;
+                    var Father = Mother.sigOther;
                     // TODO: Use build role to create new child
                     // TODO: add Build<Action, object> function and RegisterBuilder(Person, Build)
-                    Person baby = Person.createChild(BioMother, BioFather);
+                    Person baby = Person.createChild(Mother, Father);
                     PersonTown.Singleton.aliveResidents.Add(baby);
                 }
             }
@@ -84,9 +85,40 @@ public static class ActionLibrary
                 }
             }
         },
-        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"])
+/*        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
             {
-                Frequency = 0.3f,
+                Frequency = 0.1f,
+                Modifications = a =>
+                {
+                    var Bride = (Person) a["Marry"];
+                    var Groom = (Person) a["MarryWith"];
+                    if (Groom != null)
+                    {
+                        Bride.sigOther = Groom;
+                        Groom.sigOther = Bride;
+                    }
+                    //Debug.Log(Bride.name + " is married with " + Groom.name);
+                }
+            }
+        },
+        { "Divorce", new ActionType("Divorce", Roles["Divorce"], Roles["DivorceWith"])
+            {
+                Frequency = 0f,
+                Modifications = a =>
+                {
+                    var Partner = (Person) a["Divorce"];
+                    var DivorcePartner = (Person) a["DivorceWith"];
+                    Partner.sigOther = null;
+                    DivorcePartner.sigOther = null;
+                    Partner.romanticallyInterestedIn.Remove(DivorcePartner);
+                    DivorcePartner.romanticallyInterestedIn.Remove(Partner);
+                    //Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
+                }
+            } 
+        },*/
+        { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["ConstructionCompany"], Roles["FreePlot"])
+            {
+                Frequency = 0.0003f,
                 Modifications = a =>
                 {
                     // TODO: Use build role to create an institution
@@ -94,7 +126,7 @@ public static class ActionLibrary
                     Institution ins = InstitutionManager.GeneratorInstitution(
                         (Person) a["CEO"],
                         InstitutionManager.GetRandomType(),
-                        Space.Singleton.get_random_plot());
+                        (Plot) a["Location"]);
 
                     // Generating an institution also has the construction company build it.
                     ((ConstructionCompany) a["ConstructionCompany"]).Build(ins);
@@ -109,7 +141,39 @@ public static class ActionLibrary
                     ((Institution) a["Institution"]).Hiring((Person) a["Employee"]);
                 }
             }
-        }
+        },
+        {
+            "InstitutionFiring", new ActionType("InstitutionFiring", Roles["Institution"], Roles["FiredEmployee"])
+            {
+                Frequency = 0.01f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Fire((Person) action["FiredEmployee"]);
+                }
+            }
+        },
+        {
+            "PersonVisitingInstitution", new ActionType("PersonVisitingInstitution", Roles["Institution"], Roles["VisitingPerson"])
+            {
+                Frequency = 0.6f,
+                Modifications = action =>
+                {
+                    ((Institution) action["Institution"]).Visit();
+                }
+            }
+        },
+        {
+            "RobInstitution", new ActionType("RobInstitution", Roles["Institution"], Roles["Robber"])
+            {
+                Frequency = 0.01f,
+                Modifications = action => { ((Institution) action["Institution"]).BeRobbed(); }
+            }
+        },
+        { "InstitutionIncreaseSecurity", new ActionType("InstitutionIncreaseSecurity", Roles["InstitutionToIncreaseSecurity"])
+        {
+            Frequency = 0.1f,
+            Modifications = action => { ((Institution) action["InstitutionToIncreaseSecurity"]).IncreaseSecurity(); }
+        }}
     };
 
     /// <summary>

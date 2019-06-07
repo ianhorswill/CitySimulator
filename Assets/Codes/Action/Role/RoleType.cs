@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Codes.Institution;
 
 /// <summary>
 /// Represents a role, independent of the value it's bound to in a particular action.
@@ -57,7 +56,7 @@ public class RoleType<T> : RoleTypeBase
     /// <param name="name">Name of the role</param>
     /// <param name="collection">Set of objects to which the action might potentially be bound</param>
     public RoleType(string name, List<T> collection)
-        : this(name, collection, (t, l) => true)
+        : this(name, collection, null)
     { }
 
     /// <summary>
@@ -68,7 +67,7 @@ public class RoleType<T> : RoleTypeBase
     /// </summary>
     /// <param name="name">Name of the role</param>
     public RoleType(string name)
-        : this(name, DefaultCollection(), (t, l) => true)
+        : this(name, DefaultCollection(), null)
     { }
 
     /// <summary>
@@ -95,6 +94,8 @@ public class RoleType<T> : RoleTypeBase
             return PersonTown.Singleton.aliveResidents as List<T>;
         if (t == typeof(Institution))
             return InstitutionManager.institutionList as List<T>;
+        if (t == typeof(ConstructionCompany))
+            return InstitutionManager.constructionCompanyList as List<T>;
         if (t == typeof(Action))
             return ActionSimulator.action_history as List<T>;
         throw new InvalidOperationException($"No default collection defined for type {t.Name}");
@@ -119,16 +120,27 @@ public class RoleType<T> : RoleTypeBase
             var value = binder(action);
             return value != null ? new Role<T>(Name, value) : null;
         }
-        IEnumerable<T> candidates = from entity in collection
-                                    where filter(entity, action)
-                                    select entity;
-        List<T> candidateList = candidates.ToList();
+
+        List<T> candidateList;
+        if (filter == null)
+            candidateList = collection;
+        else
+        {
+            candidateBuffer.Clear();
+            candidateBuffer.AddRange(from entity in collection
+                where filter(entity, action)
+                select entity);
+            candidateList = candidateBuffer;
+        }
+
         if (candidateList.Any())
         {
             return new Role<T>(Name, candidateList.RandomElement());
         }
         return null;
     }
+
+    private readonly List<T> candidateBuffer = new List<T>();
 
     /// <summary>
     /// Passes a new Role<T> back up to the RoleBase, and returns that role in
