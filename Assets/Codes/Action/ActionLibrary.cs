@@ -100,7 +100,7 @@ public static class ActionLibrary
                         Marry.sigOther = MarryWith;
                         MarryWith.sigOther = Marry;
                     }
-                    Debug.Log(Marry.name + " is married with " + MarryWith.name);
+                    //Debug.Log(Marry.name + " is married with " + MarryWith.name);
                 }
             }
         },
@@ -117,7 +117,7 @@ public static class ActionLibrary
                     DivorcePartner.updateRelationshipSpark(Partner, -DivorcePartner.getRelationshipSpark(Partner)/2);
                     Partner.captivatedBy.Remove(DivorcePartner);
                     DivorcePartner.captivatedBy.Remove(Partner);
-                    Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
+                    //Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
                 }
             } 
         },
