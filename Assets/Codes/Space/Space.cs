@@ -31,8 +31,8 @@ public class Space : SimulatorComponent
         PlotsArray = new Plot[GridLen, GridLen];
         StreetsList = new Street[GridLen+1,2];
 
-        HorizontalStreets = new Street[GridLen,GridLen+1];
-        VerticalStreets = new Street[GridLen, GridLen+1];
+        HorizontalStreets = new Street[GridLen+1,GridLen+2];
+        VerticalStreets = new Street[GridLen+1, GridLen+2];
 
         calc_max_plots();
 
@@ -51,12 +51,23 @@ public class Space : SimulatorComponent
     {
         drawPlots();
 
-        for (int level = 0; level < GridLen + 1; level++)
+        // draw horizontal and vertical street sections
+        for (int layerIndex = 0; layerIndex < GridLen + 1; layerIndex++)
         {
-            Rect hori_rect = new Rect(0, DrawScale * level, DrawScale * (GridLen + 0.1f), DrawScale * 0.1f);
-            Rect vert_rect = new Rect(DrawScale * level, 0, DrawScale * 0.1f, DrawScale * (GridLen + 0.1f));
-            Draw.Rect(vert_rect, Color.black);
-            Draw.Rect(hori_rect, Color.black);
+            for (int section = 0; section < GridLen; section++)
+            {
+                if (HorizontalStreets[layerIndex,section] != null)
+                {
+                    Rect hor_rect = new Rect(layerIndex * 2, DrawScale * section, DrawScale, DrawScale * 0.1f);
+                    Draw.Rect(hor_rect, Color.black);
+                }
+
+                if (VerticalStreets[layerIndex, section] != null)
+                {
+                    Rect vert_rect = new Rect(DrawScale * layerIndex, section * 2, DrawScale * 0.1f, DrawScale);
+                    Draw.Rect(vert_rect, Color.black);
+                }
+            }
         }
     }
 
@@ -71,7 +82,8 @@ public class Space : SimulatorComponent
                 DrawScale,
                 DrawScale);
             Draw.Rect(p_rect, p.color, -1);
-        }    }
+        }    
+    }
 
     private void generate_plots()
     {
@@ -102,24 +114,28 @@ public class Space : SimulatorComponent
                     case 0:
                         childX = x;
                         childY = modulo((y + 1), GridLen);
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     // East
                     case 1:
                         childX = modulo((x + 1), GridLen);
                         childY = y;
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     // South
                     case 2:
                         childX = x;
                         childY = modulo(y - 1, GridLen);
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     // West
                     case 3:
                         childX = modulo((x - 1), GridLen);
                         childY = y;
+                        make_bordering_streets(childX, childY);
                         break;
 					
                     default:
@@ -225,7 +241,6 @@ public class Space : SimulatorComponent
     {
         string dir_name = dir == Street.street_direction.NS ? "N. " : "E. ";
         Street new_street = new Street(dir, dir_name + lvl + " Street");
-
         return new_street;
     }
 
