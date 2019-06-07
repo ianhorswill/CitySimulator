@@ -167,6 +167,7 @@ public class Person
     int sparkThresholdForCaptivating = 10;
     int chargeThresholdForRelationship = 15;
     public List<Person> captivatedBy = new List<Person>();
+
     public void getCaptivatedIndividuals()
     {
         captivatedBy = new List<Person>();
@@ -596,7 +597,16 @@ public class Person
         }
         return true;
     }
-    
+
+    public bool haveAffair()
+    {
+        foreach (Person p in romanticallyInterestedIn)
+        {
+            if (p != sigOther && (getRelationshipSpark(p) > getRelationshipSpark(sigOther)))
+                return true;
+        }
+        return false;
+    }
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
     {
         if (listOfPersons == null || listOfPersons.Count == 0) return "None";
