@@ -1,4 +1,5 @@
 :- public define_indexical/2.
+:- public show_graph/1.
 
 define_indexical(Name, ValueExpression) :-
    Value is ValueExpression,

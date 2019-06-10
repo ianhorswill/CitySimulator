@@ -4,6 +4,7 @@
 :- public romantically_interested_in/2, significant_other/2, couple/2.
 :- public love_triangle/3.
 :- public show_person/1, person_named/2, show_random_person/0, random_person/1.
+:- public r/3.
 
 :- define_indexical(residents, $town.aliveResidents).
 
@@ -29,8 +30,8 @@ relationship(I, O, owner) :-
    owner(I, O).
 relationship(I, E, employee) :-
    employee(I, E).
-% relationship(P1, P2, coworker) :-
-%    coworker(P1, P2).
+relationship(P1, P2, coworker) :-
+   coworker(P1, P2).
 relationship(P1, P2, boss) :-
    boss(P1, P2).
 
