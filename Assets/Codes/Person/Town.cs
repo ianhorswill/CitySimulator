@@ -132,7 +132,7 @@ public class PersonTown : SimulatorComponent
     public override void Step() {
         foreach (Person pc in aliveResidents){
             //AM location code
-            if(Simulator.CurrentTime.ToString("tt").equals("AM")){
+            if(Simulator.CurrentTime.ToString("tt").Equals("AM")){
                 //Move to work
                 if(pc.workStatus.workplace != null)
                     pc.currentInstitution = pc.workStatus.workplace;
@@ -142,8 +142,16 @@ public class PersonTown : SimulatorComponent
             else{
                 //Move to home
                 //Attempt to find a home if currently do not have one.
-                if(pc.home == null)
-                    pc.home = InstitutionManager.Singleton.GetRandomInstitutionOfType("ApartmentComplex");
+                if(pc.home == null){
+                    //Institution potentialHome = InstitutionManager.Singleton.GetRandomInstitutionOfType("ApartmentComplex");
+                    //if(potentialHome == null){
+                        //continue;
+                    //}
+                    //else{
+                       //pc.home = potentialHome; 
+                    //}
+                    continue;
+                }
                 pc.currentInstitution = pc.home;
             }
         }

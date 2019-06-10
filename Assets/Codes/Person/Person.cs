@@ -425,7 +425,13 @@ public class Person
         individualPersonality = new Personality();
         id = Guid.NewGuid();
 
-        currentInstitution = parents[0].currentInstitution;
+        /* keeps breaking
+        if(parentsParam[0].currentInstitution == null){
+            currentInstitution = parentsParam[0].currentInstitution;
+        }
+        else {currentInstitution = InstitutionManager.RandomInstitutionIfAny();}
+        */
+        currentInstitution = InstitutionManager.RandomInstitutionIfAny();
         if(Random.Integer(0, 2) == 1)
         {
             biologicalSex = true;

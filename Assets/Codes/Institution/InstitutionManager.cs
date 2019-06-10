@@ -150,13 +150,13 @@ public class InstitutionManager : SimulatorComponent
         {
             return new List<Institution>();
         }
-
         return InstitutionDictionary[type];
     }
 
-    public static Institution GetRandomInstitutionOfType(string type){
-        if(GetInstitutionOfType(type).Count != 0)
-            return GetInstitutionOfType(type).RandomElement();
+    public Institution GetRandomInstitutionOfType(string type){
+        if(InstitutionDictionary[type].Count > 0){
+            return InstitutionDictionary[type].RandomElement();
+        }
         return null;
     }
 
