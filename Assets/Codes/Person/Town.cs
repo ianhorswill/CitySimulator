@@ -130,6 +130,27 @@ public class PersonTown : SimulatorComponent
 
     //Every timestep this method is called.
     public override void Step() {
+        foreach (Person pc in aliveResidents){
+            //AM location code
+            if(Simulator.CurrentTime.ToString("tt").equals("AM")){
+                //Move to work
+                if(pc.workStatus.workplace != null)
+                    pc.currentInstitution = pc.workStatus.workplace;
+            }
+
+            //PM location code
+            else{
+                //Move to home
+                //Attempt to find a home if currently do not have one.
+                if(pc.home == null)
+                    pc.home = InstitutionManager.Singleton.GetRandomInstitutionOfType("ApartmentComplex");
+                pc.currentInstitution = pc.home;
+            }
+        }
+
+       
+
+
         /* Birth, right now can only occur once per step */
 
         //Select Parent Randomly: LINQ

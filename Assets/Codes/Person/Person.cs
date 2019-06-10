@@ -51,6 +51,7 @@ public class Person
     public bool alive {get; set;}
     
     //Right now a person's location is inferred from the institution they are presently at.
+    public Institution home = null;
     public Institution currentInstitution {get; set;}
     public Plot currentLocation{
         get { return currentInstitution.location; }  //Implies that Institution.location is public 
@@ -379,6 +380,8 @@ public class Person
     }
 
 
+
+
     /// -----------------------------------------------------------------------------------------------------------------------------///
     /// -----------------------------------------------------------------------------------------------------------------------------///
     /// <summary>
@@ -411,7 +414,7 @@ public class Person
         individualPersonality = new Personality();
         id = Guid.NewGuid();
 
-        currentInstitution = InstitutionManager.RandomInstitutionIfAny();
+        currentInstitution = parents[0].currentInstitution;
         if(Random.Integer(0, 2) == 1)
         {
             biologicalSex = true;
