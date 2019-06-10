@@ -205,7 +205,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f9211a2499b3f742b3347112a57203c, type: 3}
+  m_Script: {fileID: 11500000, guid: d4cc83ff69afc45a0a3f3ac0a1fedf5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Shader: {fileID: 0}
@@ -214,7 +214,7 @@ MonoBehaviour:
     m_Normal:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
-      m_TextColor: {r: 1, g: 1, b: 1, a: 1}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Hover:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
@@ -481,7 +481,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1543635301}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9926afc089dc0744781c0aa630a820b2, type: 3}
+  m_Script: {fileID: 11500000, guid: d603759d324a1403db187b1b955a3cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   TextStyle:
@@ -489,7 +489,7 @@ MonoBehaviour:
     m_Normal:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
-      m_TextColor: {r: 0, g: 1, b: 0, a: 1}
+      m_TextColor: {r: 0, g: 0, b: 0, a: 1}
     m_Hover:
       m_Background: {fileID: 0}
       m_ScaledBackgrounds: []
