@@ -37,7 +37,7 @@ public static class ActionLibrary
                 {
                     var MinglingWith = (Person)a["MinglingWith"];
                     var Mingler = (Person)a["Mingler"];
-                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler)/100.0;
+                    var compat = Person.Relationship.getCompatibility(MinglingWith, Mingler);
 
                     int sparkBaseRate = 2;
                     int sparkChange = (int) Math.Ceiling((double) (sparkBaseRate*compat));
@@ -50,10 +50,64 @@ public static class ActionLibrary
                     Mingler.updateRelationshipSpark(MinglingWith, sparkChange);
                     Mingler.updateRelationshipCharge(MinglingWith, chargeChange);
 
-                    Mingler.getCaptivatedIndividuals();
+                    Mingler.getCaptivatedIndividualsAndEnemies();
                     Mingler.getRomanticInterests();
-                    MinglingWith.getCaptivatedIndividuals();
+                    MinglingWith.getCaptivatedIndividualsAndEnemies();
                     MinglingWith.getRomanticInterests();
+
+                }
+            }
+        },
+        { "Bully" , new ActionType("Bully", Roles["Bully"], Roles["Bullied"])
+            {
+                Frequency = 0.1f,
+                Modifications = a =>
+                {
+                    var Bully = (Person)a["Bully"];
+                    var Bullied = (Person)a["Bullied"];
+                    var compat = Person.Relationship.getCompatibility(Bully, Bullied);
+
+                    int sparkBaseRate = -2;
+                    int sparkChange = (int) Math.Floor((double) (sparkBaseRate*compat));
+
+                    int chargeBaseRate = -2;
+                    int chargeChange = (int) Math.Floor( (double) (chargeBaseRate*(1-compat)));
+
+                    Bully.updateRelationshipSpark(Bullied, sparkChange);
+                    Bully.updateRelationshipCharge(Bullied, chargeChange);
+                    Bully.updateRelationshipSpark(Bullied, sparkChange);
+                    Bullied.updateRelationshipCharge(Bully, chargeChange);
+
+                    Bully.getCaptivatedIndividualsAndEnemies();
+                    Bully.getRomanticInterests();
+                    Bullied.getCaptivatedIndividualsAndEnemies();
+                    Bullied.getRomanticInterests();
+
+                }
+            }
+        },
+        { "Gossip" , new ActionType("Gossip", Roles["Gossiper"], Roles["GossipingWith"], Roles["TopicOfGossip"])
+            {
+                Frequency = 0.2f,
+                Modifications = a =>
+                {
+                    var Gossiper = (Person)a["Gossiper"];
+                    var GossipingWith = (Person)a["GossipingWith"];
+                    var TopicOfGossip = (Person)a["TopicOfGossip"];
+                    var gossiperCompat = Person.Relationship.getCompatibility(Gossiper, TopicOfGossip);
+                    var withCompat = Person.Relationship.getCompatibility(GossipingWith, TopicOfGossip);
+
+                    int chargeBaseRate = -2;
+                    int gossiperChargeChange = (int) Math.Floor( (double) (chargeBaseRate*(1-gossiperCompat)));
+                    int withChargeChant = (int) Math.Floor( (double) (chargeBaseRate*(1-withCompat)));
+
+                    Gossiper.updateRelationshipCharge(TopicOfGossip, gossiperChargeChange);
+                    GossipingWith.updateRelationshipCharge(TopicOfGossip, withChargeChant);
+
+                    Gossiper.getCaptivatedIndividualsAndEnemies();
+                    Gossiper.getRomanticInterests();
+                    GossipingWith.getCaptivatedIndividualsAndEnemies();
+                    GossipingWith.getRomanticInterests();
 
                 }
             }

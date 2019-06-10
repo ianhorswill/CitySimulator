@@ -42,6 +42,16 @@ public static class RoleLibrary
         )},
         { "MinglingWith", new RoleType<Person>("MinglingWith", (person, action) =>
             (Person) action["Mingler"] != person ) },
+        { "Bully", new RoleType<Person>("Bully", (person, action) => 
+            person.age >= 4 && person.age <= 18 ) },
+        { "Bullied", new RoleType<Person>("Bullied", (person, action) =>
+            person.age >= 4 && person.age - ((Person) action["Bully"]).age < 4 
+            && (Person) action["Bully"] != person ) },
+        { "Gossiper", new RoleType<Person>("Gossiper") },
+        { "GossipingWith", new RoleType<Person>("GossipingWith", (person, action) =>
+            (Person) action["Gossiper"] != person ) },
+        { "TopicOfGossip", new RoleType<Person>("TopicOfGossip", (person, action) =>
+            (Person) action["Gossiper"] != person && (Person) action["GossipingWith"] != person ) },
 
         // Uses constructor with binder, thus the action input to the lambda
         { "SameLocation", new RoleType<Plot>("SameLocation", action =>

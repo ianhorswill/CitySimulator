@@ -66,7 +66,7 @@ public class Person
     {
         public int Charge;
         public int Spark;
-        public int Compatibility;
+        public double Compatibility;
 
         public Relationship(int c, int s, Person p1, Person p2)
         {
@@ -75,7 +75,10 @@ public class Person
             Compatibility = getCompatibility(p1, p2);
         }
 
-        public static int getCompatibility(Person p1, Person p2)
+        /// <summary>
+        /// Returns compatibility between two people as a number between 0 and 1
+        /// </summary>
+        public static double getCompatibility(Person p1, Person p2)
         {
             double personalityDiff = 0;
             // these facets are chosen to mimic James' compatibility calculation using O/E/A difference 
@@ -90,7 +93,7 @@ public class Person
 
             // average difference across facets and flip for compatibility
             int personalityDiffNorm = (int) (2.5 * personalityDiff / compatibility_facets.Count);
-            return Math.Max(100 - personalityDiffNorm, 0);
+            return Math.Max(100 - personalityDiffNorm, 0)/100.0;
         }
     }
 
@@ -166,11 +169,14 @@ public class Person
     // See https://github.com/james-owen-ryan/talktown/blob/master/config/social_sim_config.py
     int sparkThresholdForCaptivating = 10;
     int chargeThresholdForRelationship = 15;
+    int chargeThresholdForEnemies = -25;
     public List<Person> captivatedBy = new List<Person>();
+    public List<Person> enemies = new List<Person>();
 
-    public void getCaptivatedIndividuals()
+    public void getCaptivatedIndividualsAndEnemies()
     {
         captivatedBy = new List<Person>();
+        enemies = new List<Person>();
 
         foreach (var item in relationshipDict)
         {
@@ -178,9 +184,14 @@ public class Person
             {
                 captivatedBy.Add(item.Key);
             }
+            if (item.Value.Charge <= chargeThresholdForEnemies)
+            {
+                enemies.Add(item.Key);
+            }
         }
 
         captivatedBy.RemoveAll(item => item == null);
+        enemies.RemoveAll(item => item == null);
         if (this.siblings!= null)
         {
             captivatedBy.RemoveAll(item => this.siblings.Contains(item));
