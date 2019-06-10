@@ -114,7 +114,7 @@ public static class ActionLibrary
         },
         { "Birth" , new ActionType("Birth", Roles["Mother"])
            {
-                Frequency = 1f,
+               Frequency = 1f,
                 Modifications = a =>
                 {
                     var Mother = (Person) a["Mother"];
@@ -142,7 +142,7 @@ public static class ActionLibrary
                 }
             }
         },
-        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
+/*        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
             {
                 Frequency = 1f,
                 Modifications = a =>
@@ -157,10 +157,28 @@ public static class ActionLibrary
                     //Debug.Log(Marry.name + " is married with " + MarryWith.name);
                 }
             }
+        },*/
+        {
+            "Marriage", new ActionType("Marriage", Roles["MarriableCouple"])
+            {
+                Frequency = 1f,
+                Modifications = a =>
+                {
+                    var couple = (Person[]) a["MarriableCouple"];
+                    var Marry = couple[0];
+                    var MarryWith = couple[1];
+                    if (Marry != null && MarryWith != null)
+                    {
+                        Marry.sigOther = MarryWith;
+                        MarryWith.sigOther = Marry;
+                    }
+                    Debug.Log(Marry.name + " is married with " + MarryWith.name);
+                }
+            }
         },
         { "Divorce", new ActionType("Divorce", Roles["Divorce"], Roles["DivorceWith"])
             {
-                Frequency = 0.0001f,
+                Frequency = 0.00005f,
                 Modifications = a =>
                 {
                     var Partner = (Person) a["Divorce"];
@@ -171,7 +189,7 @@ public static class ActionLibrary
                     DivorcePartner.updateRelationshipSpark(Partner, -DivorcePartner.getRelationshipSpark(Partner)/2);
                     Partner.captivatedBy.Remove(DivorcePartner);
                     DivorcePartner.captivatedBy.Remove(Partner);
-                    //Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
+                    Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
                 }
             } 
         },

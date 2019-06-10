@@ -111,6 +111,8 @@ public static class RoleLibrary
                 return null;
             })
         },
+        { "MarriableCouple", new RoleType<Person[]>("MarriableCouple", action => PersonTown.Singleton.MarriableCouple()) },
+        
         { "FreePlot", new RoleType<Plot>("Location", action => Space.Singleton.get_random_empty_plot()) }
     };
 }
