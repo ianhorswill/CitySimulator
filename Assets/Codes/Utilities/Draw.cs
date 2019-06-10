@@ -26,12 +26,15 @@ public class Draw : MonoBehaviour
             });
     }
 
+    public bool Visible { get; set; }
+
     /// <summary>
     /// Fills in Shader, if not already set.
     /// </summary>
     // ReSharper disable once UnusedMember.Global
     public void Awake()
     {
+        Visible = true;
         if (Shader == null)
         {
             Shader = new Material(UnityEngine.Shader.Find("GUI/Text Shader"));
@@ -52,6 +55,11 @@ public class Draw : MonoBehaviour
     // ReSharper disable once UnusedMember.Global
     public void OnGUI()
     {
+        if (!Visible)
+        {
+            textQueue.Clear();
+            return;
+        }
         if (Event.current.type == EventType.Repaint)
             textQueue.DrawAll();
     }
@@ -59,6 +67,13 @@ public class Draw : MonoBehaviour
     // ReSharper disable once UnusedMember.Global
     public void OnRenderObject()
     {
+        if (!Visible)
+        {
+            rectQueue.Clear();
+            lineQueue.Clear();
+            return;
+        }
+
         Shader.SetPass(0);
         rectQueue.DrawAll();
         lineQueue.DrawAll();
@@ -196,6 +211,11 @@ public class Draw : MonoBehaviour
                 if (drawMode >=0)
                     GL.End();
             }
+        }
+
+        public void Clear()
+        {
+            queue.Clear();
         }
     }
 }

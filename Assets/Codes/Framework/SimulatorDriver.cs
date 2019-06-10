@@ -8,9 +8,11 @@ public class SimulatorDriver : MonoBehaviour
     public GUIStyle TextStyle;
     private bool isThreaded;
     private Thread simulatorThread;
+    public bool Visible { get; set; }
 
     internal void Start()
     {
+        Visible = true;
         Simulator.Initialize();
     }
 
@@ -37,6 +39,8 @@ public class SimulatorDriver : MonoBehaviour
 
     internal void OnGUI()
     {
+        if (!Visible)
+            return;
         GUILayout.BeginArea(new Rect(20,10, 1000, 2000));
         GUILayout.BeginHorizontal();
         if (GUILayout.Button(Simulator.IsRunning ? "Pause" : "Start", GUILayout.Width(100)))

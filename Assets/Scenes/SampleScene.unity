@@ -154,6 +154,7 @@ MonoBehaviour:
   - Codes/Prolog/town.pl
   - Codes/Prolog/person.pl
   - Codes/Prolog/space.pl
+  - Codes/Prolog/institution.pl
 --- !u!4 &362823869
 Transform:
   m_ObjectHideFlags: 0

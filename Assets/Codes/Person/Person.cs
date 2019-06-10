@@ -563,7 +563,7 @@ public class Person
                         currSiblings = p2.children;
                     }
                     
-                    Person bornChild = new Person("", currSiblings, new Person[] { p1, p2 });
+                    Person bornChild = new Person("", currSiblings, (p1 == null) ? null : new Person[] { p1, p2 });
                     if (p1.children == null)
                         p1.children = new List<Person>() {bornChild};
                     else
@@ -633,7 +633,7 @@ public class Person
     //For the time being, making ToString only return the name to make it less verbose
     public override string ToString()
     {
-        return string.Format("Person Name: {0}", name);
+        return name;
     }
 
     //Original ToString 

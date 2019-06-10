@@ -20,6 +20,11 @@ public class PersonTown : SimulatorComponent
     public readonly List<Person> aliveResidents = new List<Person>();
     public readonly  List<Person> deceased = new List<Person>();
 
+    public Person RandomPerson()
+    {
+        return aliveResidents.RandomElement();
+    }
+
     private static int deathProbability = 1;
     private static int birthProbability = 40;
 

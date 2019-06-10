@@ -82,7 +82,8 @@ public class Institution
 
         public override string ToString()
         {
-            return type +  " Owner: " + owner.name + "， Location: （" + location.x_pos +"," + location.y_pos+ ")";
+            //return type +  " Owner: " + owner.name + "， Location: （" + location.x_pos +"," + location.y_pos+ ")";
+            return type;
         }
     }
 
