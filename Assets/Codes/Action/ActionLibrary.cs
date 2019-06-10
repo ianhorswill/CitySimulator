@@ -124,7 +124,7 @@ public static class ActionLibrary
         },
         { "Divorce", new ActionType("Divorce", Roles["Divorce"], Roles["DivorceWith"])
             {
-                Frequency = 0.0001f,
+                Frequency = 0.00005f,
                 Modifications = a =>
                 {
                     var Partner = (Person) a["Divorce"];
