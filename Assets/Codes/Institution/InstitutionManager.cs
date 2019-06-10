@@ -54,6 +54,8 @@ public class InstitutionManager : SimulatorComponent
         ////School school = new School(Person.generateRandomPerson(), new Plot(0, 1), "School");
         ////institutionList.Add(school);
         GeneratorInstitution(Person.generateRandomPerson(), "School", new Plot(0, 1));
+        //initial apt complex
+        GeneratorInstitution(Person.generateRandomPerson(), "ApartmentComplex", new Plot (0, 2));
     }
 
     public InstitutionManager(Space space)
@@ -148,8 +150,14 @@ public class InstitutionManager : SimulatorComponent
         {
             return new List<Institution>();
         }
-
         return InstitutionDictionary[type];
+    }
+
+    public Institution GetRandomInstitutionOfType(string type){
+        if(InstitutionDictionary[type].Count > 0){
+            return InstitutionDictionary[type].RandomElement();
+        }
+        return null;
     }
 
     public override void Initialize()
