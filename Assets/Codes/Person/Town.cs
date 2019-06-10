@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class PersonTown : SimulatorComponent
 {
@@ -46,7 +47,7 @@ public class PersonTown : SimulatorComponent
         initialSettlerTest.Add(p1);
         initialSettlerTest.Add(p2);
 
-        int randPeopleCount = 10;
+        int randPeopleCount = 20;
         for(int i = 0; i < randPeopleCount; i++)
         {
             Person newRandPerson = Person.generateRandomPerson();
@@ -128,6 +129,26 @@ public class PersonTown : SimulatorComponent
 
     }
 
+    public Person[] MarriableCouple()
+    {
+        var noSigOther = from single in aliveResidents
+            where (single != null && single.age >= 16 && (single.sigOther == null || single.sigOther.dead))
+            select single;
+        foreach (Person single in noSigOther)
+        {
+            foreach (Person candidate in single.captivatedBy)
+            {
+                if ((candidate.sigOther == null || candidate.sigOther.dead) && single.CanMarry(candidate))
+                {
+                    Person[] couple = new Person[2];
+                    couple[0] = single;
+                    couple[1] = candidate;
+                    return couple;
+                }
+            }
+        }
+        return null;
+    }
     //Every timestep this method is called.
     public override void Step() {
         /* Birth, right now can only occur once per step */
