@@ -40,16 +40,23 @@ public class GraphNode : MonoBehaviour
         {
             var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             if (hitBox.OverlapPoint(pos))
+            {
                 mouseDrag = true;
+                Graph.SelectedNode = this;
+            }
         }
         else if (Event.current.type == EventType.MouseUp)
+        {
             mouseDrag = false;
+            Graph.SelectedNode = null;
+        }
     }
 
     public void FixedUpdate()
     {
-        if (!mouseDrag)
-            return;
-        rBody.MovePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        Graph.ConstraintToScreen(rBody);
+
+        if (mouseDrag)
+            rBody.MovePosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
 }

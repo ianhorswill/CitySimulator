@@ -34,6 +34,9 @@ relationship(P1, P2, coworker) :-
    coworker(P1, P2).
 relationship(P1, P2, boss) :-
    boss(P1, P2).
+relationship(P1, P2, enemy) :-
+   enemy(P1, P2).
+
 
 r(P1, P2, R) :-
    personify(P1, P1P),
@@ -63,17 +66,22 @@ show_person(Person) :-
 add_orbit_edges(P) :-
    orbit(P, O),
    writeln(O),
-   add_orbit_edges_aux(O).
+   add_orbit_edges_aux(P, O).
 
-add_orbit_edges_aux(O) :-
+add_orbit_edges_aux(P, O) :-
    member(A, O),
    member(B, O),
    A \= B,
    relationship(A, B, R),
+   \+ suppress_relationship(P, A, B, R),
    once(edge_color(R, C)),
    show_edge(A, B, R, C),
    fail.
 add_orbit_edges(_).
+
+suppress_relationship(MainCharacter, A, B, sibling) :-
+   A \= MainCharacter,
+   B \= MainCharacter.
 
 edge_color(significant_other, "magenta").
 edge_color(parent, "cyan").
@@ -84,6 +92,7 @@ edge_color(owner, "blue").
 edge_color(employee, "blue").
 edge_color(coworker, "gray").
 edge_color(boss, "blue").
+edge_color(enemy, "yellow").
 edge_color(_, "white").
 
 show_random_person :-
@@ -230,4 +239,9 @@ boss(E, B) :-
    affiliation(E, I),
    owner(I, B),
    E\= B.
+
+enemy(P, E) :-
+   person(P),
+   L is P.enemies,
+   member(E, L).
 

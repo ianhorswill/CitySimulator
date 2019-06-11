@@ -5,8 +5,43 @@ using UnityEngine;
 public class Graph : MonoBehaviour
 {
     public static Graph Singleton;
+    public static GraphNode SelectedNode;
 
     readonly Dictionary<string, GraphNode> nodes = new Dictionary<string, GraphNode>();
+    public Rect ScreenInWorldCoordinates;
+
+    public static void ConstraintToScreen(Rigidbody2D r)
+    {
+        var screen = Singleton.ScreenInWorldCoordinates;
+        var p = r.position;
+        var changed = false;
+        if (p.x > screen.xMax)
+        {
+            p.x = screen.xMax;
+            changed = true;
+        }
+
+        if (p.x < screen.xMin)
+        {
+            p.x = screen.xMin;
+            changed = true;
+        }
+
+        if (p.y > screen.yMax)
+        {
+            p.y = screen.yMax;
+            changed = true;
+        }
+
+        if (p.y < screen.yMin)
+        {
+            p.y = screen.yMin;
+            changed = true;
+        }
+
+        if (changed)
+            r.MovePosition(p);
+    }
 
     public static void Create()
     {
@@ -79,6 +114,11 @@ public class Graph : MonoBehaviour
         FindObjectOfType<Draw>().Visible = false;
         FindObjectOfType<SimulatorDriver>().Visible = false;
         Singleton = this;
+        var lowerLeft = Camera.main.ScreenToWorldPoint(new Vector2(50, 50));
+        var upperRight = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width-50, Screen.height-50, 0));
+        var difference = upperRight - lowerLeft;
+        var middle = lowerLeft + 0.5f * difference;
+        ScreenInWorldCoordinates = new Rect(lowerLeft, difference);
     }
 
     internal void OnGUI()
