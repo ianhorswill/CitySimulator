@@ -167,6 +167,7 @@ public class Person
     int sparkThresholdForCaptivating = 10;
     int chargeThresholdForRelationship = 15;
     public List<Person> captivatedBy = new List<Person>();
+
     public void getCaptivatedIndividuals()
     {
         captivatedBy = new List<Person>();
@@ -504,68 +505,40 @@ public class Person
     {
         // createChild(p1, p1.sigOther)
         Person p2 = otherParents[0];
-        if(otherParents.Length > 1)
-        {
-            // Humans should only have two biological parents
-            return null;
-        }
 
-
-        int minAge = 18; // Change this to like 18 when we actually have age incrementing properly
-        if(p1 == null || p2 == null)
+        // string tempNameGen = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
+        List<Person> currSiblings = null;
+        if(p1.children != null)
         {
-            return null;
-        }
-
-        if(p2.age >= minAge && p1.age >= minAge)
-        {
-            // if both individuals are above the minimum age, then they may have a child
-            if((p1.IsFemale && p2.IsMale) || (p1.IsMale && p2.IsFemale))
+            if(p2.children != null)
             {
-                float birthChance = Random.Float(0,1);
-                // Debug.LogFormat("Chance of birth: {0}/{1}", birthChance, conceptionRate);
-           
-                if(birthChance <= conceptionRate)
-                {
-                    
-                    // string tempNameGen = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8);
-                    List<Person> currSiblings = null;
-                    if(p1.children != null)
-                    {
-                        if(p2.children != null)
-                        {
-                            var siblingsCollection =
-                                from child in p1.children
-                                where !(p2.children.Contains(child))
-                                select child;
+                var siblingsCollection =
+                    from child in p1.children
+                    where !(p2.children.Contains(child))
+                    select child;
 
-                            siblingsCollection = siblingsCollection.Union(from child in p2.children select child);
+                siblingsCollection = siblingsCollection.Union(from child in p2.children select child);
 
-                            currSiblings = siblingsCollection.ToList<Person>();
-                        }
-
-                        currSiblings = p1.children;
-                    }
-                    else if(p2.children != null)
-                    {
-                        currSiblings = p2.children;
-                    }
-                    
-                    Person bornChild = new Person("", currSiblings, new Person[] { p1, p2 });
-                    if (p1.children == null)
-                        p1.children = new List<Person>() {bornChild};
-                    else
-                        p1.children.Add(bornChild);
-                    if (p2.children == null)
-                        p2.children = new List<Person>() {bornChild};
-                    else
-                        p2.children.Add(bornChild);
-                    return bornChild;
-                }
+                currSiblings = siblingsCollection.ToList<Person>();
             }
 
+            currSiblings = p1.children;
         }
-        return null;
+        else if(p2.children != null)
+        {
+            currSiblings = p2.children;
+        }
+        
+        Person bornChild = new Person("", currSiblings, new Person[] { p1, p2 });
+        if (p1.children == null)
+            p1.children = new List<Person>() {bornChild};
+        else
+            p1.children.Add(bornChild);
+        if (p2.children == null)
+            p2.children = new List<Person>() {bornChild};
+        else
+            p2.children.Add(bornChild);
+        return bornChild;
     }
 
     // helper function for the filter of biologicalMother in roleLibrary
@@ -596,7 +569,16 @@ public class Person
         }
         return true;
     }
-    
+
+    public bool haveAffair()
+    {
+        foreach (Person p in romanticallyInterestedIn)
+        {
+            if (p != sigOther && (getRelationshipSpark(p) > getRelationshipSpark(sigOther)))
+                return true;
+        }
+        return false;
+    }
     public string getNamesFromListOfPersons(List<Person> listOfPersons)
     {
         if (listOfPersons == null || listOfPersons.Count == 0) return "None";

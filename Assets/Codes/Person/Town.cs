@@ -142,29 +142,24 @@ public class PersonTown : SimulatorComponent
 
         StopWhen("Population died off", () =>
             aliveResidents.Count == 0);
-        var noSigOtherFem = from women in aliveResidents
-                            where (women != null && women.age >= 16 && women.IsFemale && (women.sigOther == null || women.sigOther.dead))
-                            select women;
 
-        var noSigOtherMale = from men in aliveResidents
-                             where (men != null && men.age >= 16 && men.IsMale && (men.sigOther == null || men.sigOther.dead))
-                             select men;
-
-        if (noSigOtherMale != null && noSigOtherFem != null)
+        //if (noSigOtherMale != null && noSigOtherFem != null)
+        var noSigOther = from single in aliveResidents
+            where (single != null && single.age >= 16 && (single.sigOther == null || single.sigOther.dead))
+            select single;
+        foreach (Person single in noSigOther)
         {
-            foreach (Person pm in noSigOtherMale)
+            foreach (Person candidate in single.captivatedBy)
             {
-                foreach (Person pf in noSigOtherFem)
+                if ((candidate.sigOther == null || candidate.sigOther.dead) && single.CanMarry(candidate))
                 {
-                    if (pm.sigOther == null && pf.sigOther == null && pm.CanMarry(pf))
-                    {
-                        pm.sigOther = pf;
-                        pf.sigOther = pm;
-                        Log(pm.name+" and "+pf.name+" is married.");
-                    }
+                    single.sigOther = candidate;
+                    candidate.sigOther = single;
+                    Log(single.name + " and " + candidate.name + " is married.");
+                    break;
                 }
             }
-        }   
+        }
 
         int birthDice = Random.Integer(100);
         if(birthDice < PersonTown.birthProbability){

@@ -73,6 +73,39 @@ public static class ActionLibrary
                 }
             }
         },
+        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
+            {
+                Frequency = 1f,
+                Modifications = a =>
+                {
+                    var Marry = (Person) a["Marry"];
+                    var MarryWith = (Person) a["MarryWith"];
+                    if (Marry != null && MarryWith != null)
+                    {
+                        Marry.sigOther = MarryWith;
+                        MarryWith.sigOther = Marry;
+                    }
+                    Debug.Log(Marry.name + " is married with " + MarryWith.name);
+                }
+            }
+        },
+        { "Divorce", new ActionType("Divorce", Roles["Divorce"], Roles["DivorceWith"])
+            {
+                Frequency = 0.0001f,
+                Modifications = a =>
+                {
+                    var Partner = (Person) a["Divorce"];
+                    var DivorcePartner = (Person) a["DivorceWith"];
+                    Partner.sigOther = null;
+                    DivorcePartner.sigOther = null;
+                    Partner.updateRelationshipSpark(DivorcePartner, -Partner.getRelationshipSpark(DivorcePartner)/2);
+                    DivorcePartner.updateRelationshipSpark(Partner, -DivorcePartner.getRelationshipSpark(Partner)/2);
+                    Partner.captivatedBy.Remove(DivorcePartner);
+                    DivorcePartner.captivatedBy.Remove(Partner);
+                    Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
+                }
+            }
+        },
         { "GenerateInstitution", new ActionType("GenerateInstitution", Roles["CEO"], Roles["FreePlot"], Roles["NewInstitution"], Roles["ConstructionCompany"])
             {
                 Frequency = 0.3f,
@@ -80,37 +113,6 @@ public static class ActionLibrary
                 Modifications = a => ((ConstructionCompany) a["ConstructionCompany"]).Build((Institution) a["NewInstitution"])
             }
         },
-/*        { "Marriage", new ActionType("Marriage", Roles["Marry"], Roles["MarryWith"])
-            {
-                Frequency = 0.1f,
-                Modifications = a =>
-                {
-                    var Bride = (Person) a["Marry"];
-                    var Groom = (Person) a["MarryWith"];
-                    if (Groom != null)
-                    {
-                        Bride.sigOther = Groom;
-                        Groom.sigOther = Bride;
-                    }
-                    //Debug.Log(Bride.name + " is married with " + Groom.name);
-                }
-            }
-        },
-        { "Divorce", new ActionType("Divorce", Roles["Divorce"], Roles["DivorceWith"])
-            {
-                Frequency = 0f,
-                Modifications = a =>
-                {
-                    var Partner = (Person) a["Divorce"];
-                    var DivorcePartner = (Person) a["DivorceWith"];
-                    Partner.sigOther = null;
-                    DivorcePartner.sigOther = null;
-                    Partner.romanticallyInterestedIn.Remove(DivorcePartner);
-                    DivorcePartner.romanticallyInterestedIn.Remove(Partner);
-                    //Debug.Log(Partner.name + " is divorced with " + DivorcePartner.name);
-                }
-            } 
-        },*/
         { "InstitutionHiring", new ActionType("InstitutionHiring", Roles["Institution"], Roles["Employee"])
             {
                 Frequency = 0.3f,

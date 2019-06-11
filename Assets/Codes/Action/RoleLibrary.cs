@@ -20,13 +20,14 @@ public static class RoleLibrary
         // Uses constructor with default collection but custom filter
         { "Mother", new RoleType<Person>("Mother", (person, action) =>
             person.IsFemale && person.age >= 18 && person.age <= 50 &&
-            person.sigOther != null && person.sigOther.age >= 18 && person.readyForNextChild())
+            person.sigOther != null && person.sigOther.age >= 18 && person.sigOther.IsMale
+            && person.readyForNextChild())
         },
         { "Marry", new RoleType<Person>("Marry", (person, action) =>
             person.age >= 16 && (person.sigOther == null || person.sigOther.dead))
         },
         { "Divorce", new RoleType<Person>("Divorce", (person, action) =>
-            person.sigOther != null)
+            person.sigOther != null && person.haveAffair())
         },
         { "CEO", new RoleType<Person>("CEO", (person, action) =>
             person.individualPersonality.facets["STRESS_VULNERABILITY"] < 40 &&
@@ -101,10 +102,10 @@ public static class RoleLibrary
         },
         { "MarryWith", new RoleType<Person>("MarryWith", action =>
             {
-                var Bride = (Person) action["Marry"];
-                foreach (Person candidate in Bride.romanticallyInterestedIn)
+                var Marry = (Person) action["Marry"];
+                foreach (Person candidate in Marry.captivatedBy)
                 {
-                    if ((candidate.sigOther == null||candidate.sigOther.dead)&& Bride.CanMarry(candidate) && candidate.romanticallyInterestedIn.Contains(Bride))
+                    if ((candidate.sigOther == null||candidate.sigOther.dead)&& Marry.CanMarry(candidate) && candidate.captivatedBy.Contains(Marry))
                     {
                         //Debug.Log("Find Candidate: " + candidate.name + " " + candidate.sigOther);
                         return candidate;
