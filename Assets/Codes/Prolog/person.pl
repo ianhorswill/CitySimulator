@@ -61,14 +61,11 @@ show_person(Person) :-
    display("Displaying orbit of "),
    writeln(Person),
    $graph.create(),
-   add_orbit_edges(Person).
-
-add_orbit_edges(P) :-
-   orbit(P, O),
+   orbit(Person, O),
    writeln(O),
-   add_orbit_edges_aux(P, O).
+   add_orbit_edges(Person, O).
 
-add_orbit_edges_aux(P, O) :-
+add_orbit_edges(P, O) :-
    member(A, O),
    member(B, O),
    A \= B,
@@ -77,7 +74,7 @@ add_orbit_edges_aux(P, O) :-
    once(edge_color(R, C)),
    show_edge(A, B, R, C),
    fail.
-add_orbit_edges(_).
+add_orbit_edges(_,_).
 
 suppress_relationship(MainCharacter, A, B, sibling) :-
    A \= MainCharacter,
@@ -97,7 +94,6 @@ edge_color(_, "white").
 
 show_random_person :-
    random_person(P),
-   parent(P, _),
    show_person(P).
 
 person_named(X, Name) :-

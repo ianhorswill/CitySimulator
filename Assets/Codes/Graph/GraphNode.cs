@@ -5,7 +5,7 @@ public class GraphNode : MonoBehaviour
 {
     public Rigidbody2D rBody;
     private TextMesh textMesh;
-    private BoxCollider2D hitBox;
+    private CircleCollider2D hitBox;
 
     public Color Color = Color.white;
 
@@ -20,8 +20,9 @@ public class GraphNode : MonoBehaviour
         rBody.constraints = RigidbodyConstraints2D.FreezeRotation;
         textMesh = gameObject.AddComponent<TextMesh>();
         textMesh.alignment = TextAlignment.Center;
-        hitBox = gameObject.AddComponent<BoxCollider2D>();
-        hitBox.size = new Vector2(5,5);
+        //textMesh.fontStyle = FontStyle.Bold;
+        hitBox = gameObject.AddComponent<CircleCollider2D>();
+        hitBox.radius = 3;
         textMesh.text = gameObject.name;
         textMesh.color = Color;
         gameObject.transform.position = new Vector3(Random.Float(-10, 30), Random.Float(-10, 30));    
@@ -34,22 +35,26 @@ public class GraphNode : MonoBehaviour
             textMesh.color = c;
     }
 
-    public void OnGUI()
+    internal void OnMouseDown()
     {
-        if (Event.current.type == EventType.MouseDown)
-        {
-            var pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (hitBox.OverlapPoint(pos))
-            {
-                mouseDrag = true;
-                Graph.SelectedNode = this;
-            }
-        }
-        else if (Event.current.type == EventType.MouseUp)
-        {
-            mouseDrag = false;
-            Graph.SelectedNode = null;
-        }
+        mouseDrag = true;
+        Graph.SelectedNode = this;
+    }
+
+    internal void OnMouseUp()
+    {
+        mouseDrag = false;
+        Graph.SelectedNode = null;
+    }
+
+    internal void OnMouseEnter()
+    {
+        Graph.SelectedNode = this;
+    }
+
+    internal void OnMouseExit()
+    {
+        Graph.SelectedNode = null;
     }
 
     public void FixedUpdate()
