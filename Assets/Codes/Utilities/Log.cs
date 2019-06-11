@@ -18,14 +18,18 @@ public static class Logger
 
         // Arrange for the log file to be closed upon quitting.
         UnityEngine.Application.quitting +=
-            () => LogFile.Close();
+            () =>
+            {
+                LogFile.Close();
+                LogFile = null;
+            };
     }
 
     #region Static fields
     /// <summary>
     /// Text file to which we are writing the log messages.
     /// </summary>
-    static readonly TextWriter LogFile;
+    static TextWriter LogFile;
     /// <summary>
     /// Size of the recent message buffer.
     /// </summary>
@@ -47,6 +51,8 @@ public static class Logger
     /// <param name="arguments">Strings to include in the message</param>
     public static void Log(string subsystem, params string[] arguments)
     {
+        if (LogFile == null)
+            return;
         LogFile.Write(Simulator.CurrentTimeString);
         LogFile.Write('\t');
         LogFile.Write(subsystem);
@@ -116,6 +122,6 @@ public static class Logger
     /// </summary>
     public static void FlushLog()
     {
-        LogFile.Flush();
+        LogFile?.Flush();
     }
 }
