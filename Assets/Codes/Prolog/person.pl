@@ -55,7 +55,7 @@ orbit(PersonOrName, [Person | Relatees]) :-
 
 show_person(Person) :-
    step_limit(10000000),
-   write("Displaying orbit of"),
+   display("Displaying orbit of "),
    writeln(Person),
    $graph.create(),
    add_orbit_edges(Person).
